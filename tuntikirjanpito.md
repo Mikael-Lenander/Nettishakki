@@ -2,4 +2,5 @@
 
 | päivä | aika | mitä tein  |
 | :----:|:-----| :-----|
-| 1.1   | 4    | Projektin konfigurointi, palvelinpohja, yhteisen koodin sisältävän shared-packagen alustus |
+| 31.1. | 4    | Projektin konfigurointi, palvelinpohja, yhteisen koodin sisältävän shared-packagen alustus |
+| 1.1.  | 5    | Shakkinappuloiden liikeratoja ja niiden testausta |
