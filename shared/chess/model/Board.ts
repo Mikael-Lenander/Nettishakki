@@ -1,23 +1,98 @@
-import { BoardType, Color, PieceType, Row } from "../types"
+import { BoardType, PieceType, Move, Color } from "../types"
 import { Bishop, King, Knight, Pawn, Queen, Rook, Piece } from "./pieces"
 import Pos from "./Pos"
 
 export default class Board {
   static size = 8
   board: BoardType
+  moves: Move[]
 
-  constructor() {
-    this.board = Board.#createBoard()
-
+  constructor(board?: BoardType) {
+    if (board) {
+      this.board = board
+    } else {
+      this.board = Board.createBoard()
+    }
+    this.moves = []
   }
 
   pieceAt(pos: Pos): PieceType {
     return this.board[pos.y][pos.x]
   }
 
+  movePiece(oldPos: Pos, newPos: Pos): void {
+    const piece = this.pieceAt(oldPos)
+    piece.pos = newPos
+    this.board[newPos.y][newPos.x] = piece
+    this.board[oldPos.y][oldPos.x] = null
+    this.moves.push({
+      pieceName: piece.name,
+      pieceColor: piece.color,
+      oldPos,
+      newPos
+    })
+  }
+
+  movedPiece(oldPos: Pos, newPos: Pos): Board {
+    const newBoard = new Board(this.board)
+    newBoard.movePiece(oldPos, newPos)
+    return newBoard
+  }
+
+  kingPositon(color: Color): Pos {
+    return this.board
+      .flat()
+      .find(piece => piece && piece.name === 'king' && piece.color === color)
+      .pos
+  }
+
+  pieces(color: Color): Piece[] {
+    return this.board
+      .flat()
+      .filter(piece => piece && piece.color === color)
+  }
+
+  longRangePieces(color: Color): Piece[] {
+    return this.board
+      .flat()
+      .filter(piece => piece && piece.color === color && ['rook', 'queen', 'bishop'].includes(piece.name))
+  }
+
+  inCheck(color: Color, pieces: Piece[]): boolean {
+    return pieces
+      .some(piece => piece.validMoves(this).includes(this.kingPositon(color)))
+  }
+
+  legalMoves(piece: Piece, opponentPieces: Piece[]) {
+    return piece.validMoves(this).filter(move => {
+      const newBoard = this.movedPiece(piece.pos, move)
+      return !newBoard.inCheck(piece.color, opponentPieces)
+    })
+  }
+
+  controlledSquares(color: Color): Pos[] {
+    return [
+      ...new Set(
+        this.board
+          .flat()
+          .filter(piece => piece && piece.color === color)
+          .flatMap(piece => {
+            console.log('valid moves');
+            return piece.validMoves(this)
+          })
+      )
+    ]
+  }
+
   // Vain testaukseen
-  add(piece: Piece) {
-    this.board[piece.pos.y][piece.pos.x] = piece
+  add(pieces: Piece | Piece[]) {
+    if (pieces instanceof Array) {
+      pieces.forEach(piece => {
+        this.board[piece.pos.y][piece.pos.x] = piece
+      })
+    } else {
+      this.board[pieces.pos.y][pieces.pos.x] = pieces
+    }
   }
 
   // Vain testaukseen
@@ -25,7 +100,7 @@ export default class Board {
     console.table(
       this.board.map(row =>
         row.map(piece =>
-          piece ? `${piece.constructor.name.substring(0, 2)}(${piece.color.substring(0, 1)} (${piece.pos.x}, ${piece.pos.y}))` : 0
+          piece ? `${piece.name.substring(0, 2)}(${piece.color.substring(0, 1)} (${piece.pos.x}, ${piece.pos.y}))` : 0 //eslint-disable-line
         )
       ).reverse()
     )
@@ -34,34 +109,66 @@ export default class Board {
   // Vain testaukseen
   static empty(): Board {
     const newBoard = new Board()
-    newBoard.board = Array(8).fill(
-      Array(Board.size).fill(null)
-    ) as BoardType
+    newBoard.board = [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null]
+    ] as BoardType
     return newBoard
   }
 
   // Palauttaa laudan avausasemassa
-  static #createBoard(): BoardType {
-    const pieceRow = (color: Color, row: number) => [
-      new Rook(color, new Pos(0, row)),
-      new Bishop(color, new Pos(1, row)),
-      new Knight(color, new Pos(2, row)),
-      new Queen(color, new Pos(3, row)),
-      new King(color, new Pos(4, row)),
-      new Knight(color, new Pos(5, row)),
-      new Bishop(color, new Pos(6, row)),
-      new Rook(color, new Pos(7, row)),
-    ]
-    const pawnRow = (color: Color, row: number) => Array(this.size).fill(null)
-      .map((_item, index) => new Pawn(color, new Pos(index, row)))
-
-    const emptyRow = Array(this.size).fill(null) as Row
+  static createBoard(): BoardType {
     return [
-      pieceRow('white', 0),
-      pawnRow('white', 1),
-      emptyRow, emptyRow, emptyRow, emptyRow, emptyRow, emptyRow,
-      pawnRow('black', 7),
-      pieceRow('black', 8)
+      [
+        new Rook('white', 0, 0),
+        new Bishop('white', 1, 0),
+        new Knight('white', 2, 0),
+        new Queen('white', 3, 0),
+        new King('white', 4, 0),
+        new Knight('white', 5, 0),
+        new Bishop('white', 6, 0),
+        new Rook('white', 7, 0),
+      ],
+      [
+        new Pawn('white', 0, 1),
+        new Pawn('white', 1, 1),
+        new Pawn('white', 2, 1),
+        new Pawn('white', 3, 1),
+        new Pawn('white', 4, 1),
+        new Pawn('white', 5, 1),
+        new Pawn('white', 6, 1),
+        new Pawn('white', 7, 1),
+      ],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [
+        new Pawn('black', 0, 6),
+        new Pawn('black', 1, 6),
+        new Pawn('black', 2, 6),
+        new Pawn('black', 3, 6),
+        new Pawn('black', 4, 6),
+        new Pawn('black', 5, 6),
+        new Pawn('black', 6, 6),
+        new Pawn('black', 7, 6),
+      ],
+      [
+        new Rook('black', 0, 7),
+        new Bishop('black', 1, 7),
+        new Knight('black', 2, 7),
+        new Queen('black', 3, 7),
+        new King('black', 4, 7),
+        new Knight('black', 5, 7),
+        new Bishop('black', 6, 7),
+        new Rook('black', 7, 7),
+      ]
     ]
   }
 }

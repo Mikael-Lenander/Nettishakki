@@ -1,21 +1,42 @@
-import { Color, Direction } from '../../types'
+import { Color, Direction, PieceName } from '../../types'
 import Pos from '../Pos'
 import Board from '../Board'
 
-export class Piece {
+export abstract class Piece {
+  name: PieceName
   color: Color
   pos: Pos
-  constructor(color: Color, pos: Pos) {
+  constructor(color: Color, x: number, y: number) {
     this.color = color
-    this.pos = pos
+    this.pos = new Pos(x, y)
+  }
+
+  isOpponentPiece(piece: Piece): boolean {
+    return this.color !== piece.color
+  }
+
+  abstract validMoves(board: Board): Pos[]
+
+  validMovesInCheck(validMoves: Pos[], checkingPiece: Piece, kingPos: Pos) {
+    const captureMove = (pos: Pos) => pos.equals(checkingPiece.pos)
+    const squaresBetween = kingPos.squaresBetween(checkingPiece.pos)
+    switch (checkingPiece.name) {
+      case 'knight':
+      case 'pawn':
+        return validMoves.filter(pos => captureMove(pos))
+      case 'queen':
+      case 'rook':
+      case 'bishop':
+        return validMoves.filter(pos => captureMove(pos) || squaresBetween.includes(pos))
+    }
   }
 }
 
-export class LongRangePiece extends Piece {
-  directions: Direction[] = []
+export abstract class LongRangePiece extends Piece {
+  abstract directions: Direction[]
 
-  constructor(color: Color, pos: Pos) {
-    super(color, pos)
+  constructor(color: Color, x: number, y: number) {
+    super(color, x, y)
   }
 
   validMoves(board: Board): Pos[] {

@@ -1,13 +1,9 @@
+import { Pos } from '.'
 import { Piece } from './model/pieces'
 
 export type PieceType = Piece | null
 
 export type Color = 'white' | 'black'
-
-// export type Pos = {
-//   x: number,
-//   y: number
-// }
 
 export type Row = PieceType[]
 
@@ -18,6 +14,17 @@ export type Direction = {
   y: number
 }
 
+export type Tuple2 = [number, number]
+
+export type PieceName = 'bishop' | 'king' | 'knight' | 'pawn' | 'queen' | 'rook'
+
+export interface Move {
+  pieceName: PieceName,
+  pieceColor: Color,
+  oldPos: Pos,
+  newPos: Pos
+}
+
 type MockPiece = null | 0 | '' | 1 | 'x' | 'P'
 
-export type MockBoard = MockPiece[][]
+export type MockBoard = Array<Array<MockPiece>>

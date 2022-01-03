@@ -1,10 +1,18 @@
-import Board from '../model/Board'
-import { MockBoard } from '../types'
+import { MockBoard, Tuple2 } from '../types'
 import Pos from '../model/Pos'
 
-export const mockBoard = (): MockBoard => Array(8).fill(
-  Array(Board.size).fill(null)
-) as MockBoard
+export const mockBoard = (): MockBoard => {
+  return [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null]
+  ]
+}
 
 // Jäjestää Pos-olioita sisältävän listan, jotta testeissä voi verrata listoja
 export function sortPosArr(posArray: Pos[]) {
@@ -15,20 +23,28 @@ export function sortPosArr(posArray: Pos[]) {
 }
 
 // Näyttää graafisesti nappulan siirrot shakkilaudalla
-export function showMoves(piecePos: Pos, moves: Pos[]): void {
+export function showMoves(moves: Pos[], piecePos?: Pos): MockBoard {
   const board = mockBoard()
   moves.forEach(move => {
     board[move.y][move.x] = 'x'
   })
-  board[piecePos.y][piecePos.x] = 'P'
+  if (piecePos) board[piecePos.y][piecePos.x] = 'P'
   console.table(board)
+  return board
 }
 
-// Palauttaa ne laudan sijainnit, joissa on nappula
+// Palauttaa ne laudan sijainnit, joissa on nappula (valelaudalla numero 1). Helpottaa testaamista, kun testien oikeat vastaukset
+// voi merkata graafiselle laudalle.
 export function extractMoves(board: MockBoard): Pos[] {
   return sortPosArr(board.flatMap((row, rowIndex) =>
     row.flatMap((col, colIndex) =>
       col ? { x: colIndex, y: rowIndex } : null
     )
   ).filter(item => item) as Pos[])
+}
+
+export function extractPos(positions: Tuple2[]) {
+  return sortPosArr(
+    positions.map(tuple => new Pos(tuple[0], tuple[1]))
+  )
 }

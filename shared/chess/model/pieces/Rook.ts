@@ -1,8 +1,8 @@
-import { Color, Direction } from "../../types"
+import { Color, Direction, PieceName } from "../../types"
 import { LongRangePiece } from './Piece'
-import Pos from "../Pos"
 
 export class Rook extends LongRangePiece {
+  name: PieceName = 'rook'
   directions: Direction[] = [
     { x: 0, y: 1 },
     { x: 1, y: 0 },
@@ -10,7 +10,7 @@ export class Rook extends LongRangePiece {
     { x: -1, y: 0 },
   ]
 
-  constructor(color: Color, pos: Pos) {
-    super(color, pos)
+  constructor(color: Color, x: number, y: number) {
+    super(color, x, y)
   }
 }
