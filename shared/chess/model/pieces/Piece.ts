@@ -1,6 +1,7 @@
 import { Color, Direction, PieceName } from '../../types'
 import Pos from '../Pos'
 import Board from '../Board'
+import { opponent } from '../utils'
 
 export abstract class Piece {
   name: PieceName
@@ -17,18 +18,30 @@ export abstract class Piece {
 
   abstract validMoves(board: Board): Pos[]
 
-  validMovesInCheck(validMoves: Pos[], checkingPiece: Piece, kingPos: Pos) {
-    const captureMove = (pos: Pos) => pos.equals(checkingPiece.pos)
-    const squaresBetween = kingPos.squaresBetween(checkingPiece.pos)
-    switch (checkingPiece.name) {
+  abstract controlledSquares(board: Board): Pos[]
+
+  validMovesInCheck(board: Board): Pos[] {
+    const kingPos: Pos = board.kingPosition(this.color)
+    const kingAttackingPieces = board.kingAttackingPieces(opponent(this.color)) 
+    if (kingAttackingPieces.length > 1) return []
+    const kingAttackingPiece = kingAttackingPieces[0]
+    const captureMove = (pos: Pos) => pos.equals(kingAttackingPiece.pos)
+    const squaresBetween = kingPos.squaresBetween(kingAttackingPiece.pos)
+    switch (kingAttackingPiece.name) {
       case 'knight':
       case 'pawn':
-        return validMoves.filter(pos => captureMove(pos))
+        return this.validMoves(board).filter(pos => captureMove(pos))
       case 'queen':
       case 'rook':
       case 'bishop':
-        return validMoves.filter(pos => captureMove(pos) || squaresBetween.includes(pos))
+        return this.validMoves(board).filter(pos => captureMove(pos) || pos.in(squaresBetween))
     }
+  }
+
+  validMovesOnPin(board: Board, pinnningPiece: Piece): Pos[] {
+    const squaresBetween = this.pos.squaresBetween(pinnningPiece.pos)
+    return this.validMoves(board)
+      .filter(pos => pos.equals(pinnningPiece.pos) || pos.in(squaresBetween))
   }
 }
 
@@ -39,19 +52,29 @@ export abstract class LongRangePiece extends Piece {
     super(color, x, y)
   }
 
-  validMoves(board: Board): Pos[] {
-    const validMoves: Pos[] = []
+  moves(board: Board, sameColorAllowed: boolean): Pos[] {
+    const moves: Pos[] = []
     this.directions.forEach(direction => {
       let currentPos = this.pos.to(direction)
       while (currentPos.inBounds() && !board.pieceAt(currentPos)) {
-        validMoves.push(currentPos)
+        moves.push(currentPos)
         currentPos = currentPos.to(direction)
       }
       const currentPiece = currentPos.inBounds() && board.pieceAt(currentPos)
-      if (currentPiece && currentPiece.color !== this.color) {
-        validMoves.push(currentPos)
+      if (currentPiece) {
+        !sameColorAllowed && currentPiece.color !== this.color && moves.push(currentPos)
+        sameColorAllowed && moves.push(currentPos)
       }
     })
-    return validMoves
+    return moves
   }
+
+  validMoves(board: Board): Pos[] {
+      return this.moves(board, false)
+  }
+
+  controlledSquares(board: Board): Pos[] {
+      return this.moves(board, true)
+  }
+
 }

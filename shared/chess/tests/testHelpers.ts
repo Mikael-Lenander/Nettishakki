@@ -38,9 +38,9 @@ export function showMoves(moves: Pos[], piecePos?: Pos): MockBoard {
 export function extractMoves(board: MockBoard): Pos[] {
   return sortPosArr(board.flatMap((row, rowIndex) =>
     row.flatMap((col, colIndex) =>
-      col ? { x: colIndex, y: rowIndex } : null
+      col ? new Pos(colIndex, rowIndex) : null
     )
-  ).filter(item => item) as Pos[])
+  ).filter(item => item))
 }
 
 export function extractPos(positions: Tuple2[]) {

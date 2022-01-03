@@ -1,6 +1,6 @@
 import { Color } from "../types";
 
-export function opponentColor(color: Color): Color {
+export function opponent(color: Color): Color {
   return color === 'white' ? 'black' : 'white'
 }
 

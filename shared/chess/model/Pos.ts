@@ -1,6 +1,6 @@
 import { Direction } from '../types'
 import Board from './Board'
-import * as _ from 'lodash'
+import { range } from 'lodash'
 
 export default class Pos {
   x: number
@@ -18,8 +18,16 @@ export default class Pos {
     return new Pos(this.x + direction.x, this.y + direction.y)
   }
 
+  distance(other: Pos) {
+    return Math.hypot(other.x - this.x, other.y - this.y)
+  }
+
   equals(other: Pos): boolean {
     return this.x === other.x && this.y === other.y
+  }
+
+  in(positions: Pos[]): boolean {
+    return positions.some(pos => pos.equals(this))
   }
 
   // Palauttaa ruudut kahden ruudun välissä
@@ -29,11 +37,11 @@ export default class Pos {
     const max = new Pos(Math.max(this.x, other.x), Math.max(this.y, other.y))
     const slope = (this.y - other.y) / (this.x - other.x)
     if (!isFinite(slope)) {
-      return _.range(min.y + 1, max.y)
+      return range(min.y + 1, max.y)
         .map(y => new Pos(this.x, y))
     } else if (slope === Math.sign(slope)) {
       const yStart = this.x < other.x ? this.y : other.y
-      return _.range(min.x + 1, max.x)
+      return range(min.x + 1, max.x)
         .map((x, index) => new Pos(x, yStart + slope * (index + 1)))
     }
     return []

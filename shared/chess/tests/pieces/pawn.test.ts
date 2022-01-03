@@ -96,7 +96,6 @@ describe('Pawn', () => {
     test('has correct valid moves in the opening', () => {
       board = new Board()
       const blackPawn = board.pieceAt(new Pos(6, 6)) as Pawn
-      console.log('opening black');
       board.display()
       const blackMoves = sortPosArr(blackPawn.validMoves(board))
       showMoves(blackMoves, blackPawn.pos)

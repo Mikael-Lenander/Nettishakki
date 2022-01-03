@@ -10,12 +10,26 @@ export class Pawn extends Piece {
     super(color, x, y)
   }
 
+  yDirection(): number {
+    return this.color === 'white' ? 1 : -1
+  }
+
+  captureSquares(): Pos[] {
+    return [
+      this.pos.to({ x: -1, y: this.yDirection() }),
+      this.pos.to({ x: 1, y: this.yDirection() })
+    ].filter(square => square.inBounds())
+  }
+
+  controlledSquares(_board: Board): Pos[] {
+    return this.captureSquares()
+  }
+
   validMoves(board: Board): Pos[] {
     const validMoves: Pos[] = []
-    const yDirection = this.color === 'white' ? 1 : -1
     const squaresInFront = {
-      1: this.pos.to({ x: 0, y: yDirection }),
-      2: this.pos.to({ x: 0, y: 2 * yDirection })
+      1: this.pos.to({ x: 0, y: this.yDirection() }),
+      2: this.pos.to({ x: 0, y: 2 * this.yDirection() })
     }
     if (board.pieceAt(squaresInFront[1]) == null) {
       validMoves.push(squaresInFront[1])
@@ -25,12 +39,8 @@ export class Pawn extends Piece {
       }
     }
 
-    const captureSquares = [
-      this.pos.to({ x: -1, y: yDirection }),
-      this.pos.to({ x: 1, y: yDirection })
-    ]
-    captureSquares.forEach(square => {
-      if (square.inBounds() && board.pieceAt(square) && board.pieceAt(square).color !== this.color) {
+    this.captureSquares().forEach(square => {
+      if (board.pieceAt(square) && board.pieceAt(square).color !== this.color) {
         validMoves.push(square)
       }
     })
@@ -45,7 +55,7 @@ export class Pawn extends Piece {
       && Math.abs(lastMove.newPos.y - lastMove.oldPos.y) === 2
       && Math.abs(lastMove.newPos.x - this.pos.x) === 1
     ) {
-      validMoves.push(new Pos(lastMove.oldPos.x, this.pos.y + yDirection))
+      validMoves.push(new Pos(lastMove.oldPos.x, this.pos.y + this.yDirection()))
     }
 
     return validMoves

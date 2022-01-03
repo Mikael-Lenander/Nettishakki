@@ -1,6 +1,8 @@
 import { BoardType, PieceType, Move, Color } from "../types"
 import { Bishop, King, Knight, Pawn, Queen, Rook, Piece } from "./pieces"
 import Pos from "./Pos"
+import { opponent } from "./utils"
+import { uniqWith } from 'lodash'
 
 export default class Board {
   static size = 8
@@ -20,11 +22,14 @@ export default class Board {
     return this.board[pos.y][pos.x]
   }
 
-  movePiece(oldPos: Pos, newPos: Pos): void {
-    const piece = this.pieceAt(oldPos)
-    piece.pos = newPos
+  isEmptySquare(pos: Pos): boolean {
+    return this.pieceAt(pos) == null
+  }
+
+  #setPiece(piece: Piece, oldPos: Pos, newPos: Pos) {
     this.board[newPos.y][newPos.x] = piece
     this.board[oldPos.y][oldPos.x] = null
+    piece.pos = newPos
     this.moves.push({
       pieceName: piece.name,
       pieceColor: piece.color,
@@ -33,16 +38,31 @@ export default class Board {
     })
   }
 
-  movedPiece(oldPos: Pos, newPos: Pos): Board {
-    const newBoard = new Board(this.board)
-    newBoard.movePiece(oldPos, newPos)
-    return newBoard
+  castle(king: King, oldPos: Pos, newPos: Pos): void {
+    this.#setPiece(king, oldPos, newPos)
+    const rook = this.pieceAt(new Pos(
+      newPos.x === 6 ? 7 : 0,
+      king.pos.y
+    ))
+    this.#setPiece(rook, rook.pos, new Pos(
+      rook.pos.x === 7 ? 5 : 3,
+      rook.pos.y
+    ))
   }
 
-  kingPositon(color: Color): Pos {
+  movePiece(oldPos: Pos, newPos: Pos): void {
+    const piece = this.pieceAt(oldPos)
+    if (piece instanceof King && piece.isCastleMove(newPos)) {
+      this.castle(piece, oldPos, newPos)
+      return
+    }
+    this.#setPiece(piece, oldPos, newPos)
+  }
+
+  kingPosition(color: Color): Pos {
     return this.board
       .flat()
-      .find(piece => piece && piece.name === 'king' && piece.color === color)
+      .find(piece => piece?.name === 'king' && piece.color === color)
       .pos
   }
 
@@ -53,35 +73,38 @@ export default class Board {
   }
 
   longRangePieces(color: Color): Piece[] {
-    return this.board
-      .flat()
-      .filter(piece => piece && piece.color === color && ['rook', 'queen', 'bishop'].includes(piece.name))
+    return this.pieces(color)
+      .filter(piece => ['rook', 'queen', 'bishop'].includes(piece.name))
   }
 
-  inCheck(color: Color, pieces: Piece[]): boolean {
-    return pieces
-      .some(piece => piece.validMoves(this).includes(this.kingPositon(color)))
+  kingAttackingPieces(color: Color): Piece[] {
+    return this.pieces(color)
+      .filter(piece => this.kingPosition(opponent(color)).in(piece.validMoves(this)))
   }
 
-  legalMoves(piece: Piece, opponentPieces: Piece[]) {
-    return piece.validMoves(this).filter(move => {
-      const newBoard = this.movedPiece(piece.pos, move)
-      return !newBoard.inCheck(piece.color, opponentPieces)
-    })
+  pinningPiece(pinnedPiece: Piece): Piece | null {
+    const kingPos = this.kingPosition(pinnedPiece.color)
+    const squaresBetween = kingPos.squaresBetween(pinnedPiece.pos)
+    if (squaresBetween.length === 0 && kingPos.distance(pinnedPiece.pos) >= 2) return null
+    if (squaresBetween.some(pos => this.pieceAt(pos))) return null
+    return this.longRangePieces(opponent(pinnedPiece.color)).find(piece => {
+      return piece.pos.squaresBetween(kingPos).length > 0
+        && piece.pos.squaresBetween(pinnedPiece.pos).every(pos => !this.pieceAt(pos))
+    }) || null
+  }
+
+  inCheck(color: Color): boolean {
+    const kingPos = this.kingPosition(color)
+    return this.pieces(opponent(color))
+      .some(piece => kingPos.in(piece.validMoves(this)))
   }
 
   controlledSquares(color: Color): Pos[] {
-    return [
-      ...new Set(
-        this.board
-          .flat()
-          .filter(piece => piece && piece.color === color)
-          .flatMap(piece => {
-            console.log('valid moves');
-            return piece.validMoves(this)
-          })
-      )
-    ]
+    return uniqWith(
+      this.pieces(color)
+        .flatMap(piece => piece.controlledSquares(this))
+      , (a, b) => a.equals(b)
+    )
   }
 
   // Vain testaukseen
@@ -102,7 +125,7 @@ export default class Board {
         row.map(piece =>
           piece ? `${piece.name.substring(0, 2)}(${piece.color.substring(0, 1)} (${piece.pos.x}, ${piece.pos.y}))` : 0 //eslint-disable-line
         )
-      ).reverse()
+      )
     )
   }
 

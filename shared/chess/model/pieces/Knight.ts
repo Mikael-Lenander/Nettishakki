@@ -20,16 +20,25 @@ export class Knight extends Piece {
     super(color, x, y)
   }
 
-  validMoves(board: Board): Pos[] {
-    const validMoves: Pos[] = []
+  moves(board: Board, sameColorAllowed: boolean): Pos[] {
+    const moves: Pos[] = []
     this.directions.forEach(direction => {
       const currentPos = this.pos.to(direction)
       if (!currentPos.inBounds()) return
       const currentPiece = board.pieceAt(currentPos)
       if (!currentPiece || currentPiece.color !== this.color) {
-        validMoves.push(currentPos)
+        moves.push(currentPos)
       }
+      sameColorAllowed && moves.push(currentPos)
     })
-    return validMoves
+    return moves
+  }
+
+  validMoves(board: Board): Pos[] {
+      return this.moves(board, false)
+  }
+
+  controlledSquares(board: Board): Pos[] {
+      return this.moves(board, true)
   }
 }
