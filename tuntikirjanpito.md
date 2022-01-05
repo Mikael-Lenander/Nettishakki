@@ -6,3 +6,4 @@
 | 1.1.  | 5    | Shakkinappuloiden liikeratoja ja niiden testausta |
 | 2.1   | 10   | Lisää shakkinappuloiden liikeratoja ja testausta, Pos-luokan parantelua |
 | 3.1   | 10   | Shakkinappuloiden liikeradat viimeistelty (ehkä), bugikorjauksia |
+| 4.1   | 5    | Frontendin aloittaminen |
