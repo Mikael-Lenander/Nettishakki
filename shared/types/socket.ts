@@ -1,10 +1,10 @@
+import { Pos, PosType } from "../chess";
 
 export interface ServerToClientEvents {
-  noArg: () => void;
-  basicEmit: (a: number, b: string, c: Buffer) => void;
-  withAck: (d: string, callback: (e: number) => void) => void;
+  getMove: (oldPos: PosType, newPos: PosType) => void
+
 }
 
 export interface ClientToServerEvents {
-  hello: () => void;
+  makeMove: (oldPos: Pos, newPos: Pos) => void
 }

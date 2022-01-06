@@ -1,4 +1,4 @@
-import { MockBoard, Tuple2 } from '../types'
+import { MockBoard, Tuple2 } from '../model/types'
 import Pos from '../model/Pos'
 
 export const mockBoard = (): MockBoard => {

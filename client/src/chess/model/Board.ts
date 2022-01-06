@@ -120,17 +120,9 @@ export default class Board {
   }
 
   static toFullImplementation(board: SimpleBoard) {
-    const constructors = {
-      'pawn': Pawn,
-      'bishop': Bishop,
-      'rook': Rook,
-      'queen': Queen,
-      'king': King,
-      'knight': Knight   
-    }
     const fullBoard = board.map((row, y) => (
       row.map((piece, x) => (
-        piece ? new constructors[piece.name](piece.color, x, y) : null
+        piece ? Piece.toFullImplementation(piece, x, y) : null
       ))
     ))
     return new Board(fullBoard)

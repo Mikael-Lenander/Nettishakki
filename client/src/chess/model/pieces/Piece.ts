@@ -23,7 +23,7 @@ export abstract class Piece {
 
   validMovesInCheck(board: Board): Pos[] {
     const kingPos: Pos = board.kingPosition(this.color)
-    const kingAttackingPieces = board.kingAttackingPieces(opponent(this.color)) 
+    const kingAttackingPieces = board.kingAttackingPieces(opponent(this.color))
     if (kingAttackingPieces.length > 1) return []
     const kingAttackingPiece = kingAttackingPieces[0]
     const captureMove = (pos: Pos) => pos.equals(kingAttackingPiece.pos)
@@ -56,7 +56,7 @@ export abstract class Piece {
       'king': King,
       'knight': Knight
     }
-    return new constructors[piece.name](piece.color, x, y) as Piece  //eslint-disable-line
+    return new constructors[piece.name](piece.color, x, y)
   }
 }
 
@@ -85,11 +85,11 @@ export abstract class LongRangePiece extends Piece {
   }
 
   validMoves(board: Board): Pos[] {
-      return this.moves(board, false)
+    return this.moves(board, false)
   }
 
   controlledSquares(board: Board): Pos[] {
-      return this.moves(board, true)
+    return this.moves(board, true)
   }
 
 }

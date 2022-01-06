@@ -1,5 +1,5 @@
 import Board from '../model/Board'
-import { PieceType } from '../types'
+import { PieceType } from '../model/types'
 import { Queen, Bishop, King, Pawn, Rook, Knight } from '../model/pieces'
 import Pos from '../model/Pos'
 import { extractMoves, showMoves, sortPosArr } from './testHelpers'

@@ -7,3 +7,4 @@
 | 2.1   | 10   | Lisää shakkinappuloiden liikeratoja ja testausta, Pos-luokan parantelua |
 | 3.1   | 10   | Shakkinappuloiden liikeradat viimeistelty (ehkä), bugikorjauksia |
 | 4.1   | 5    | Frontendin aloittaminen |
+| 5.1   | 6    | Pelilogiikan toteutusta frontendissä |

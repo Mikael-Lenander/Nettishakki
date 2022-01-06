@@ -24,6 +24,7 @@ export default class Game {
     this.turn = opponent(this.turn)
   }
 
+
   static legalMoves(board: Board, check: boolean, piece: Piece): Pos[] {
     if (check) return piece.validMovesInCheck(board)
     if (piece instanceof King) return piece.legalMoves(board)
