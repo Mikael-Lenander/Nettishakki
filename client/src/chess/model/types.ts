@@ -21,10 +21,7 @@ export type Direction = {
   y: number
 }
 
-export type PosType = {
-  x: number,
-  y: number
-}
+export type PosType = Direction
 
 export type Tuple2 = [number, number]
 
@@ -38,8 +35,24 @@ export interface Move {
 }
 
 export type Turn = {
-  oldPos: PosType,
-  newPos: PosType,
+  oldPos: Pos,
+  newPos: Pos,
+  turn: Color,
+  check: boolean
+}
+
+export interface GameState {
+  board: SimpleBoard,
+  turn: Color,
+  isCheck: boolean,
+  color: Color,
+  moves: Move[]
+}
+
+export type GameStateChange = {
+  moves: Move[],
+  isCheck: boolean,
+  turn: Color
 }
 
 type MockPiece = null | 0 | '' | 1 | 'x' | 'P'

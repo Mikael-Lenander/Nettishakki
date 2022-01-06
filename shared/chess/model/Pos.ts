@@ -1,4 +1,4 @@
-import { Direction } from './types'
+import { Direction, PosType } from './types'
 import Board from './Board'
 import { range } from 'lodash'
 
@@ -45,5 +45,16 @@ export default class Pos {
         .map((x, index) => new Pos(x, yStart + slope * (index + 1)))
     }
     return []
+  }
+
+  static obj(pos: Pos) {
+    return {
+      x: pos.x,
+      y: pos.y
+    }
+  }
+
+  static new(posType: PosType) {
+    return new Pos(posType.x, posType.y)
   }
 }

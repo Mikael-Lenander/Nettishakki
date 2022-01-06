@@ -1,30 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {  Color } from 'shared/chess';
-import { SimpleBoard, Board, Turn } from '../chess';
-
-interface GameState {
-  board: SimpleBoard,
-  turn: Color,
-  check: boolean
-}
+import { Board, GameStateChange, GameState } from '../chess';
 
 const initialState: GameState = {
   board: Board.simple(),
   turn: 'white',
-  check: false
+  isCheck: false,
+  color: 'white',
+  moves: []
 }
 
 const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    makeMove: (state, action: PayloadAction<Turn>) => {
-      const { oldPos, newPos } = action.payload
-      const piece = state.board[oldPos.y][oldPos.x]
-      state.board[oldPos.y][oldPos.x] = null
-      state.board[newPos.y][newPos.x] = piece
-      state.turn = state.turn === 'white' ? 'black' : 'white'
-      state.check = false
+    makeMove: (state, action: PayloadAction<GameStateChange>) => {
+      const { moves, turn, isCheck } = action.payload
+      moves.forEach(move => {
+        state.board[move.newPos.y][move.newPos.x] = { name: move.pieceName, color: move.pieceColor }
+        state.board[move.oldPos.y][move.oldPos.x] = null
+        state.moves.push(move)
+      })
+      state.turn = turn
+      state.isCheck = isCheck
     }
   }
 })

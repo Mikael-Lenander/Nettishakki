@@ -30,6 +30,8 @@ export default class Pos {
     return positions.some(pos => pos.equals(this))
   }
 
+  
+
   // Palauttaa ruudut kahden ruudun välissä
   squaresBetween(other: Pos): Pos[] {
     if (this.equals(other)) return []

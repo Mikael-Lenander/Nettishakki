@@ -23,15 +23,15 @@ describe('Check', () => {
     })
     test('only valid moves for a queen are to capture or block', () => {
       const queen = game.board.pieceAt(new Pos(4, 2))
-      expect(sortPosArr(game.legalMoves(queen))).toEqual([new Pos(1, 5)])
+      expect(sortPosArr(Game.legalMoves(game.board, game.check, queen))).toEqual([new Pos(1, 5)])
     })
     test("a rook has no moves when it can't capture or block", () => {
       const rook = game.board.pieceAt(new Pos(0, 6))
-      expect(sortPosArr(game.legalMoves(rook))).toHaveLength(0)
+      expect(sortPosArr(Game.legalMoves(game.board, game.check, rook))).toHaveLength(0)
     })
     test('king has correct escape squares', () => {
       const king = game.board.pieceAt(new Pos(0, 7))
-      expect(sortPosArr(game.legalMoves(king))).toEqual(extractMoves([
+      expect(sortPosArr(Game.legalMoves(game.board, game.check, king))).toEqual(extractMoves([
        [0, 0, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 0, 0, 0, 0],
@@ -57,7 +57,7 @@ describe('Check', () => {
     })
     test('only valid moves for a queen are to capture or block', () => {
       const queen = game.board.pieceAt(new Pos(5, 7))
-      const moves = sortPosArr(game.legalMoves(queen))
+      const moves = sortPosArr(Game.legalMoves(game.board, game.check, queen))
       showMoves(moves, queen.pos)
       expect(moves).toEqual(extractMoves([
        [0, 0, 0, 0, 0, 0, 0, 0],
@@ -72,11 +72,11 @@ describe('Check', () => {
     })
     test("only valid moves for a rook are to capture or block", () => {
       const rook = game.board.pieceAt(new Pos(0, 6))
-      expect(sortPosArr(game.legalMoves(rook))).toEqual([ new Pos(6, 6) ])
+      expect(sortPosArr(Game.legalMoves(game.board, game.check, rook))).toEqual([ new Pos(6, 6) ])
     })
     test('king has correct escape squares', () => {
       const king = game.board.pieceAt(new Pos(4, 4))
-      const moves = sortPosArr(game.legalMoves(king))
+      const moves = sortPosArr(Game.legalMoves(game.board, game.check, king))
       showMoves(moves, king.pos)
       expect(moves).toEqual(extractMoves([
        [0, 0, 0, 0, 0, 0, 0, 0],

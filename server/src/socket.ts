@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/types'
-import { Game, Pos } from 'shared/chess'
+import { Game, Pos, PosType } from 'shared/chess'
 
 export interface InterServerEvents {
   ping: () => void;
@@ -22,11 +22,9 @@ export default function socketServer(server: http.Server) {
 
   io.on("connection", socket => {
     console.log('User connected');
-    socket.on('makeMove', (oldPos: Pos, newPos: Pos) => {
-      console.log('oldPos', oldPos)
-      console.log('newPos', newPos)
-      game.makeMove(new Pos(oldPos.x, oldPos.y), new Pos(newPos.x, newPos.y)) //eslint-disable-line
-      io.emit('getMove', oldPos, newPos) //eslint-disable-line
+    socket.on('makeMove', (oldPos: PosType, newPos: PosType) => {
+      const moves = game.makeMove(Pos.new(oldPos), Pos.new(newPos))//eslint-disable-line
+      io.emit('getMove', moves, game.check, game.turn) //eslint-disable-line
     })
   })
 

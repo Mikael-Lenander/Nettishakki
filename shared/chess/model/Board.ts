@@ -26,37 +26,59 @@ export default class Board {
     return this.pieceAt(pos) == null
   }
 
-  setPiece(piece: Piece, oldPos: Pos, newPos: Pos) {
+  setPiece(piece: Piece, oldPos: Pos, newPos: Pos): Move {
     this.board[newPos.y][newPos.x] = piece
     this.board[oldPos.y][oldPos.x] = null
     piece.pos = newPos
-    this.moves.push({
+    const move = {
       pieceName: piece.name,
       pieceColor: piece.color,
       oldPos,
       newPos
-    })
+    }
+    this.moves.push(move)
+    return move
   }
 
-  castle(king: King, oldPos: Pos, newPos: Pos): void {
-    this.setPiece(king, oldPos, newPos)
+  castle(king: King, oldPos: Pos, newPos: Pos): Move[] {
+    const kingMove = this.setPiece(king, oldPos, newPos)
     const rook = this.pieceAt(new Pos(
-      newPos.x === 6 ? 7 : 0, 
+      newPos.x === 6 ? 7 : 0,
       king.pos.y
     )) as Rook
-    this.setPiece(rook, rook.pos, new Pos(
+    const rookMove = this.setPiece(rook, rook.pos, new Pos(
       rook.pos.x === 7 ? 5 : 3,
       rook.pos.y
     ))
+    return [kingMove, rookMove]
   }
 
-  movePiece(oldPos: Pos, newPos: Pos): void {
+  enPassant(piece: Piece, oldPos: Pos, newPos: Pos): Move[] {
+    const pawnMove = this.setPiece(piece, oldPos, newPos)
+    const captureSquare = new Pos(newPos.x, oldPos.y)
+    const capturedPiece = this.pieceAt(captureSquare)
+    this.board[captureSquare.y][captureSquare.x] = null
+    return [
+      pawnMove,
+      {
+        pieceName: capturedPiece.name,
+        pieceColor: capturedPiece.color,
+        oldPos: captureSquare,
+        newPos: captureSquare
+      }
+    ]
+  }
+
+  movePiece(oldPos: Pos, newPos: Pos): Move[] {
     const piece = this.pieceAt(oldPos)
+    if (!piece) return []
     if (piece instanceof King && piece.isCastleMove(newPos)) {
-      this.castle(piece, oldPos, newPos)
-      return
+      return this.castle(piece, oldPos, newPos)
     }
-    piece && this.setPiece(piece, oldPos, newPos)
+    if (piece instanceof Pawn && piece.isEnPassantMove(newPos, this)) {
+      return this.enPassant(piece, oldPos, newPos)
+    }
+    return [this.setPiece(piece, oldPos, newPos)]
   }
 
   kingPosition(color: Color): Pos {
@@ -88,7 +110,8 @@ export default class Board {
     if (squaresBetween.length === 0 && kingPos.distance(pinnedPiece.pos) >= 2) return null
     if (squaresBetween.some(pos => this.pieceAt(pos))) return null
     return this.longRangePieces(opponent(pinnedPiece.color)).find(piece => {
-      return piece.pos.squaresBetween(kingPos).length > 0
+      const squaresBetweenKing = piece.pos.squaresBetween(kingPos)
+      return pinnedPiece.pos.in(squaresBetweenKing)
         && piece.pos.squaresBetween(pinnedPiece.pos).every(pos => !this.pieceAt(pos))
     }) || null
   }
@@ -96,7 +119,7 @@ export default class Board {
   inCheck(color: Color): boolean {
     const kingPos = this.kingPosition(color)
     return this.pieces(opponent(color))
-      .some(piece => kingPos.in(piece.validMoves(this)))
+      .some(piece => kingPos.in(piece.controlledSquares(this)))
   }
 
   controlledSquares(color: Color): Pos[] {
@@ -114,26 +137,28 @@ export default class Board {
           name: piece.name,
           color: piece.color
         }
-        : null
+          : null
       ))
     ))
   }
 
-  static toFullImplementation(board: SimpleBoard) {
+  static toFullImplementation(board: SimpleBoard, moves: Move[]) {
     const constructors = {
       'pawn': Pawn,
       'bishop': Bishop,
       'rook': Rook,
       'queen': Queen,
       'king': King,
-      'knight': Knight   
+      'knight': Knight
     }
     const fullBoard = board.map((row, y) => (
       row.map((piece, x) => (
         piece ? new constructors[piece.name](piece.color, x, y) : null
       ))
     ))
-    return new Board(fullBoard)
+    const newBoard = new Board(fullBoard)
+    newBoard.moves = moves
+    return newBoard
   }
 
   // Vain testaukseen
@@ -179,12 +204,12 @@ export default class Board {
     return [
       [
         new Rook('white', 0, 0),
-        new Bishop('white', 1, 0),
-        new Knight('white', 2, 0),
+        new Knight('white', 1, 0),
+        new Bishop('white', 2, 0),
         new Queen('white', 3, 0),
         new King('white', 4, 0),
-        new Knight('white', 5, 0),
-        new Bishop('white', 6, 0),
+        new Bishop('white', 5, 0),
+        new Knight('white', 6, 0),
         new Rook('white', 7, 0),
       ],
       [
@@ -213,12 +238,12 @@ export default class Board {
       ],
       [
         new Rook('black', 0, 7),
-        new Bishop('black', 1, 7),
-        new Knight('black', 2, 7),
+        new Knight('black', 1, 7),
+        new Bishop('black', 2, 7),
         new Queen('black', 3, 7),
         new King('black', 4, 7),
-        new Knight('black', 5, 7),
-        new Bishop('black', 6, 7),
+        new Bishop('black', 5, 7),
+        new Knight('black', 6, 7),
         new Rook('black', 7, 7),
       ]
     ]

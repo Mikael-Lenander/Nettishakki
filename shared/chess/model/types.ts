@@ -41,6 +41,20 @@ export type Turn = {
   check: boolean
 }
 
+export interface GameState {
+  board: SimpleBoard,
+  turn: Color,
+  isCheck: boolean,
+  color: Color,
+  moves: Move[]
+}
+
+export type GameStateChange = {
+  moves: Move[],
+  isCheck: boolean,
+  turn: Color
+}
+
 type MockPiece = null | 0 | '' | 1 | 'x' | 'P'
 
 export type MockBoard = Array<Array<MockPiece>>

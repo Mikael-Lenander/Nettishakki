@@ -1,4 +1,4 @@
-import { Color, SimpleBoard } from "./types"
+import { Color, GameState, Move } from "./types"
 import Board from "./Board"
 import Pos from './Pos'
 import { opponent } from "./utils"
@@ -24,8 +24,8 @@ export default class Game {
     this.turn = opponent(this.turn)
   }
 
-
-  static legalMoves(board: Board, check: boolean, piece: Piece): Pos[] {
+  static legalMoves(board: Board, check: boolean, turn: Color, piece: Piece): Pos[] {
+    if (turn !== piece.color) return []
     if (check) return piece.validMovesInCheck(board)
     if (piece instanceof King) return piece.legalMoves(board)
     const pinningPiece = board.pinningPiece(piece)
@@ -33,22 +33,29 @@ export default class Game {
     return piece.validMoves(board)
   }
 
-  makeMove(oldPos: Pos, newPos: Pos) {
+  makeMove(oldPos: Pos, newPos: Pos): Move[] {
     const piece = this.board.pieceAt(oldPos)
-    if (!piece) return
-    const legalMoves = Game.legalMoves(this.board, this.check, piece)
+    if (!piece) return []
+    const legalMoves = this.getMoves(piece)
     if (newPos.in(legalMoves)) {
-      this.board.movePiece(oldPos, newPos)
+      const moves = this.board.movePiece(oldPos, newPos)
       this.switchTurns()
-      this.check = this.board.inCheck(opponent(this.turn))
+      this.check = this.board.inCheck(this.turn)
+      return moves
     }
+    return []
   }
 
-  static getMoves(board: SimpleBoard, check: boolean, pos: Pos) {
+  getMoves(piece: Piece): Pos[] {
+    return Game.legalMoves(this.board, this.check, this.turn, piece)
+  }
+
+  static getMoves(game: GameState, pos: Pos) {
+    const { board, isCheck, moves, turn } = game
     const piece = board[pos.y][pos.x]
     if (!piece) return []
-    const fullBoard = Board.toFullImplementation(board)
+    const fullBoard = Board.toFullImplementation(board, moves)
     const fullPiece = Piece.toFullImplementation(piece, pos.x, pos.y)
-    return this.legalMoves(fullBoard, check, fullPiece)
+    return Game.legalMoves(fullBoard, isCheck, turn, fullPiece)
   }
 }

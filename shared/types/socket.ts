@@ -1,10 +1,9 @@
-import { Pos, PosType } from "../chess";
+import { Color, Move, PosType } from "../chess";
 
 export interface ServerToClientEvents {
-  getMove: (oldPos: PosType, newPos: PosType) => void
-
+  getMove: (moves: Move[], isCheck: boolean, turn: Color) => void
 }
 
 export interface ClientToServerEvents {
-  makeMove: (oldPos: Pos, newPos: Pos) => void
+  makeMove: (oldPos: PosType, newPos: PosType) => void
 }

@@ -9,7 +9,6 @@ type Props = {
 
 export default function MenuButton({ text }: Props) {
   const theme = useTheme()
-  console.log(theme.palette.primary);
 
   return (
     <Paper elevation={5} className='hover-button' onClick={() => console.log('clicked')} sx={{

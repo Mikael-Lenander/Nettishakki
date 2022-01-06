@@ -2,15 +2,15 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { Stage, Layer, Rect, Circle } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { range } from 'lodash'
-import { Game, Pos } from '../chess'
+import { Game, Pos, Move, Color } from '../chess'
 import { useAppDispatch, useAppSelector } from '../hooks/store'
 import { makeMove } from '../reducers/gameReducer'
+import { useSocket } from '../hooks/socketContext'
 import ChessImage from './ChessImage'
 
 interface Square {
-  id: string
-  row: number,
-  col: number,
+  id: string,
+  pos: Pos,
   fill: string
 }
 
@@ -22,40 +22,60 @@ export default function Board() {
   const radius = 10
   const game = useAppSelector(state => state.game)
   const dispatch = useAppDispatch()
+  const socket = useSocket()
 
   const squares = useMemo((): Square[][] => {
     return range(0, 8).map(row => (
       range(0, 8).map(col => ({
         id: `(${col}, ${row})`,
-        col: col,
-        row: row,
-        fill: (row % 2) === (col % 2) ? '#dee3e6' : '#8ca2ad'
+        pos: new Pos(col, row),
+        fill: (row % 2) === (col % 2) ? '#8ca2ad' : '#dee3e6'
       }))
     ))
   }, [])
 
+  const flip = (pos: Pos): Pos => new Pos(
+    game.color === 'white' ? pos.x : 7 - pos.x,
+    game.color === 'white' ? 7 - pos.y : pos.y
+  )
+
   const [selectedPos, setSelectedPos] = useState<Pos>()
   const [availabeMoves, setAvailableMoves] = useState<Pos[]>([])
-  
+
   function handleClickBoard(event: KonvaEventObject<MouseEvent>) {
     const square = event.target.attrs
     const pos = new Pos(square.col, square.row)
     const piece = game.board[pos.y][pos.x]
-    if (selectedPos && pos.in(availabeMoves)) {
-      dispatch(makeMove({
-        oldPos: Pos.obj(selectedPos),
-        newPos: Pos.obj(pos)
-      }))
+    if (selectedPos && pos.in(availabeMoves) && socket) {
+      socket.emit('makeMove', selectedPos, pos)
     }
     setSelectedPos(piece && piece.color === game.turn ? pos : null)
   }
-  
+
   useEffect(() => {
     if (selectedPos) {
-      return setAvailableMoves(Game.getMoves(game.board, game.check, selectedPos))
+      setAvailableMoves(Game.getMoves(game, selectedPos))
+      return
     }
     setAvailableMoves([])
   }, [selectedPos])
+
+  useEffect(() => {
+    if (!socket) return
+    socket.on('getMove', (moves: Move[], isCheck: boolean, turn: Color) => {
+      dispatch(makeMove({
+        moves,
+        isCheck,
+        turn
+      }))
+    })
+
+    return () => {
+      socket.off('getMove')
+    }
+  }, [socket])
+
+  if (!game) return null
 
   return (
     <Stage width={width} height={height}>
@@ -64,10 +84,10 @@ export default function Board() {
           row.map(square => (
             <Rect
               key={square.id}
-              row={square.row}
-              col={square.col}
-              x={square.col * squareSize}
-              y={square.row * squareSize}
+              col={square.pos.x}
+              row={square.pos.y}
+              x={flip(square.pos).x * squareSize}
+              y={flip(square.pos).y * squareSize}
               width={squareSize}
               height={squareSize}
               fill={square.fill}
@@ -75,27 +95,14 @@ export default function Board() {
             />
           ))
         ))}
-        {selectedPos && <>
+        {selectedPos &&
           <Rect
-            x={selectedPos.x * squareSize}
-            y={selectedPos.y * squareSize}
+            x={flip(selectedPos).x * squareSize}
+            y={flip(selectedPos).y * squareSize}
             width={squareSize}
             height={squareSize}
             fill={'green'}
-          />
-          {availabeMoves.map(move => (
-            <Circle
-              key={`(${move.x}, ${move.y})`}
-              row={move.y}
-              col={move.x}
-              x={squareSize * (move.x + 0.5)}
-              y={squareSize * (move.y + 0.5)}
-              fill='grey'
-              radius={radius}
-              onClick={handleClickBoard}
-            />
-          ))}
-        </>}
+          />}
         {game.board.map((row, y) => (
           row.map((piece, x) => {
             if (!piece) return null
@@ -104,12 +111,24 @@ export default function Board() {
               x={x}
               y={y}
               pieceName={piece.name}
-              color={piece.color}
+              pieceColor={piece.color}
+              playerColor={game.color}
               squareSize={squareSize}
               handleClickBoard={handleClickBoard}
             />
-
           })
+        ))}
+        {availabeMoves.map(move => (
+          <Circle
+            key={`(${move.x}, ${move.y})`}
+            row={move.y}
+            col={move.x}
+            x={squareSize * (flip(move).x + 0.5)}
+            y={squareSize * (flip(move).y + 0.5)}
+            fill='grey'
+            radius={radius}
+            onClick={handleClickBoard}
+          />
         ))}
       </Layer>
     </Stage>

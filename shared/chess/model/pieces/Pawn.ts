@@ -25,6 +25,10 @@ export class Pawn extends Piece {
     return this.captureSquares()
   }
 
+  isEnPassantMove(newPos: Pos, board: Board) {
+    return newPos.x !== this.pos.x && newPos.y !== this.pos.y && board.isEmptySquare(newPos)
+  }
+
   validMoves(board: Board): Pos[] {
     const validMoves: Pos[] = []
     const squaresInFront = {
