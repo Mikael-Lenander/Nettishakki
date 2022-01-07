@@ -29,6 +29,11 @@ export class Pawn extends Piece {
     return newPos.x !== this.pos.x && newPos.y !== this.pos.y && board.isEmptySquare(newPos)
   }
 
+  isPromotionMove(newPos: Pos) {
+    const eighthRank = this.color === 'white' ? 7 : 0
+    return newPos.y === eighthRank
+  }
+
   validMoves(board: Board): Pos[] {
     const validMoves: Pos[] = []
     const squaresInFront = {

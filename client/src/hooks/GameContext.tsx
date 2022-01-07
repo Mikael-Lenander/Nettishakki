@@ -36,7 +36,6 @@ export function GameProvider({ children }: { children: JSX.Element }) {
     socket.on('getMove', (oldPos: PosType, newPos: PosType) => {
       gameRef.current.makeMove(new Pos(oldPos.x, oldPos.y), new Pos(newPos.x, newPos.y))
       const newGame = cloneDeep(gameRef.current)
-      console.log('setting new game state', game.board.board)
       setGame(newGame)
     })
 

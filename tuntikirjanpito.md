@@ -9,3 +9,4 @@
 | 4.1   | 5    | Frontendin aloittaminen |
 | 5.1   | 6    | Pelilogiikan toteutusta frontendissä |
 | 6.1   | 6    | Pelilogiikan ja frontendin bugikorjauksia |
+| 7.1   | 10   | Moninpeli ja siihen liittyvät frontend-komponentit, pelin päättymislogiikka |

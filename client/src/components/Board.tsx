@@ -2,11 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { Stage, Layer, Rect, Circle } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { range } from 'lodash'
-import { Game, Pos, Move, Color } from '../chess'
-import { useAppDispatch, useAppSelector } from '../hooks/store'
-import { makeMove } from '../reducers/gameReducer'
+import { Game, Pos } from '../chess'
 import { useSocket } from '../hooks/socketContext'
 import ChessImage from './ChessImage'
+import { GameState } from 'shared/chess'
 
 interface Square {
   id: string,
@@ -14,14 +13,16 @@ interface Square {
   fill: string
 }
 
-export default function Board() {
+interface Props {
+  game: GameState
+}
+
+export default function Board({ game }: Props) {
 
   const width = 650
   const height = 650
   const squareSize = width / 8
   const radius = 10
-  const game = useAppSelector(state => state.game)
-  const dispatch = useAppDispatch()
   const socket = useSocket()
 
   const squares = useMemo((): Square[][] => {
@@ -43,13 +44,14 @@ export default function Board() {
   const [availabeMoves, setAvailableMoves] = useState<Pos[]>([])
 
   function handleClickBoard(event: KonvaEventObject<MouseEvent>) {
+    if (!game.active) return
     const square = event.target.attrs
     const pos = new Pos(square.col, square.row)
     const piece = game.board[pos.y][pos.x]
-    if (selectedPos && pos.in(availabeMoves) && socket) {
+    if (game.turn === game.color && selectedPos && pos.in(availabeMoves) && socket) {
       socket.emit('makeMove', selectedPos, pos)
     }
-    setSelectedPos(piece && piece.color === game.turn ? pos : null)
+    setSelectedPos(piece && piece.color === game.turn && piece.color === game.color ? pos : null)
   }
 
   useEffect(() => {
@@ -60,77 +62,62 @@ export default function Board() {
     setAvailableMoves([])
   }, [selectedPos])
 
-  useEffect(() => {
-    if (!socket) return
-    socket.on('getMove', (moves: Move[], isCheck: boolean, turn: Color) => {
-      dispatch(makeMove({
-        moves,
-        isCheck,
-        turn
-      }))
-    })
-
-    return () => {
-      socket.off('getMove')
-    }
-  }, [socket])
-
-  if (!game) return null
-
   return (
-    <Stage width={width} height={height}>
-      <Layer>
-        {squares.map(row => (
-          row.map(square => (
+    <div style={{margin: '1em'}}>
+      <Stage width={width} height={height}>
+        <Layer>
+          {squares.map(row => (
+            row.map(square => (
+              <Rect
+                key={square.id}
+                col={square.pos.x}
+                row={square.pos.y}
+                x={flip(square.pos).x * squareSize}
+                y={flip(square.pos).y * squareSize}
+                width={squareSize}
+                height={squareSize}
+                fill={square.fill}
+                onClick={handleClickBoard}
+              />
+            ))
+          ))}
+          {selectedPos &&
             <Rect
-              key={square.id}
-              col={square.pos.x}
-              row={square.pos.y}
-              x={flip(square.pos).x * squareSize}
-              y={flip(square.pos).y * squareSize}
+              x={flip(selectedPos).x * squareSize}
+              y={flip(selectedPos).y * squareSize}
               width={squareSize}
               height={squareSize}
-              fill={square.fill}
+              fill={'green'}
+            />}
+          {game.board.map((row, y) => (
+            row.map((piece, x) => {
+              if (!piece) return null
+              return <ChessImage
+                key={`${x} ${y}`}
+                x={x}
+                y={y}
+                pieceName={piece.name}
+                pieceColor={piece.color}
+                playerColor={game.color}
+                squareSize={squareSize}
+                handleClickBoard={handleClickBoard}
+              />
+            })
+          ))}
+          {availabeMoves.map(move => (
+            <Circle
+              key={`(${move.x}, ${move.y})`}
+              row={move.y}
+              col={move.x}
+              x={squareSize * (flip(move).x + 0.5)}
+              y={squareSize * (flip(move).y + 0.5)}
+              fill='grey'
+              radius={radius}
               onClick={handleClickBoard}
             />
-          ))
-        ))}
-        {selectedPos &&
-          <Rect
-            x={flip(selectedPos).x * squareSize}
-            y={flip(selectedPos).y * squareSize}
-            width={squareSize}
-            height={squareSize}
-            fill={'green'}
-          />}
-        {game.board.map((row, y) => (
-          row.map((piece, x) => {
-            if (!piece) return null
-            return <ChessImage
-              key={`${x} ${y}`}
-              x={x}
-              y={y}
-              pieceName={piece.name}
-              pieceColor={piece.color}
-              playerColor={game.color}
-              squareSize={squareSize}
-              handleClickBoard={handleClickBoard}
-            />
-          })
-        ))}
-        {availabeMoves.map(move => (
-          <Circle
-            key={`(${move.x}, ${move.y})`}
-            row={move.y}
-            col={move.x}
-            x={squareSize * (flip(move).x + 0.5)}
-            y={squareSize * (flip(move).y + 0.5)}
-            fill='grey'
-            radius={radius}
-            onClick={handleClickBoard}
-          />
-        ))}
-      </Layer>
-    </Stage>
+          ))}
+        </Layer>
+      </Stage>
+    </div>
   )
 }

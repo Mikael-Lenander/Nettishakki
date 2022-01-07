@@ -38,15 +38,18 @@ export type Turn = {
   oldPos: Pos,
   newPos: Pos,
   turn: Color,
-  check: boolean
+  isCheck: boolean
 }
 
 export interface GameState {
+  id: string,
+  active: boolean,
   board: SimpleBoard,
   turn: Color,
   isCheck: boolean,
   color: Color,
-  moves: Move[]
+  moves: Move[],
+  opponentName: string
 }
 
 export type GameStateChange = {

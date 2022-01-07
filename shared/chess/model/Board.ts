@@ -78,6 +78,9 @@ export default class Board {
     if (piece instanceof Pawn && piece.isEnPassantMove(newPos, this)) {
       return this.enPassant(piece, oldPos, newPos)
     }
+    if (piece instanceof Pawn && piece.isPromotionMove(newPos)) {
+      return [this.setPiece(new Queen(piece.color, newPos.x, newPos.y), oldPos, newPos)]
+    }
     return [this.setPiece(piece, oldPos, newPos)]
   }
 
@@ -130,6 +133,17 @@ export default class Board {
     )
   }
 
+  insufficientMaterial(): boolean {
+    if (this.moves.length < 35) return false
+    const whitePieces = this.pieces('white')
+    const blackPieces = this.pieces('black')
+    const allPieces = whitePieces.concat(blackPieces)
+    return (allPieces.length <= 2)
+      || (allPieces.length === 3 && allPieces.some(piece => piece.name === 'bishop' || piece.name === 'knight'))
+      || (allPieces.length === 4 && whitePieces.some(piece => piece.name === 'bishop') && blackPieces.some(piece => piece.name === 'bishop')
+        && whitePieces.find(piece => piece.name === 'bishop').color === blackPieces.find(piece => piece.name === 'bishop').color)
+  }
+
   static simple(): SimpleBoard {
     return Board.createBoard().map(row => (
       row.map(piece => (
@@ -157,7 +171,12 @@ export default class Board {
       ))
     ))
     const newBoard = new Board(fullBoard)
-    newBoard.moves = moves
+    newBoard.moves = moves.map(move => ({
+      pieceName: move.pieceName,
+      pieceColor: move.pieceColor,
+      oldPos: Pos.new(move.oldPos),
+      newPos: Pos.new(move.newPos)
+    }))
     return newBoard
   }
 

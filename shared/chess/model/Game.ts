@@ -3,12 +3,13 @@ import Board from "./Board"
 import Pos from './Pos'
 import { opponent } from "./utils"
 import { Piece, King } from './pieces'
+import { GameOver } from "../../types"
 
 export default class Game {
   board: Board
   turn: Color
   mate: boolean
-  check: boolean
+  isCheck: boolean
   constructor(board?: Board) {
     if (board) {
       this.board = board
@@ -16,7 +17,7 @@ export default class Game {
       this.board = new Board()
     }
     this.mate = false
-    this.check = false
+    this.isCheck = false
     this.turn = 'white'
   }
 
@@ -24,9 +25,23 @@ export default class Game {
     this.turn = opponent(this.turn)
   }
 
-  static legalMoves(board: Board, check: boolean, turn: Color, piece: Piece): Pos[] {
+  over(): GameOver | null {
+    if (this.isCheck && this.allMoves(this.turn).length === 0) {
+      return { winner: opponent(this.turn), message: 'checkmate' }
+    }
+    // Patti, nopein mahdollinen teoreettinen patti tulee 19. siirrolla :)
+    if (this.board.moves.length >= 19 && !this.isCheck && this.allMoves(this.turn).length === 0) {
+      return { winner: null, message: 'stalemate' }
+    }
+    if (this.board.insufficientMaterial()) {
+      return { winner: null, message: 'insufficient material' }
+    }
+    return null
+  }
+
+  static legalMoves(board: Board, isCheck: boolean, turn: Color, piece: Piece): Pos[] {
     if (turn !== piece.color) return []
-    if (check) return piece.validMovesInCheck(board)
+    if (isCheck) return piece.validMovesInCheck(board)
     if (piece instanceof King) return piece.legalMoves(board)
     const pinningPiece = board.pinningPiece(piece)
     if (pinningPiece) return piece.validMovesOnPin(board, pinningPiece)
@@ -40,14 +55,14 @@ export default class Game {
     if (newPos.in(legalMoves)) {
       const moves = this.board.movePiece(oldPos, newPos)
       this.switchTurns()
-      this.check = this.board.inCheck(this.turn)
+      this.isCheck = this.board.inCheck(this.turn)
       return moves
     }
     return []
   }
 
   getMoves(piece: Piece): Pos[] {
-    return Game.legalMoves(this.board, this.check, this.turn, piece)
+    return Game.legalMoves(this.board, this.isCheck, this.turn, piece)
   }
 
   static getMoves(game: GameState, pos: Pos) {
@@ -57,5 +72,10 @@ export default class Game {
     const fullBoard = Board.toFullImplementation(board, moves)
     const fullPiece = Piece.toFullImplementation(piece, pos.x, pos.y)
     return Game.legalMoves(fullBoard, isCheck, turn, fullPiece)
+  }
+
+  allMoves(color: Color): Pos[] {
+    return this.board.pieces(color) 
+      .flatMap(piece => this.getMoves(piece))
   }
 }
