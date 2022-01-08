@@ -1,5 +1,6 @@
 import { Pos } from '..'
 import { Piece } from './pieces'
+import { GameOverMessage } from '../../types'
 
 export type PieceType = Piece | null
 
@@ -49,7 +50,8 @@ export interface GameState {
   isCheck: boolean,
   color: Color,
   moves: Move[],
-  opponentName: string
+  opponentName: string,
+  overMessage: GameOverMessage | null
 }
 
 export type GameStateChange = {

@@ -2,9 +2,9 @@ import { Color, Move, PosType } from "../chess";
 
 export interface ServerToClientEvents {
   getMove: (moves: Move[], isCheck: boolean, turn: Color) => void,
-  gameCreated: (color: Color, gameId: string) => void,
+  gameCreated: (info: Info, color?: Color, gameId?: string) => void,
   joinedGame: (info: Info, opponentName?: string, color?: Color, gameId?: string) => void,
-  gameOver: (data: GameOver) => void
+  gameOver: (message: GameOverMessage) => void
 }
 
 export interface ClientToServerEvents {
@@ -18,7 +18,7 @@ export interface Info {
   message: string
 }
 
-export interface GameOver {
+export interface GameOverMessage {
   winner: Color | null,
   message: string
 }

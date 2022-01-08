@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../state/hooks'
 import { useSocket } from '../hooks/socketContext'
 import { makeMove, gameOver } from '../state/reducers/gameReducer'
 import { Color, Move } from 'shared/chess'
+import { GameOverMessage } from 'shared/types'
 import Board from './Board'
 import InfoBar from './InfoBar'
-import { GameOver } from 'shared/types'
 import { Navigate } from 'react-router-dom'
 
 export default function Game() {
@@ -13,12 +13,6 @@ export default function Game() {
   const game = useAppSelector(state => state.game)
   const socket = useSocket()
   const dispatch = useAppDispatch()
-  const [gameOverMessage, setGameOverMessage] = useState<string>('')
-
-  function formatGameOverMessage(data: GameOver) {
-    if (!data.winner) return `draw by ${data.message}`
-    return `${data.winner} wins by ${data.message}`
-  }
 
   useEffect(() => {
     if (!socket || !game.active) return
@@ -29,9 +23,8 @@ export default function Game() {
         turn
       }))
     })
-    socket.on('gameOver', data => {
-      dispatch(gameOver())
-      setGameOverMessage(formatGameOverMessage(data))
+    socket.on('gameOver', (message: GameOverMessage) => {
+      dispatch(gameOver(message))
     })
     return () => {
       socket.off('getMove')
@@ -44,7 +37,7 @@ export default function Game() {
   return (
     <div style={{display: 'flex', flexDirection: 'row', margin: '1em'}}>
       <Board game={game} />
-      <InfoBar game={game} gameOverMessage={gameOverMessage}/>
+      <InfoBar game={game}/>
     </div>
   )
 }

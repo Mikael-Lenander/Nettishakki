@@ -23,6 +23,11 @@
     "noImplicitThis": true,
     // "strictNullChecks": true
   },
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ],
   "include": [
     "src"
   ]

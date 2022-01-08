@@ -16,13 +16,14 @@ describe('Pins', () => {
       game.board.add([
         new King('black', 4, 0),
         new Rook('white', 4, 7),
-        new Queen('black', 4, 1)
+        new Queen('black', 4, 1),
+        new King('white', 0, 7)
       ])
       game.turn = 'black'
     })
     test("a queen can't discover its own king", () => {
       const queen = game.board.pieceAt(new Pos(4, 1))
-      const moves = sortPosArr(game.legalMoves(queen))
+      const moves = sortPosArr(game.getMoves(queen))
       showMoves(moves, queen.pos)
       expect(moves).toEqual(extractMoves([
        [0, 0, 0, 0, 0, 0, 0, 0],
@@ -37,9 +38,10 @@ describe('Pins', () => {
     })
     test("a queen can move after the king has unpinned", () => {
       game.makeMove(new Pos(4, 0), new Pos(5, 0))
+      game.turn = 'black'
       game.board.display()
       const queen = game.board.pieceAt(new Pos(4, 1))
-      const moves = sortPosArr(game.legalMoves(queen))
+      const moves = sortPosArr(game.getMoves(queen))
       showMoves(moves, queen.pos)
       expect(moves).toEqual(extractMoves([
        [0, 0, 0, 1, 1, 0, 0, 0],
@@ -53,5 +55,5 @@ describe('Pins', () => {
        ]))
     })
   })
-  
+
 })

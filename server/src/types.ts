@@ -1,15 +1,4 @@
-import { Color, Game } from "shared/chess";
-
-export type ActiveGames = {
-  [id: string]: {
-    game: Game,
-    status: GameStatus,
-    players: {
-      white: string | null,
-      black: string | null
-    }
-  }
-}
+import { Color } from "shared/chess"
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout

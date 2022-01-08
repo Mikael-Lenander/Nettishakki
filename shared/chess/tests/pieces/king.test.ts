@@ -168,7 +168,7 @@ describe('a King', () => {
       new Rook('white', 0, 0),
       new Rook('white', 7, 0),
       new Pawn('black', 0, 6),
-      new King('black', 7, 7)
+      new King('black', 6, 7)
     ])
     const game = new Game(board)
     game.makeMove(king.pos, new Pos(5, 0))
@@ -192,6 +192,7 @@ describe('a King', () => {
     board.add([
       new Rook('white', 0, 0),
       new Rook('white', 7, 0),
+      new King('black', 2, 7),
       king
     ])
     const game = new Game(board)
@@ -215,6 +216,7 @@ describe('a King', () => {
     board.add([
       new Rook('black', 0, 7),
       new Rook('black', 7, 7),
+      new King('white', 2, 0),
       king
     ])
     const game = new Game(board)
