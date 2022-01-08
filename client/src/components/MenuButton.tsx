@@ -5,7 +5,7 @@ import { Button } from '@mui/material'
 
 type Props = {
   text: string,
-  link: string,
+  link?: string,
   onClick?: () => void
 }
 
@@ -15,7 +15,7 @@ export default function MenuButton({ text, link, onClick }: Props) {
 
   function handleClick() {
     onClick && onClick()
-    navigate(link)
+    link && navigate(link)
   }
 
   return (

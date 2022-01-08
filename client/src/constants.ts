@@ -1,2 +1,2 @@
 
-export const LOCAL_STORAGE_PREFIX = 'chess-'
+export const STORAGE_PREFIX = 'chess-'

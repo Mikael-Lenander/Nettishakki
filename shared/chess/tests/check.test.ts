@@ -20,6 +20,7 @@ describe('Check', () => {
         new Rook('black', 0, 6)
       ])
       game.isCheck = true
+      game.turn = 'black'
     })
     test('only valid moves for a queen are to capture or block', () => {
       const queen = game.board.pieceAt(new Pos(4, 2))

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Board, GameStateChange, GameState, Color } from '../../chess'
+import { GameOverMessage } from 'shared/types'
 
 const initialState: GameState = {
   id: null,
@@ -9,7 +10,8 @@ const initialState: GameState = {
   isCheck: false,
   color: 'black',
   moves: [],
-  opponentName: ''
+  opponentName: '',
+  overMessage: null
 }
 
 type NewGame = {
@@ -48,9 +50,11 @@ const gameSlice = createSlice({
       game.isCheck = false
       game.moves = []
       game.opponentName = action.payload.opponentName
+      game.overMessage = null
     },
-    gameOver: (game) => {
+    gameOver: (game, action: PayloadAction<GameOverMessage>) => {
       game.active = false
+      game.overMessage = action.payload
     }
   }
 })

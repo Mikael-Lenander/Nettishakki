@@ -3,7 +3,7 @@ import Board from "./Board"
 import Pos from './Pos'
 import { opponent } from "./utils"
 import { Piece, King } from './pieces'
-import { GameOver } from "shared/types"
+import { GameOverMessage } from "shared/types"
 
 export default class Game {
   board: Board
@@ -25,7 +25,7 @@ export default class Game {
     this.turn = opponent(this.turn)
   }
 
-  over(): GameOver | null {
+  over(): GameOverMessage | null {
     if (this.isCheck && this.allMoves(this.turn).length === 0) {
       return { winner: opponent(this.turn), message: 'checkmate' }
     }
