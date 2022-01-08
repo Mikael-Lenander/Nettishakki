@@ -3,8 +3,8 @@ import Typography from '@mui/material/Typography'
 import { useSocket } from '../hooks/socketContext'
 import { Color } from 'shared/chess'
 import { Info } from 'shared/types'
-import { initializeGame, startGame } from '../reducers/gameReducer'
-import { useAppDispatch, useAppSelector } from '../hooks/store'
+import { initializeGame, startGame } from '../state/reducers/gameReducer'
+import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { Navigate } from 'react-router-dom'
 
 export default function Lobby() {

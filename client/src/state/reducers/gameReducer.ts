@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Board, GameStateChange, GameState, Color } from '../chess'
+import { Board, GameStateChange, GameState, Color } from '../../chess'
 
 const initialState: GameState = {
   id: null,

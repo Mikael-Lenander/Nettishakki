@@ -14,8 +14,19 @@ export default class Pos {
     return this.x >= 0 && this.y >= 0 && this.x < Board.size && this.y < Board.size
   }
 
+  inContactWith(other: Pos): boolean {
+    return this.squaresBetween(other).length > 0 || this.distance(other) < 2
+  }
+
   to(direction: Direction) {
     return new Pos(this.x + direction.x, this.y + direction.y)
+  }
+
+  directionTo(other: Pos): Direction | null {
+    return {
+      x: Math.sign(other.x - this.x),
+      y: Math.sign(other.y - this.y)
+    }
   }
 
   distance(other: Pos) {

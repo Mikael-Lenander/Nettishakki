@@ -2,7 +2,7 @@ import React from 'react'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { Circle, CircleOutlined } from '@mui/icons-material'
-import { useAppSelector } from '../hooks/store'
+import { useAppSelector } from '../state/hooks'
 import { GameState } from 'shared/chess'
 
 interface Props {

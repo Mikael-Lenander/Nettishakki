@@ -11,6 +11,10 @@ export type ActiveGames = {
   }
 }
 
+export type Disconnections = {
+  [id: string]: NodeJS.Timeout
+}
+
 export enum GameStatus {
   Starting = 'starting',
   Active = 'active',

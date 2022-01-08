@@ -110,7 +110,7 @@ export default class Board {
   pinningPiece(pinnedPiece: Piece): Piece | null {
     const kingPos = this.kingPosition(pinnedPiece.color)
     const squaresBetween = kingPos.squaresBetween(pinnedPiece.pos)
-    if (squaresBetween.length === 0 && kingPos.distance(pinnedPiece.pos) >= 2) return null
+    if (!kingPos.inContactWith(pinnedPiece.pos)) return null
     if (squaresBetween.some(pos => this.pieceAt(pos))) return null
     return this.longRangePieces(opponent(pinnedPiece.color)).find(piece => {
       const squaresBetweenKing = piece.pos.squaresBetween(kingPos)

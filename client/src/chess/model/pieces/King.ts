@@ -3,6 +3,7 @@ import { Piece } from './Piece'
 import Pos from '../Pos'
 import Board from "../Board"
 import { opponent } from "../utils"
+import { LongRangePiece } from "."
 
 export class King extends Piece {
   name: PieceName = 'king'
@@ -64,7 +65,15 @@ export class King extends Piece {
   }
 
   validMovesInCheck(board: Board): Pos[] {
-    return this.legalMoves(board)
+    const validMoves = this.legalMoves(board)
+    const illegalMoves: Pos[] = []
+    board.kingAttackingPieces(opponent(this.color)).forEach(piece => {
+      if (piece instanceof LongRangePiece && piece.pos.inContactWith(this.pos)) {
+        const squareBehindKing = this.pos.to(piece.pos.directionTo(this.pos))
+        illegalMoves.push(squareBehindKing)
+      }
+    })
+    return validMoves.filter(move => !move.in(illegalMoves))
   }
 
   controlledSquares(board: Board): Pos[] {

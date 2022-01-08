@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../hooks/store'
+import { useAppSelector, useAppDispatch } from '../state/hooks'
 import { useSocket } from '../hooks/socketContext'
-import { makeMove, gameOver } from '../reducers/gameReducer'
+import { makeMove, gameOver } from '../state/reducers/gameReducer'
 import { Color, Move } from 'shared/chess'
 import Board from './Board'
 import InfoBar from './InfoBar'
 import { GameOver } from 'shared/types'
+import { Navigate } from 'react-router-dom'
 
 export default function Game() {
 
@@ -20,7 +21,7 @@ export default function Game() {
   }
 
   useEffect(() => {
-    if (!socket) return
+    if (!socket || !game.active) return
     socket.on('getMove', (moves: Move[], isCheck: boolean, turn: Color) => {
       dispatch(makeMove({
         moves,
@@ -38,7 +39,7 @@ export default function Game() {
     }
   }, [socket])
 
-  if (!game) return null
+  if (!game.id) return <Navigate to='/' />
 
   return (
     <div style={{display: 'flex', flexDirection: 'row', margin: '1em'}}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import MenuButton from './MenuButton'
 import { useSocket } from '../hooks/socketContext'
-import { useAppSelector } from '../hooks/store'
+import { useAppSelector } from '../state/hooks'
 import { Navigate } from 'react-router-dom'
 
 export default function MainMenu() {

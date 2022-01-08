@@ -1,11 +1,12 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { ClientToServerEvents, ServerToClientEvents } from 'shared/types'
-import { InterServerEvents, SocketData, ActiveGames, GameStatus } from './types'
+import { InterServerEvents, SocketData, ActiveGames, GameStatus, Disconnections } from './types'
 import { Game, opponent, Pos, PosType } from 'shared/chess'
-import { generateUniqueId, randomColor } from './utils'
+import { generateUniqueId, randomColor, findGameId } from './utils'
 
 const activeGames: ActiveGames = {}
+const disconnections: Disconnections = {}
 
 export default function socketServer(server: http.Server) {
   const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
@@ -17,8 +18,14 @@ export default function socketServer(server: http.Server) {
   io.on("connection", socket => {
     const username = socket.handshake.query.username as string
     socket.join(username)
-    let currentGameId = ''
-    console.log(`User ${username} connected`)
+    let currentGameId = findGameId(username, activeGames)
+    console.log(`User ${username} connected width gameId ${currentGameId}`)
+    if (currentGameId) {
+      console.log(`Joined back to game ${currentGameId} with user ${username} and timeoutId ${disconnections[username]}`)
+      clearTimeout(disconnections[username])
+      // delete disconnections[username]
+      socket.join(currentGameId)
+    }
 
     socket.on('createGame', () => {
       if (!username) return console.log('no user')
@@ -32,9 +39,9 @@ export default function socketServer(server: http.Server) {
           black: userColor === 'black' ? username : null
         }
       }
+      console.log('activeGames', activeGames)
       socket.join(gameId)
       currentGameId = gameId
-      console.log(`set gameid ${gameId} for player ${username}`)
       io.to(username).emit('gameCreated', userColor, gameId)
       console.log(`game ${gameId} created for player ${username}`)
     })
@@ -51,13 +58,13 @@ export default function socketServer(server: http.Server) {
       }
       socket.join(gameId)
       currentGameId = gameId
-      console.log(`set gameid ${gameId} for player ${username}`)
       const freeColor = white ? 'black' : 'white'
       game.players[freeColor] = username
       const opponentName = game.players[opponent(freeColor)]
+      console.log('activeGames', activeGames)
       io.to(username).emit('joinedGame', { success: true, message: '' }, opponentName, freeColor, gameId)
       io.to(opponentName).emit('joinedGame', { success: true, message: '' }, username, freeColor, gameId)
-      console.log('joined to game', gameId)
+      console.log(`player ${username} joined to game ${gameId}`)
     })
     socket.on('makeMove', (oldPos: PosType, newPos: PosType) => {
       const game = activeGames[currentGameId].game
@@ -66,10 +73,22 @@ export default function socketServer(server: http.Server) {
       const gameOver = game.over()
       if (gameOver) {
         io.to(currentGameId).emit('gameOver', gameOver)
-        return
+        delete activeGames[currentGameId]
       }
     })
-
+    socket.on('disconnect', () => {
+      console.log(`User ${username} has disconnected`)
+      const currentGame = activeGames[currentGameId]
+      if (currentGame) {
+        const opponent = currentGame.players.white === username ? 'black' : 'white'
+        const timeoutId = setTimeout(() => {
+          io.to(currentGameId).emit('gameOver', { winner: opponent, message: 'opponent disconnection' })
+          delete activeGames[currentGameId]
+          console.log(`Deleted disconnected game ${currentGameId}`)
+        }, 10 * 1000)
+        console.log(`setting timeout for user ${username} with id ${timeoutId}`)
+        disconnections[username] = timeoutId
+      }
+    })
   })
-
 }
