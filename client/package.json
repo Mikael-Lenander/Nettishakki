@@ -29,7 +29,7 @@
     "use-image": "^1.0.8",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.2",
-    "shakki": "git+https://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:x-oauth-basic@github.com/Mikael-Lenander/shakki.git"
+    "shakki": "git+https://@github.com/Mikael-Lenander/shakki.git"
   },
   "scripts": {
     "start": "react-scripts start",

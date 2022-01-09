@@ -33,7 +33,7 @@
     "express": "^4.17.2",
     "mongoose": "^6.1.4",
     "morgan": "^1.10.0",
-    "shakki": "git+https://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:x-oauth-basic@github.com/Mikael-Lenander/shakki.git",
+    "shakki": "git+https://@github.com/Mikael-Lenander/shakki.git",
     "socket.io": "^4.4.0"
   },
   "engines": {
