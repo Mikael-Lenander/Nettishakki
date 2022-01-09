@@ -10,4 +10,5 @@
 | 5.1   | 6    | Pelilogiikan toteutusta frontendissä |
 | 6.1   | 6    | Pelilogiikan ja frontendin bugikorjauksia |
 | 7.1   | 10   | Moninpeli ja siihen liittyvät frontend-komponentit, pelin päättymislogiikka |
-| 8.1   | 10   | Paranneltu palvelimen käynnissä olevien pelien hallintaa, pelaajan disconnectaus pelistä, bugikorjauksia|
+| 8.1   | 10   | Paranneltu palvelimen käynnissä olevien pelien hallintaa, pelaajan disconnectaus pelistä, bugikorjauksia |
+| 9.1   | 5    | Julkaisu tuotantoon |
