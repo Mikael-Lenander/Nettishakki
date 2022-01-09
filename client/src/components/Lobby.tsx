@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSocket } from '../hooks/socketContext'
-import { Color } from 'shared/chess'
-import { Info } from 'shared/types'
+import { Color, Info } from 'shakki'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { Navigate } from 'react-router-dom'

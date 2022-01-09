@@ -8,6 +8,6 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('tiny'))
 
-app.get('/', (req, res) => { res.send('<h1>Hello world</h1>'); });
+app.get('/', (req, res) => { res.send('<h1>Shakki backend</h1>'); });
 
 export default app

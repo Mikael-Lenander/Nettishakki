@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import io, { Socket } from 'socket.io-client'
-import { ServerToClientEvents, ClientToServerEvents } from 'shared/types'
+import { ServerToClientEvents, ClientToServerEvents } from 'shakki'
 import { useAppSelector } from '../state/hooks';
 
 const SocketContext = createContext<Socket | null>(null);

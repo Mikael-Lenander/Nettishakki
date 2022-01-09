@@ -2,10 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { Stage, Layer, Rect, Circle } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { range } from 'lodash'
-import { Game, Pos } from '../chess'
+import { Game, Pos, GameState } from 'shakki'
 import { useSocket } from '../hooks/socketContext'
 import ChessImage from './ChessImage'
-import { GameState } from 'shared/chess'
 
 interface Square {
   id: string,
@@ -63,7 +62,7 @@ export default function Board({ game }: Props) {
   }, [selectedPos])
 
   return (
-    <div style={{margin: '1em'}}>
+    <div style={{ margin: '1em' }}>
       <Stage width={width} height={height}>
         <Layer>
           {squares.map(row => (

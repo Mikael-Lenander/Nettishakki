@@ -1,4 +1,4 @@
-import { Color } from "shared/chess"
+import { Color } from "shakki"
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout

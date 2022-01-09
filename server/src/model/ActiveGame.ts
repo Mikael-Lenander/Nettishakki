@@ -1,10 +1,9 @@
-import { Color, Game, opponent } from "shared/chess"
+import { Color, Game, opponent } from "shakki"
 import { Player } from "../types"
 
 export default class ActiveGame {
   id: string
   game: Game
-  // status: GameStatus
   players: Player[]
   constructor(id: string, firstPlayer: string) {
     this.id = id

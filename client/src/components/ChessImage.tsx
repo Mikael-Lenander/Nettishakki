@@ -1,5 +1,5 @@
 import React from 'react'
-import { Color, PieceName } from '../chess'
+import { Color, PieceName } from 'shakki'
 import useImage from 'use-image'
 import { Image } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'

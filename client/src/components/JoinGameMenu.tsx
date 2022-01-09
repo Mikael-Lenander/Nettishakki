@@ -3,8 +3,7 @@ import { Typography, TextField, Button, Alert } from '@mui/material'
 import { useSocket } from '../hooks/socketContext'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
-import { Info } from 'shared/types'
-import { Color } from '../chess'
+import { Color, Info } from 'shakki'
 import { Navigate } from 'react-router-dom'
 
 export default function JoinGameMenu() {

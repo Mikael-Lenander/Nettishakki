@@ -3,8 +3,7 @@ import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { Circle, CircleOutlined } from '@mui/icons-material'
 import { useAppSelector } from '../state/hooks'
-import { GameState } from '../chess'
-import { GameOverMessage } from 'shared/types'
+import { GameState, GameOverMessage } from 'shakki'
 
 interface Props {
   game: GameState,

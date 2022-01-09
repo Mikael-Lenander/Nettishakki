@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Board, GameStateChange, GameState, Color } from '../../chess'
-import { GameOverMessage } from 'shared/types'
+import { Board, GameStateChange, GameState, Color, GameOverMessage } from 'shakki'
 
 const initialState: GameState = {
   id: null,
