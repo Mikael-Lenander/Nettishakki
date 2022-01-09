@@ -4,7 +4,7 @@ import gameReducer from './reducers/gameReducer'
 import userReducer from './reducers/userReducer'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, } from 'redux-persist'
 import sessionStorage from 'redux-persist/lib/storage/session'
-import localStorage from 'redux-persist/lib/storage'
+// import localStorage from 'redux-persist/lib/storage'
 import { STORAGE_PREFIX } from '../constants'
 import { WebStorage } from 'redux-persist/es/types'
 
@@ -14,7 +14,7 @@ const persistedReducer = (key: string, reducer: Reducer, storage: WebStorage) =>
 
 const rootReducer = combineReducers({
   game: persistedReducer('game', gameReducer, sessionStorage),
-  user: persistedReducer('user', userReducer, localStorage)
+  user: persistedReducer('user', userReducer, sessionStorage)
 })
 
 export const store = configureStore({
