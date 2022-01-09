@@ -2,7 +2,7 @@
 
 Sivu löytyy [täältä](https://nettishakki.netlify.app/).
 
-Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan. Sivu näyttää parhaalta Chromella, eikä siitä ole puhelinversiota.
+Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan. Sivu toimii ainakin Chromella ja Firefoxilla, muista selaimista en tiedä. Sivusta ei ole puhelinversiota.
 
 ## Käytetyt teknologiat ja rakenne
 
