@@ -9,7 +9,7 @@ const games = new GameController()
 export default function socketServer(server: http.Server) {
   const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
     cors: {
-      origin: "http://localhost:3000"
+      origin: ["http://localhost:3000", "https://nettishakki.netlify.app"]
     }
   })
 
