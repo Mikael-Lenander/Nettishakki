@@ -2,9 +2,17 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { connectToDatabase } from './utils/db'
+import './database-models'
+import { runMigrations } from './utils/db'
 
 const app = express()
-connectToDatabase()
+
+const initDatabase = async () => {
+  await connectToDatabase()
+  await runMigrations()
+}
+
+initDatabase()
 
 app.use(cors())
 app.use(express.json())
