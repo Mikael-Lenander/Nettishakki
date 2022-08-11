@@ -3,36 +3,27 @@ import { sequelize } from '../utils/db'
 
 export default class Move extends Model<InferAttributes<Move>, InferCreationAttributes<Move>> {
   declare index: number
-  declare oldPosX: number
-  declare oldPosY: number
-  declare newPosX: number
-  declare newPosY: number
+  declare oldPos: string
+  declare newPos: string
 }
+
 Move.init({
   index: {
     type: DataTypes.INTEGER,
     primaryKey: true
   },
-  oldPosX: {
-    type: DataTypes.INTEGER,
+  oldPos: {
+    type: DataTypes.STRING(2),
     primaryKey: true
   },
-  oldPosY: {
-    type: DataTypes.INTEGER,
-    primaryKey: true
-  },
-  newPosX: {
-    type: DataTypes.INTEGER,
+  newPos: {
+    type: DataTypes.STRING(2),
     allowNull: false
   },
-  newPosY: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  }
 }, {
   sequelize,
   underscored: true,
   modelName: 'move',
-  timestamps: false
+  timestamps: false,
 })
 

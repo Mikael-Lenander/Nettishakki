@@ -1,13 +1,13 @@
 import { Server } from 'socket.io'
 import http from 'http'
-import { InterServerEvents, SocketData } from './types'
-import { Pos, PosType, ClientToServerEvents, ServerToClientEvents } from 'shakki'
+// import { InterServerEvents, SocketData } from './types'
+import { Pos, PosType, ClientToServerEvents, ServerToClientEvents } from '../../shared/src'
 import GameController from './model/GameController'
 
 const games = new GameController()
 
 export default function socketServer(server: http.Server) {
-  const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
+  const io = new Server<ClientToServerEvents, ServerToClientEvents/* , InterServerEvents, SocketData */>(server, {
     cors: {
       origin: ["http://localhost:3000", "https://nettishakki.netlify.app"]
     }

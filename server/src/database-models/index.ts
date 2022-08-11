@@ -9,6 +9,4 @@ User.hasMany(Game, { foreignKey: 'winnerId', as: 'winner' })
 Game.hasMany(Move, { foreignKey: { allowNull: false } })
 Move.belongsTo(Game)
 
-export * from './game'
-export * from './move'
-export * from './user'
+export { Move, User, Game }

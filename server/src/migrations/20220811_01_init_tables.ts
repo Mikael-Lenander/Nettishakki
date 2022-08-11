@@ -54,26 +54,18 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface 
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    old_pos_x: {
-      type: DataTypes.INTEGER,
+    old_pos: {
+      type: DataTypes.STRING(2),
       primaryKey: true
     },
-    old_pos_y: {
-      type: DataTypes.INTEGER,
-      primaryKey: true
-    },
-    new_pos_x: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    new_pos_y: {
-      type: DataTypes.INTEGER,
+    new_pos: {
+      type: DataTypes.STRING(2),
       allowNull: false
     },
     game_id: {
       type: DataTypes.INTEGER,
       references: { model: 'games', key: 'id' },
-      allowNull: false
+      primaryKey: true
     }
   })
 }

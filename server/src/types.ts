@@ -1,4 +1,4 @@
-import { Color } from "shakki"
+import { Color, Pos } from "shakki"
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout
@@ -14,8 +14,13 @@ export interface Player {
   color: Color
 }
 
-export interface InterServerEvents {
+export interface MoveCoords {
+  oldPos: Pos,
+  newPos: Pos
 }
 
-export interface SocketData {
-}
+// export interface InterServerEvents {
+// }
+
+// export interface SocketData {
+// }

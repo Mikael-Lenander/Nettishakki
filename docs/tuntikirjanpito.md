@@ -13,4 +13,5 @@
 | 8.1   | 10   | Paranneltu palvelimen käynnissä olevien pelien hallintaa, pelaajan disconnectaus pelistä, bugikorjauksia |
 | 9.1   | 5    | Julkaisu tuotantoon |
 | 11.8. | 2    | Tietokannan alustus |
-
+| 11.8. | 5    | Tietokannan taulujen ja migraatioiden luonti |
+| 11.8. | 2    | Refaktoroitu moves-taulu, UML-kaavio tietokannalle |
