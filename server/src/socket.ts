@@ -13,18 +13,18 @@ export default function socketServer(server: http.Server) {
     }
   })
 
-  io.on("connection", socket => {
+  io.on("connection", async socket => {
     const username = socket.handshake.query.username as string
-    socket.join(username)
+    await socket.join(username)
     let currentGameId = games.findWithPlayer(username)
     console.log(`User ${username} connected width gameId ${currentGameId}`)
     if (currentGameId) {
       console.log(`Joined back to game ${currentGameId} with user ${username} and timeoutId ${games.disconnections[username]}`)
       games.reconnect(username)
-      socket.join(currentGameId)
+      await socket.join(currentGameId)
     }
 
-    socket.on('createGame', () => {
+    socket.on('createGame', async () => {
       if (!username) return console.log('no user')
       if (games.findActiveWithPlayer(username)) {
         console.log(`Error on createGame due to player ${username} already having an active game`)
@@ -34,13 +34,13 @@ export default function socketServer(server: http.Server) {
       games.removeWithPlayer(username)
       const currentGame = games.new(username)
       currentGameId = currentGame.id
-      console.log('activeGames', games.games)
-      socket.join(currentGameId)
+      console.log('activeGames', games.games.map(game => game.id))
+      await socket.join(currentGameId)
       io.to(username).emit('gameCreated', { success: true, message: '' }, currentGame.playerColor(username), currentGameId)
       console.log(`game ${currentGameId} created for player ${username}`)
     })
 
-    socket.on('joinGame', (gameId: string) => {
+    socket.on('joinGame', async (gameId: string) => {
       const game = games.find(gameId)
       // if (activeGame && activeGame.hasPlayer(username)) {
       //   io.to(username).emit('joinedGame', { success: true, message: '' }, activeGame.opponent(username).color, player.color, gameId)
@@ -58,11 +58,11 @@ export default function socketServer(server: http.Server) {
         return
       }
       games.removeWithPlayer(username)
-      socket.join(gameId)
+      await socket.join(gameId)
       currentGameId = game.id
       const player = game.addPlayer(username)
       const opponent = game.opponent(username)
-      console.log('activeGames', games.games)
+      console.log('activeGames', games.games.map(game => game.id))
       io.to(username).emit('joinedGame', { success: true, message: '' }, opponent.username, player.color, gameId)
       io.to(opponent.username).emit('joinedGame', { success: true, message: '' }, username)
       console.log(`player ${username} joined to game ${gameId}`)

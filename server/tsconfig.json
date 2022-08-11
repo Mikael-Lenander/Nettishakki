@@ -10,6 +10,8 @@
     "strict": false,                                      /* Enable all strict type-checking options. */
     "noUnusedLocals": true,                           /* Enable error reporting when a local variables aren't read. */
     "noFallthroughCasesInSwitch": true,               /* Enable error reporting for fallthrough cases in switch statements. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
   }
 }
