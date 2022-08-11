@@ -1,4 +1,4 @@
-import { Direction, PosType } from './types'
+import { Direction, PosType, PosString } from './types'
 import Board from './Board'
 import { range } from 'lodash'
 
@@ -58,6 +58,10 @@ export default class Pos {
     return []
   }
 
+  toString() {
+    return "abcdefgh"[this.x] + (this.y + 1).toString()
+  }
+
   static obj(pos: Pos) {
     return {
       x: pos.x,
@@ -65,7 +69,8 @@ export default class Pos {
     }
   }
 
-  static new(posType: PosType) {
+  static new(posType: PosType | PosString) {
+    if (typeof posType === 'string') return new Pos("abcdefgh".indexOf(posType[0]), parseInt(posType[1]) - 1)
     return new Pos(posType.x, posType.y)
   }
 }
