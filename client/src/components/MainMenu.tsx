@@ -5,9 +5,8 @@ import { Navigate } from 'react-router-dom'
 import MenuButton from './MenuButton'
 
 export default function MainMenu() {
-
   const socket = useSocket()
-  const game = useAppSelector(state => state.game)
+  const game = useAppSelector((state) => state.game)
 
   function createGame() {
     socket && socket.emit('createGame')
@@ -15,12 +14,12 @@ export default function MainMenu() {
 
   const flex = { width: '100%', display: 'flex' }
 
-  if (game.active) return <Navigate to='/play' />
+  if (game.active) return <Navigate to="/play" />
   return (
     <div style={{ ...flex, alignItems: 'center', flexDirection: 'column' }}>
       <div style={{ ...flex, justifyContent: 'center' }}>
-        <MenuButton text='Create new game' link='/lobby' onClick={createGame} />
-        <MenuButton text='Join game' link='/join-game' />
+        <MenuButton text="Create new game" link="/lobby" onClick={createGame} />
+        <MenuButton text="Join game" link="/join-game" />
       </div>
     </div>
   )

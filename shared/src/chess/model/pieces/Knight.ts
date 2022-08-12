@@ -1,6 +1,6 @@
-import { Color, Direction, PieceName } from "../types"
+import { Color, Direction, PieceName } from '../types'
 import { Piece } from './Piece'
-import Pos from "../Pos"
+import Pos from '../Pos'
 import Board from '../Board'
 
 export class Knight extends Piece {
@@ -13,7 +13,7 @@ export class Knight extends Piece {
     { x: -1, y: -2 },
     { x: -2, y: -1 },
     { x: -2, y: 1 },
-    { x: -1, y: 2 },
+    { x: -1, y: 2 }
   ]
 
   constructor(color: Color, x: number, y: number) {
@@ -22,7 +22,7 @@ export class Knight extends Piece {
 
   moves(board: Board, sameColorAllowed: boolean): Pos[] {
     const moves: Pos[] = []
-    this.directions.forEach(direction => {
+    this.directions.forEach((direction) => {
       const currentPos = this.pos.to(direction)
       if (!currentPos.inBounds()) return
       const currentPiece = board.pieceAt(currentPos)
@@ -35,10 +35,10 @@ export class Knight extends Piece {
   }
 
   validMoves(board: Board): Pos[] {
-      return this.moves(board, false)
+    return this.moves(board, false)
   }
 
   controlledSquares(board: Board): Pos[] {
-      return this.moves(board, true)
+    return this.moves(board, true)
   }
 }

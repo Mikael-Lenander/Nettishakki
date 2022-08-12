@@ -13,32 +13,36 @@ describe('a Rook', () => {
     const rook = new Rook('white', 7, 7)
     const moves = sortPosArr(rook.validMoves(board))
     showMoves(moves, rook.pos)
-    expect(moves).toEqual(extractMoves([
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 0],
-    ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 0]
+      ])
+    )
   })
 
   test('has correct valid moves on an empty board when in center', () => {
     const rook = new Rook('white', 2, 3)
     const moves = sortPosArr(rook.validMoves(board))
     showMoves(moves, rook.pos)
-    expect(moves).toEqual(extractMoves([
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [1, 1, 0, 1, 1, 1, 1, 1],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-    ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0]
+      ])
+    )
   })
 
   test('has correct valid moves when blocked by friendly pieces', () => {
@@ -47,16 +51,18 @@ describe('a Rook', () => {
     board.add(new Rook('white', 7, 3))
     const moves = sortPosArr(rook.validMoves(board))
     showMoves(moves, rook.pos)
-    expect(moves).toEqual(extractMoves([
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 1, 0, 1, 1, 1, 1, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-    ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0]
+      ])
+    )
   })
 
   test('has correct valid moves when blocked by opponent pieces', () => {
@@ -66,15 +72,17 @@ describe('a Rook', () => {
     board.add(new Rook('black', 7, 6))
     const moves = sortPosArr(rook.validMoves(board))
     showMoves(moves, rook.pos)
-    expect(moves).toEqual(extractMoves([
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 1, 0],
-      [0, 0, 0, 0, 0, 0, 1, 0],
-      [0, 1, 1, 1, 1, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 1, 0],
-    ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0]
+      ])
+    )
   })
 })

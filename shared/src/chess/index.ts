@@ -5,8 +5,4 @@ import Game from './model/Game'
 export * from './model/pieces'
 export * from './model/types'
 export * from './model/utils'
-export {
-  Pos,
-  Board,
-  Game
-}
+export { Pos, Board, Game }

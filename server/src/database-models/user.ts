@@ -6,25 +6,27 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare username: string
   declare passwordHash: string
 }
-User.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      unique: true
+    },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   },
-  username: {
-    type: DataTypes.STRING,
-    unique: true,
-  },
-  passwordHash: {
-    type: DataTypes.STRING,
-    allowNull: false
+  {
+    sequelize,
+    underscored: true,
+    modelName: 'user',
+    createdAt: 'joinedAt',
+    updatedAt: false
   }
-}, {
-  sequelize,
-  underscored: true,
-  modelName: 'user',
-  createdAt: 'joinedAt',
-  updatedAt: false
-})
-
+)

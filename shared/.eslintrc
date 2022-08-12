@@ -2,10 +2,11 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
   ],
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint", "prettier"
   ],
   "env": {
     "browser": true,
@@ -13,14 +14,24 @@
     "node": true
   },
   "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto",
+        "trailingComma": "none",
+        "printWidth": 160,
+        "semi": false,
+        "singleQuote": true
+      }
+    ],
+    "semi": "off",
+    "@typescript-eslint/semi": ["warn", "never"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     // "@typescript-eslint/no-unsafe-return": "off",
-    "": "off",
-    "no-extra-semi": "warn",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

@@ -1,5 +1,5 @@
-import { Color, Game, opponent } from "shakki"
-import { Player } from "../types"
+import { Color, Game, opponent } from 'shakki'
+import { Player } from '../types'
 
 export default class ActiveGame {
   id: string
@@ -7,23 +7,25 @@ export default class ActiveGame {
   players: Player[]
   constructor(id: string, firstPlayer: string) {
     this.id = id
-    this.players = [{
-      username: firstPlayer,
-      color: this.randomColor()
-    }]
+    this.players = [
+      {
+        username: firstPlayer,
+        color: this.randomColor()
+      }
+    ]
     this.game = new Game()
   }
 
   hasPlayer(username: string) {
-    return this.players.map(player => player.username).includes(username)
+    return this.players.map((player) => player.username).includes(username)
   }
 
   playerColor(username: string): Color {
-    return this.players.find(player => player.username === username).color
+    return this.players.find((player) => player.username === username).color
   }
 
   opponent(username: string): Player {
-    return this.players.find(player => player.username !== username)
+    return this.players.find((player) => player.username !== username)
   }
 
   addPlayer(username: string): Player {
@@ -45,6 +47,4 @@ export default class ActiveGame {
   randomColor(): Color {
     return ['white', 'black'][Math.floor(Math.random() * 2)] as Color
   }
-
 }
-

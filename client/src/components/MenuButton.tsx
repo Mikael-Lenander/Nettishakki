@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 
 type Props = {
-  text: string,
-  link?: string,
+  text: string
+  link?: string
   onClick?: () => void
 }
 
 export default function MenuButton({ text, link, onClick }: Props) {
-
   const navigate = useNavigate()
 
   function handleClick() {
@@ -19,7 +18,10 @@ export default function MenuButton({ text, link, onClick }: Props) {
   }
 
   return (
-      <Button className='hover-button' onClick={handleClick} sx={{
+    <Button
+      className="hover-button"
+      onClick={handleClick}
+      sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -29,13 +31,12 @@ export default function MenuButton({ text, link, onClick }: Props) {
         width: 'clamp(200px, 30%, 300px)',
         color: 'white',
         margin: '0.5em',
-        "&:hover": {
-          backgroundColor: "#3f51b5"
+        '&:hover': {
+          backgroundColor: '#3f51b5'
         }
-      }}>
-        <TypoGraphy variant='h3'>
-          {text}
-        </TypoGraphy>
-      </Button>
+      }}
+    >
+      <TypoGraphy variant="h3">{text}</TypoGraphy>
+    </Button>
   )
 }

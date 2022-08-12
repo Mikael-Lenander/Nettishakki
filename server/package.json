@@ -13,7 +13,6 @@
     "postinstall": "tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "migration:up": "ts-node src/utils/runMigrations.ts",
     "migration:down": "ts-node src/utils/rollback.ts"
   },
   "keywords": [],
@@ -30,6 +29,9 @@
     "@typescript-eslint/parser": "^5.8.1",
     "dotenv": "^16.0.1",
     "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4"

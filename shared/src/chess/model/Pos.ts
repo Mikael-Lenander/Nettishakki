@@ -38,7 +38,7 @@ export default class Pos {
   }
 
   in(positions: Pos[]): boolean {
-    return positions.some(pos => pos.equals(this))
+    return positions.some((pos) => pos.equals(this))
   }
 
   // Palauttaa ruudut kahden ruudun välissä
@@ -48,18 +48,16 @@ export default class Pos {
     const max = new Pos(Math.max(this.x, other.x), Math.max(this.y, other.y))
     const slope = (this.y - other.y) / (this.x - other.x)
     if (!isFinite(slope)) {
-      return range(min.y + 1, max.y)
-        .map(y => new Pos(this.x, y))
+      return range(min.y + 1, max.y).map((y) => new Pos(this.x, y))
     } else if (slope === Math.sign(slope)) {
       const yStart = this.x < other.x ? this.y : other.y
-      return range(min.x + 1, max.x)
-        .map((x, index) => new Pos(x, yStart + slope * (index + 1)))
+      return range(min.x + 1, max.x).map((x, index) => new Pos(x, yStart + slope * (index + 1)))
     }
     return []
   }
 
   toString() {
-    return "abcdefgh"[this.x] + (this.y + 1).toString()
+    return 'abcdefgh'[this.x] + (this.y + 1).toString()
   }
 
   static obj(pos: Pos) {
@@ -70,7 +68,7 @@ export default class Pos {
   }
 
   static new(posType: PosType | PosString) {
-    if (typeof posType === 'string') return new Pos("abcdefgh".indexOf(posType[0]), parseInt(posType[1]) - 1)
+    if (typeof posType === 'string') return new Pos('abcdefgh'.indexOf(posType[0]), parseInt(posType[1]) - 1)
     return new Pos(posType.x, posType.y)
   }
 }

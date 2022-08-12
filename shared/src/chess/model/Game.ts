@@ -1,9 +1,9 @@
-import { Color, GameState, Move } from "./types"
-import Board from "./Board"
+import { Color, GameState, Move } from './types'
+import Board from './Board'
 import Pos from './Pos'
-import { opponent } from "./utils"
+import { opponent } from './utils'
 import { Piece, King } from './pieces'
-import { GameOverMessage } from "../../types"
+import { GameOverMessage } from '../../types'
 
 export default class Game {
   board: Board
@@ -75,7 +75,6 @@ export default class Game {
   }
 
   allMoves(color: Color): Pos[] {
-    return this.board.pieces(color) 
-      .flatMap(piece => this.getMoves(piece))
+    return this.board.pieces(color).flatMap((piece) => this.getMoves(piece))
   }
 }

@@ -13,12 +13,7 @@ beforeEach(() => {
 describe('Check', () => {
   describe('when checked by a knight', () => {
     beforeEach(() => {
-      game.board.add([
-        new Knight('white', 1, 5),
-        new King('black', 0, 7),
-        new Queen('black', 4, 2),
-        new Rook('black', 0, 6)
-      ])
+      game.board.add([new Knight('white', 1, 5), new King('black', 0, 7), new Queen('black', 4, 2), new Rook('black', 0, 6)])
       game.isCheck = true
       game.turn = 'black'
     })
@@ -32,16 +27,18 @@ describe('Check', () => {
     })
     test('king has correct escape squares', () => {
       const king = game.board.pieceAt(new Pos(0, 7))
-      expect(sortPosArr(game.getMoves(king))).toEqual(extractMoves([
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 1, 0, 0, 0, 0, 0, 0],
-       [0, 1, 0, 0, 0, 0, 0, 0],
-       ]))
+      expect(sortPosArr(game.getMoves(king))).toEqual(
+        extractMoves([
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0]
+        ])
+      )
     })
   })
   describe('when checked by a bishop', () => {
@@ -60,35 +57,39 @@ describe('Check', () => {
       const queen = game.board.pieceAt(new Pos(5, 7))
       const moves = sortPosArr(game.getMoves(queen))
       showMoves(moves, queen.pos)
-      expect(moves).toEqual(extractMoves([
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 1, 0, 0],
-       [0, 0, 0, 0, 0, 0, 1, 0],
-       [0, 0, 0, 0, 0, 0, 0, 1],
-       ]))
+      expect(moves).toEqual(
+        extractMoves([
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 1, 0, 0],
+          [0, 0, 0, 0, 0, 0, 1, 0],
+          [0, 0, 0, 0, 0, 0, 0, 1]
+        ])
+      )
     })
-    test("only valid moves for a rook are to capture or block", () => {
+    test('only valid moves for a rook are to capture or block', () => {
       const rook = game.board.pieceAt(new Pos(0, 6))
-      expect(sortPosArr((game.getMoves(rook)))).toEqual([ new Pos(6, 6) ])
+      expect(sortPosArr(game.getMoves(rook))).toEqual([new Pos(6, 6)])
     })
     test('king has correct escape squares', () => {
       const king = game.board.pieceAt(new Pos(4, 4))
       const moves = sortPosArr(game.getMoves(king))
       showMoves(moves, king.pos)
-      expect(moves).toEqual(extractMoves([
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 1, 0, 1, 0, 0],
-       [0, 0, 0, 1, 1, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       ]))
+      expect(moves).toEqual(
+        extractMoves([
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 1, 0, 0],
+          [0, 0, 0, 1, 1, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0]
+        ])
+      )
     })
   })
 })

@@ -8,19 +8,20 @@ import InfoBar from './InfoBar'
 import { Navigate } from 'react-router-dom'
 
 export default function Game() {
-
-  const game = useAppSelector(state => state.game)
+  const game = useAppSelector((state) => state.game)
   const socket = useSocket()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (!socket || !game.active) return
     socket.on('getMove', (moves: Move[], isCheck: boolean, turn: Color) => {
-      dispatch(makeMove({
-        moves,
-        isCheck,
-        turn
-      }))
+      dispatch(
+        makeMove({
+          moves,
+          isCheck,
+          turn
+        })
+      )
     })
     socket.on('gameOver', (message: GameOverMessage) => {
       dispatch(gameOver(message))
@@ -31,12 +32,12 @@ export default function Game() {
     }
   }, [socket])
 
-  if (!game.id) return <Navigate to='/' />
+  if (!game.id) return <Navigate to="/" />
 
   return (
-    <div style={{display: 'flex', flexDirection: 'row', margin: '1em'}}>
+    <div style={{ display: 'flex', flexDirection: 'row', margin: '1em' }}>
       <Board game={game} />
-      <InfoBar game={game}/>
+      <InfoBar game={game} />
     </div>
   )
 }

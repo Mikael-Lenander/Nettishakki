@@ -22,18 +22,17 @@ const customTheme = createTheme({
 })
 
 export default function App() {
-
   return (
     <SocketProvider>
       <ThemeProvider theme={customTheme}>
         <NavBar />
         <Routes>
-          <Route path='/' element={<Background />} >
-            <Route path='/' element={<MainMenu />} />
-            <Route path='/lobby' element={<Lobby />} />
-            <Route path='/play' element={<Game />} />
-            <Route path='/join-game' element={<JoinGameMenu />} />
-            <Route path="*" element={<h1 style={{color: 'white'}}>404 NOT FOUND</h1>} />
+          <Route path="/" element={<Background />}>
+            <Route path="/" element={<MainMenu />} />
+            <Route path="/lobby" element={<Lobby />} />
+            <Route path="/play" element={<Game />} />
+            <Route path="/join-game" element={<JoinGameMenu />} />
+            <Route path="*" element={<h1 style={{ color: 'white' }}>404 NOT FOUND</h1>} />
           </Route>
         </Routes>
       </ThemeProvider>

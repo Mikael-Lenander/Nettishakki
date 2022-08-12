@@ -25,7 +25,7 @@ export function sortPosArr(posArray: Pos[]) {
 // Näyttää graafisesti nappulan siirrot shakkilaudalla
 export function showMoves(moves: Pos[], piecePos?: Pos): MockBoard {
   const board = mockBoard()
-  moves.forEach(move => {
+  moves.forEach((move) => {
     board[move.y][move.x] = 'x'
   })
   if (piecePos) board[piecePos.y][piecePos.x] = 'P'
@@ -36,15 +36,9 @@ export function showMoves(moves: Pos[], piecePos?: Pos): MockBoard {
 // Palauttaa ne laudan sijainnit, joissa on nappula (valelaudalla numero 1). Helpottaa testaamista, kun testien oikeat vastaukset
 // voi merkata graafiselle laudalle.
 export function extractMoves(board: MockBoard): Pos[] {
-  return sortPosArr(board.flatMap((row, rowIndex) =>
-    row.flatMap((col, colIndex) =>
-      col ? new Pos(colIndex, rowIndex) : null
-    )
-  ).filter(item => item))
+  return sortPosArr(board.flatMap((row, rowIndex) => row.flatMap((col, colIndex) => (col ? new Pos(colIndex, rowIndex) : null))).filter((item) => item))
 }
 
 export function extractPos(positions: Tuple2[]) {
-  return sortPosArr(
-    positions.map(tuple => new Pos(tuple[0], tuple[1]))
-  )
+  return sortPosArr(positions.map((tuple) => new Pos(tuple[0], tuple[1])))
 }

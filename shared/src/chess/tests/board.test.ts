@@ -42,25 +42,21 @@ describe('The board', () => {
   describe('controlledSquares method', () => {
     test('returns valid squares', () => {
       board = Board.empty()
-      board.add([
-        new Queen('white', 2, 2),
-        new Bishop('black', 4, 4),
-        new Bishop('white', 6, 6),
-        new Queen('black', 4, 2),
-        new Pawn('white', 6, 1)
-      ])
+      board.add([new Queen('white', 2, 2), new Bishop('black', 4, 4), new Bishop('white', 6, 6), new Queen('black', 4, 2), new Pawn('white', 6, 1)])
       const squares = sortPosArr(board.controlledSquares('white'))
       showMoves(squares)
-      expect(squares).toEqual(extractMoves([
-        [1, 0, 1, 0, 1, 0, 0, 0],
-        [0, 1, 1, 1, 0, 0, 0, 0],
-        [1, 1, 0, 1, 1, 1, 0, 1],
-        [0, 1, 1, 1, 0, 0, 0, 0],
-        [1, 0, 1, 0, 1, 0, 0, 0],
-        [0, 0, 1, 0, 0, 1, 0, 1],
-        [0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 1, 0, 1],
-      ]))
+      expect(squares).toEqual(
+        extractMoves([
+          [1, 0, 1, 0, 1, 0, 0, 0],
+          [0, 1, 1, 1, 0, 0, 0, 0],
+          [1, 1, 0, 1, 1, 1, 0, 1],
+          [0, 1, 1, 1, 0, 0, 0, 0],
+          [1, 0, 1, 0, 1, 0, 0, 0],
+          [0, 0, 1, 0, 0, 1, 0, 1],
+          [0, 0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 0, 1, 0, 1]
+        ])
+      )
     })
     test('returns valid squares 2', () => {
       board = Board.empty()
@@ -74,16 +70,18 @@ describe('The board', () => {
       ])
       const squares = sortPosArr(board.controlledSquares('white'))
       showMoves(squares)
-      expect(squares).toEqual(extractMoves([
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0],
-       [0, 0, 0, 0, 1, 0, 1, 0],
-       [0, 0, 0, 1, 0, 0, 0, 1],
-       [0, 0, 0, 0, 0, 1, 0, 1],
-       [0, 0, 0, 1, 0, 1, 1, 1],
-       [0, 0, 0, 0, 1, 1, 1, 1],
-       [0, 0, 0, 0, 0, 1, 1, 1],
-       ]))
+      expect(squares).toEqual(
+        extractMoves([
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 1, 0],
+          [0, 0, 0, 1, 0, 0, 0, 1],
+          [0, 0, 0, 0, 0, 1, 0, 1],
+          [0, 0, 0, 1, 0, 1, 1, 1],
+          [0, 0, 0, 0, 1, 1, 1, 1],
+          [0, 0, 0, 0, 0, 1, 1, 1]
+        ])
+      )
     })
   })
 
@@ -94,33 +92,19 @@ describe('The board', () => {
     test('correctly returns the pinned piece', () => {
       const pinnedPiece = new Pawn('white', 4, 5)
       const pinningPiece = new Bishop('black', 1, 2)
-      board.add([
-        new King('white', 5, 6),
-        pinnedPiece,
-        new Queen('black', 0, 1),
-        pinningPiece
-      ])
+      board.add([new King('white', 5, 6), pinnedPiece, new Queen('black', 0, 1), pinningPiece])
       expect(board.pinningPiece(pinnedPiece)).toEqual(pinningPiece)
     })
     test('correctly returns the pinned piece 2', () => {
       const pinnedPiece = new Queen('white', 1, 4)
       const pinningPiece = new Rook('black', 0, 4)
-      board.add([
-        new King('white', 6, 4),
-        pinnedPiece,
-        pinningPiece
-      ])
+      board.add([new King('white', 6, 4), pinnedPiece, pinningPiece])
       expect(board.pinningPiece(pinnedPiece)).toEqual(pinningPiece)
     })
     test('correctly returns null when no piece is pinned', () => {
       const notPinnedPiece = new Pawn('white', 4, 5)
       const notPinnedPiece2 = new Pawn('white', 4, 6)
-        board.add([
-          new Queen('black', 4, 0),
-          notPinnedPiece,
-          notPinnedPiece2,
-          new King('white', 4, 7),
-        ])
+      board.add([new Queen('black', 4, 0), notPinnedPiece, notPinnedPiece2, new King('white', 4, 7)])
       expect(board.pinningPiece(notPinnedPiece)).toBeNull()
       expect(board.pinningPiece(notPinnedPiece2)).toBeNull()
     })

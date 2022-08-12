@@ -1,4 +1,4 @@
-import { Color, Pos } from "shakki"
+import { Color, Pos } from 'shakki'
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout
@@ -6,16 +6,16 @@ export type Disconnections = {
 
 export enum GameStatus {
   Starting = 'starting',
-  Active = 'active',
+  Active = 'active'
 }
 
 export interface Player {
-  username: string,
+  username: string
   color: Color
 }
 
 export interface MoveCoords {
-  oldPos: Pos,
+  oldPos: Pos
   newPos: Pos
 }
 

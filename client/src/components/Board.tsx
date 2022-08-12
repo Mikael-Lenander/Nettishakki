@@ -7,8 +7,8 @@ import { useSocket } from '../hooks/socketContext'
 import ChessImage from './ChessImage'
 
 interface Square {
-  id: string,
-  pos: Pos,
+  id: string
+  pos: Pos
   fill: string
 }
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function Board({ game }: Props) {
-
   const width = 650
   const height = 650
   const squareSize = width / 8
@@ -25,19 +24,16 @@ export default function Board({ game }: Props) {
   const socket = useSocket()
 
   const squares = useMemo((): Square[][] => {
-    return range(0, 8).map(row => (
-      range(0, 8).map(col => ({
+    return range(0, 8).map((row) =>
+      range(0, 8).map((col) => ({
         id: `(${col}, ${row})`,
         pos: new Pos(col, row),
-        fill: (row % 2) === (col % 2) ? '#8ca2ad' : '#dee3e6'
+        fill: row % 2 === col % 2 ? '#8ca2ad' : '#dee3e6'
       }))
-    ))
+    )
   }, [])
 
-  const flip = (pos: Pos): Pos => new Pos(
-    game.color === 'white' ? pos.x : 7 - pos.x,
-    game.color === 'white' ? 7 - pos.y : pos.y
-  )
+  const flip = (pos: Pos): Pos => new Pos(game.color === 'white' ? pos.x : 7 - pos.x, game.color === 'white' ? 7 - pos.y : pos.y)
 
   const [selectedPos, setSelectedPos] = useState<Pos>()
   const [availabeMoves, setAvailableMoves] = useState<Pos[]>([])
@@ -65,8 +61,8 @@ export default function Board({ game }: Props) {
     <div style={{ margin: '1em' }}>
       <Stage width={width} height={height}>
         <Layer>
-          {squares.map(row => (
-            row.map(square => (
+          {squares.map((row) =>
+            row.map((square) => (
               <Rect
                 key={square.id}
                 col={square.pos.x}
@@ -79,38 +75,35 @@ export default function Board({ game }: Props) {
                 onClick={handleClickBoard}
               />
             ))
-          ))}
-          {selectedPos &&
-            <Rect
-              x={flip(selectedPos).x * squareSize}
-              y={flip(selectedPos).y * squareSize}
-              width={squareSize}
-              height={squareSize}
-              fill={'green'}
-            />}
-          {game.board.map((row, y) => (
+          )}
+          {selectedPos && (
+            <Rect x={flip(selectedPos).x * squareSize} y={flip(selectedPos).y * squareSize} width={squareSize} height={squareSize} fill={'green'} />
+          )}
+          {game.board.map((row, y) =>
             row.map((piece, x) => {
               if (!piece) return null
-              return <ChessImage
-                key={`${x} ${y}`}
-                x={x}
-                y={y}
-                pieceName={piece.name}
-                pieceColor={piece.color}
-                playerColor={game.color}
-                squareSize={squareSize}
-                handleClickBoard={handleClickBoard}
-              />
+              return (
+                <ChessImage
+                  key={`${x} ${y}`}
+                  x={x}
+                  y={y}
+                  pieceName={piece.name}
+                  pieceColor={piece.color}
+                  playerColor={game.color}
+                  squareSize={squareSize}
+                  handleClickBoard={handleClickBoard}
+                />
+              )
             })
-          ))}
-          {availabeMoves.map(move => (
+          )}
+          {availabeMoves.map((move) => (
             <Circle
               key={`(${move.x}, ${move.y})`}
               row={move.y}
               col={move.x}
               x={squareSize * (flip(move).x + 0.5)}
               y={squareSize * (flip(move).y + 0.5)}
-              fill='grey'
+              fill="grey"
               radius={radius}
               onClick={handleClickBoard}
             />

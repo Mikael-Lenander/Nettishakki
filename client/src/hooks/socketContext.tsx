@@ -4,7 +4,7 @@ import { ServerToClientEvents, ClientToServerEvents } from 'shakki'
 import { useAppSelector } from '../state/hooks'
 import { URL } from '../constants'
 
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext<Socket | null>(null)
 
 export function useSocket() {
   return useContext(SocketContext)
@@ -12,7 +12,7 @@ export function useSocket() {
 
 export const SocketProvider = ({ children }: { children: JSX.Element }) => {
   const [socket, setSocket] = useState<Socket>()
-  const username = useAppSelector(state => state.user.username)
+  const username = useAppSelector((state) => state.user.username)
 
   useEffect(() => {
     const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, { query: { username } })
@@ -22,9 +22,5 @@ export const SocketProvider = ({ children }: { children: JSX.Element }) => {
     }
   }, [username])
 
-  return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
-  )
+  return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
 }

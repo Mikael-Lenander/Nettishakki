@@ -5,21 +5,23 @@ export default class Game extends Model<InferAttributes<Game>, InferCreationAttr
   declare id: number
   declare draw: boolean
 }
-Game.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Game.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    draw: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   },
-  draw: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
+  {
+    sequelize,
+    underscored: true,
+    modelName: 'game',
+    updatedAt: false,
+    createdAt: 'date'
   }
-}, {
-  sequelize,
-  underscored: true,
-  modelName: 'game',
-  updatedAt: false,
-  createdAt: 'date'
-})
-
+)

@@ -1,5 +1,5 @@
-import { Game, Board, Pawn, King, Rook, Pos } from './chess'
-import { showMoves } from './chess/tests/testHelpers'
+import { Game, Board, Pawn, King, Rook, Pos } from './src/chess'
+import { showMoves } from './src/chess/tests/testHelpers'
 
 const board = Board.empty()
 

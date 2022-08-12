@@ -1,4 +1,4 @@
-import ActiveGame from "./ActiveGame"
+import ActiveGame from './ActiveGame'
 import { Disconnections } from '../types'
 
 export default class GameController {
@@ -10,32 +10,32 @@ export default class GameController {
   }
 
   find(id: string): ActiveGame | null {
-    return this.games.find(game => game.id === id) || null
+    return this.games.find((game) => game.id === id) || null
   }
 
   findWithPlayer(username: string): string | null {
-    const game = this.games.find(game => game.hasPlayer(username))
+    const game = this.games.find((game) => game.hasPlayer(username))
     if (game) return game.id
     return null
   }
 
   findActiveWithPlayer(username: string): string | null {
-    const game = this.games.find(game => game.hasPlayer(username) && game.isActive())
+    const game = this.games.find((game) => game.hasPlayer(username) && game.isActive())
     if (game) return game.id
     return null
   }
 
   removeWithPlayer(username: string): void {
-    this.games = this.games.filter(game => !game.hasPlayer(username))
+    this.games = this.games.filter((game) => !game.hasPlayer(username))
   }
 
   remove(id: string) {
-    this.games = this.games.filter(game => game.id !== id)
+    this.games = this.games.filter((game) => game.id !== id)
   }
 
   uniqueId(): string {
     const id = [...Array(4)].map(() => Math.floor(Math.random() * 10)).join('')
-    if (!this.games.map(game => game.id).includes(id)) return id
+    if (!this.games.map((game) => game.id).includes(id)) return id
     return this.uniqueId()
   }
 

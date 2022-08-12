@@ -1,4 +1,4 @@
-import { Color, Direction, PieceName } from "../types"
+import { Color, Direction, PieceName } from '../types'
 import { LongRangePiece } from './Piece'
 
 export class Queen extends LongRangePiece {
@@ -11,7 +11,7 @@ export class Queen extends LongRangePiece {
     { x: 0, y: -1 },
     { x: -1, y: -1 },
     { x: -1, y: 0 },
-    { x: -1, y: 1 },
+    { x: -1, y: 1 }
   ]
 
   constructor(color: Color, x: number, y: number) {

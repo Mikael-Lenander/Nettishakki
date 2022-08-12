@@ -23,7 +23,7 @@ export abstract class Piece {
 
   validMovesInCheck(board: Board): Pos[] {
     const kingPos: Pos = board.kingPosition(this.color)
-    const kingAttackingPieces = board.kingAttackingPieces(opponent(this.color)) 
+    const kingAttackingPieces = board.kingAttackingPieces(opponent(this.color))
     if (kingAttackingPieces.length > 1) return []
     const kingAttackingPiece = kingAttackingPieces[0]
     const captureMove = (pos: Pos) => pos.equals(kingAttackingPiece.pos)
@@ -31,11 +31,11 @@ export abstract class Piece {
     switch (kingAttackingPiece.name) {
       case 'knight':
       case 'pawn':
-        return this.validMoves(board).filter(pos => captureMove(pos))
+        return this.validMoves(board).filter((pos) => captureMove(pos))
       case 'queen':
       case 'rook':
       case 'bishop':
-        return this.validMoves(board).filter(pos => captureMove(pos) || pos.in(squaresBetween))
+        return this.validMoves(board).filter((pos) => captureMove(pos) || pos.in(squaresBetween))
       default:
         return []
     }
@@ -43,20 +43,19 @@ export abstract class Piece {
 
   validMovesOnPin(board: Board, pinnningPiece: Piece): Pos[] {
     const squaresBetween = this.pos.squaresBetween(pinnningPiece.pos)
-    return this.validMoves(board)
-      .filter(pos => pos.equals(pinnningPiece.pos) || pos.in(squaresBetween))
+    return this.validMoves(board).filter((pos) => pos.equals(pinnningPiece.pos) || pos.in(squaresBetween))
   }
 
   static toFullImplementation(piece: SimplePiece, x: number, y: number): Piece {
     const constructors = {
-      'pawn': Pawn,
-      'bishop': Bishop,
-      'rook': Rook,
-      'queen': Queen,
-      'king': King,
-      'knight': Knight
+      pawn: Pawn,
+      bishop: Bishop,
+      rook: Rook,
+      queen: Queen,
+      king: King,
+      knight: Knight
     }
-    return new constructors[piece.name](piece.color, x, y) as Piece  //eslint-disable-line
+    return new constructors[piece.name](piece.color, x, y) as Piece //eslint-disable-line
   }
 }
 
@@ -69,7 +68,7 @@ export abstract class LongRangePiece extends Piece {
 
   moves(board: Board, sameColorAllowed: boolean): Pos[] {
     const moves: Pos[] = []
-    this.directions.forEach(direction => {
+    this.directions.forEach((direction) => {
       let currentPos = this.pos.to(direction)
       while (currentPos.inBounds() && !board.pieceAt(currentPos)) {
         moves.push(currentPos)
@@ -85,11 +84,10 @@ export abstract class LongRangePiece extends Piece {
   }
 
   validMoves(board: Board): Pos[] {
-      return this.moves(board, false)
+    return this.moves(board, false)
   }
 
   controlledSquares(board: Board): Pos[] {
-      return this.moves(board, true)
+    return this.moves(board, true)
   }
-
 }

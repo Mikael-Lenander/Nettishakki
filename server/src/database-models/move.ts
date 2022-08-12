@@ -7,23 +7,25 @@ export default class Move extends Model<InferAttributes<Move>, InferCreationAttr
   declare newPos: string
 }
 
-Move.init({
-  index: {
-    type: DataTypes.INTEGER,
-    primaryKey: true
+Move.init(
+  {
+    index: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
+    oldPos: {
+      type: DataTypes.STRING(2),
+      primaryKey: true
+    },
+    newPos: {
+      type: DataTypes.STRING(2),
+      allowNull: false
+    }
   },
-  oldPos: {
-    type: DataTypes.STRING(2),
-    primaryKey: true
-  },
-  newPos: {
-    type: DataTypes.STRING(2),
-    allowNull: false
-  },
-}, {
-  sequelize,
-  underscored: true,
-  modelName: 'move',
-  timestamps: false,
-})
-
+  {
+    sequelize,
+    underscored: true,
+    modelName: 'move',
+    timestamps: false
+  }
+)

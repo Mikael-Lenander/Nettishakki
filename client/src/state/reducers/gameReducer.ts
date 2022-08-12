@@ -14,7 +14,7 @@ const initialState: GameState = {
 }
 
 type NewGame = {
-  color: Color,
+  color: Color
   gameId: string
 }
 
@@ -28,7 +28,7 @@ const gameSlice = createSlice({
   reducers: {
     makeMove: (game, action: PayloadAction<GameStateChange>) => {
       const { moves, turn, isCheck } = action.payload
-      moves.forEach(move => {
+      moves.forEach((move) => {
         game.board[move.newPos.y][move.newPos.x] = { name: move.pieceName, color: move.pieceColor }
         game.board[move.oldPos.y][move.oldPos.x] = null
         game.moves.push(move)

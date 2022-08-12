@@ -9,7 +9,7 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface 
     },
     username: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: true
     },
     password_hash: {
       type: DataTypes.STRING,
@@ -19,7 +19,7 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface 
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     }
-  }) 
+  })
   await queryInterface.createTable('games', {
     id: {
       type: DataTypes.INTEGER,

@@ -12,33 +12,37 @@ describe('a queen', () => {
   test('has correct valid moves on an empty board when in corner', () => {
     const queen = new Queen('white', 0, 0)
     const moves = sortPosArr(queen.validMoves(board))
-    showMoves(moves, queen.pos)    
-    expect(moves).toEqual(extractMoves([
-     [0, 1, 1, 1, 1, 1, 1, 1],
-     [1, 1, 0, 0, 0, 0, 0, 0],
-     [1, 0, 1, 0, 0, 0, 0, 0],
-     [1, 0, 0, 1, 0, 0, 0, 0],
-     [1, 0, 0, 0, 1, 0, 0, 0],
-     [1, 0, 0, 0, 0, 1, 0, 0],
-     [1, 0, 0, 0, 0, 0, 1, 0],
-     [1, 0, 0, 0, 0, 0, 0, 1],
-     ]))
-    })
+    showMoves(moves, queen.pos)
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0, 0, 0],
+        [1, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0],
+        [1, 0, 0, 0, 0, 1, 0, 0],
+        [1, 0, 0, 0, 0, 0, 1, 0],
+        [1, 0, 0, 0, 0, 0, 0, 1]
+      ])
+    )
+  })
 
   test('has correct valid moves on an empty board when in center', () => {
     const queen = new Queen('white', 4, 5)
     const moves = sortPosArr(queen.validMoves(board))
     showMoves(moves, queen.pos)
-    expect(moves).toEqual(extractMoves([
-     [0, 0, 0, 0, 1, 0, 0, 0],
-     [1, 0, 0, 0, 1, 0, 0, 0],
-     [0, 1, 0, 0, 1, 0, 0, 1],
-     [0, 0, 1, 0, 1, 0, 1, 0],
-     [0, 0, 0, 1, 1, 1, 0, 0],
-     [1, 1, 1, 1, 0, 1, 1, 1],
-     [0, 0, 0, 1, 1, 1, 0, 0],
-     [0, 0, 1, 0, 1, 0, 1, 0],
-     ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 1, 0, 0, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 0, 1, 1, 1],
+        [0, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 0, 1, 0, 1, 0]
+      ])
+    )
   })
 
   test('has correct valid moves when blocked by friendly pieces', () => {
@@ -48,16 +52,18 @@ describe('a queen', () => {
     board.add(new Queen('white', 4, 2))
     const moves = sortPosArr(queen.validMoves(board))
     showMoves(moves, queen.pos)
-    expect(moves).toEqual(extractMoves([
-     [0, 0, 0, 0, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0, 0, 0, 0],
-     [0, 1, 0, 0, 0, 0, 0, 1],
-     [0, 0, 1, 0, 1, 0, 1, 0],
-     [0, 0, 0, 1, 1, 1, 0, 0],
-     [1, 1, 1, 1, 0, 1, 1, 1],
-     [0, 0, 0, 0, 1, 1, 0, 0],
-     [0, 0, 0, 0, 1, 0, 1, 0],
-     ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 0, 1, 1, 1],
+        [0, 0, 0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0, 1, 0]
+      ])
+    )
   })
 
   test('has correct valid moves when blocked by opponent pieces', () => {
@@ -67,16 +73,17 @@ describe('a queen', () => {
     board.add(new Queen('white', 4, 2))
     const moves = sortPosArr(queen.validMoves(board))
     showMoves(moves, queen.pos)
-    expect(moves).toEqual(extractMoves([
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 1, 0, 0, 1],
-      [0, 0, 1, 0, 1, 0, 1, 0],
-      [0, 0, 0, 1, 1, 1, 0, 0],
-      [1, 1, 1, 1, 0, 1, 1, 1],
-      [0, 0, 0, 1, 1, 1, 0, 0],
-      [0, 0, 0, 0, 1, 0, 1, 0],
-      ]))
+    expect(moves).toEqual(
+      extractMoves([
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 0, 1, 1, 1],
+        [0, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0, 1, 0]
+      ])
+    )
   })
-
 })

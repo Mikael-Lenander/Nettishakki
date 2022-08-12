@@ -2,15 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Reducer, combineReducers } from 'redux'
 import gameReducer from './reducers/gameReducer'
 import userReducer from './reducers/userReducer'
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, } from 'redux-persist'
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import sessionStorage from 'redux-persist/lib/storage/session'
 // import localStorage from 'redux-persist/lib/storage'
 import { STORAGE_PREFIX } from '../constants'
 import { WebStorage } from 'redux-persist/es/types'
 
-const persistedReducer = (key: string, reducer: Reducer, storage: WebStorage) => (
-  persistReducer({ key: STORAGE_PREFIX + key, storage }, reducer)
-)
+const persistedReducer = (key: string, reducer: Reducer, storage: WebStorage) => persistReducer({ key: STORAGE_PREFIX + key, storage }, reducer)
 
 const rootReducer = combineReducers({
   game: persistedReducer('game', gameReducer, sessionStorage),
@@ -19,13 +17,12 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => (
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
     })
-  )
 })
 export const persistor = persistStore(store)
 

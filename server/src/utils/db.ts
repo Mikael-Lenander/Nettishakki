@@ -1,6 +1,6 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize'
 import { DATABASE_URL } from './config'
-import { Umzug, SequelizeStorage } from 'umzug';
+import { Umzug, SequelizeStorage } from 'umzug'
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   logging: false,
@@ -9,8 +9,8 @@ export const sequelize = new Sequelize(DATABASE_URL, {
       require: true,
       rejectUnauthorized: false
     }
-  },
-});
+  }
+})
 
 export const connectToDatabase = async () => {
   try {
@@ -20,15 +20,15 @@ export const connectToDatabase = async () => {
     console.log('Connecting database failed: ', err)
     process.exit(1)
   }
-};
+}
 
 const migrationConf = (file: string) => ({
   migrations: {
-    glob: `src/migrations/${file}`,
+    glob: `src/migrations/${file}`
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console,
+  logger: console
 })
 
 export const runMigrations = async () => {
@@ -36,7 +36,7 @@ export const runMigrations = async () => {
   const migrator = new Umzug(migrationConf('*.ts'))
   const migrations = await migrator.up()
   console.log('Migrations up to date', {
-    files: migrations.map((mig) => mig.name),
+    files: migrations.map((mig) => mig.name)
   })
 }
 export const rollbackMigration = async (file: string) => {
