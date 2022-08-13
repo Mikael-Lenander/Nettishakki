@@ -19,7 +19,6 @@ export default function MenuButton({ text, link, onClick }: Props) {
 
   return (
     <Button
-      className="hover-button"
       onClick={handleClick}
       sx={{
         display: 'flex',
@@ -36,7 +35,7 @@ export default function MenuButton({ text, link, onClick }: Props) {
         }
       }}
     >
-      <TypoGraphy variant="h3">{text}</TypoGraphy>
+      <TypoGraphy variant='h3'>{text}</TypoGraphy>
     </Button>
   )
 }

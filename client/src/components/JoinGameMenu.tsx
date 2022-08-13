@@ -32,22 +32,26 @@ export default function JoinGameMenu() {
     }
   }, [socket])
 
-  if (game.active) return <Navigate to="/play" />
+  if (game.active) return <Navigate to='/play' />
 
   return (
-    <form style={{ color: 'white', display: 'flex', justifyContent: 'center', flexDirection: 'column' }} onSubmit={handleSubmit} autoComplete="off">
-      <Typography variant="h3">Enter game id:</Typography>
+    <form
+      style={{ color: 'white', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}
+      onSubmit={handleSubmit}
+      autoComplete='off'
+    >
+      <Typography variant='h3'>Enter game id:</Typography>
       <TextField
         fullWidth
-        variant="outlined"
+        variant='outlined'
         onChange={(e) => setGameId(e.target.value)}
         style={{ background: 'white', borderRadius: '5px', marginTop: '1.2em', marginBottom: '1.2em' }}
       />
-      <Button variant="contained" color="success" style={{ fontSize: '1.5rem', alignSelf: 'center' }} type="submit">
+      <Button variant='contained' color='success' style={{ fontSize: '1.5rem', alignSelf: 'center' }} type='submit'>
         Join
       </Button>
       {errorMessage && (
-        <Alert severity="error" style={{ marginTop: '1em' }}>
+        <Alert severity='error' style={{ marginTop: '1em' }}>
           {errorMessage}
         </Alert>
       )}

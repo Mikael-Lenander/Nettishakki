@@ -15,4 +15,5 @@
 | 11.8. | 2    | Tietokannan alustus |
 | 11.8. | 5    | Tietokannan taulujen ja migraatioiden luonti |
 | 11.8. | 2    | Refaktoroitu moves-taulu, UML-kaavio tietokannalle |
-| 12.8. | 2    | Konfiguroitu prettier
+| 12.8. | 2    | Konfiguroitu prettier |
+| 13.8. | 6    | Sisäänkirjautumis- ja rekisteröitymislomakkeet |

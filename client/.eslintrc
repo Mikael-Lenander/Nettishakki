@@ -18,9 +18,11 @@
       {
         "endOfLine": "auto",
         "trailingComma": "none",
-        "printWidth": 160,
+        "printWidth": 140,
         "semi": false,
-        "singleQuote": true
+        "singleQuote": true,
+        "jsxSingleQuote": true,
+        "arrowParens": "avoid"
       }
     ],
     "semi": "off",
@@ -30,6 +32,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./client/tsconfig.json"
   }
 }

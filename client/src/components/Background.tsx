@@ -12,7 +12,7 @@ export default function Background() {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundImage: 'url(/background.png)',
-          backgroundSize: '100vw calc(100vh - 70px)'
+          backgroundSize: '40vw'
         }}
       >
         <Outlet />

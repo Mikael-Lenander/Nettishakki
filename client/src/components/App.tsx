@@ -8,13 +8,17 @@ import Background from './Background'
 import MainMenu from './MainMenu'
 import JoinGameMenu from './JoinGameMenu'
 import Lobby from './Lobby'
+import Login from './Login'
+import SignUp from './SignUp'
 import Game from './Game'
 
 const customTheme = createTheme({
   typography: {
     button: {
-      textTransform: 'none'
-    }
+      textTransform: 'none',
+      fontFamily: 'Lato'
+    },
+    fontFamily: 'Lato'
   },
   palette: {
     primary: indigo
@@ -27,12 +31,14 @@ export default function App() {
       <ThemeProvider theme={customTheme}>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Background />}>
-            <Route path="/" element={<MainMenu />} />
-            <Route path="/lobby" element={<Lobby />} />
-            <Route path="/play" element={<Game />} />
-            <Route path="/join-game" element={<JoinGameMenu />} />
-            <Route path="*" element={<h1 style={{ color: 'white' }}>404 NOT FOUND</h1>} />
+          <Route path='/' element={<Background />}>
+            <Route path='/' element={<MainMenu />} />
+            <Route path='/lobby' element={<Lobby />} />
+            <Route path='/play' element={<Game />} />
+            <Route path='/join-game' element={<JoinGameMenu />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='*' element={<h1 style={{ color: 'white' }}>404 NOT FOUND</h1>} />
           </Route>
         </Routes>
       </ThemeProvider>
