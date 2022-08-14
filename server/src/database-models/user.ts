@@ -1,5 +1,6 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequelize'
 import { sequelize } from '../utils/db'
+import userService from '../services/userService'
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: number
@@ -25,7 +26,7 @@ User.init(
           msg: 'Username must only contain alphanumeric characters'
         },
         async isUnique(username: string) {
-          const user = await User.findOne({ where: { username } })
+          const user = await userService.find(username)
           if (user) throw new Error('Username taken')
         }
       },

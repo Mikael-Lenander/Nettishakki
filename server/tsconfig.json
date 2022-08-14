@@ -12,6 +12,8 @@
     "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
     "skipLibCheck": true,
     "noImplicitAny": true,
-    "noUnusedParameters": true
-  }
+    "noUnusedParameters": true,
+    "typeRoots": ["./types"]
+  },
+  "include": ["src/**/*"]
 }
