@@ -15,7 +15,21 @@ User.init(
     },
     username: {
       type: DataTypes.STRING,
-      unique: true
+      validate: {
+        len: {
+          args: [3, 20],
+          msg: 'Username must be 3-20 characters long'
+        },
+        is: {
+          args: /^[A-Za-z0-9_-äö]+$/,
+          msg: 'Username must only contain alphanumeric characters'
+        },
+        async isUnique(username: string) {
+          const user = await User.findOne({ where: { username } })
+          if (user) throw new Error('Username taken')
+        }
+      },
+      allowNull: false
     },
     passwordHash: {
       type: DataTypes.STRING,

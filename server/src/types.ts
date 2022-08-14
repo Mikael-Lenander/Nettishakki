@@ -19,6 +19,12 @@ export interface MoveCoords {
   newPos: Pos
 }
 
+export interface NewUser {
+  username: string
+  password: string
+  repeatPassword: string
+}
+
 // export interface InterServerEvents {
 // }
 

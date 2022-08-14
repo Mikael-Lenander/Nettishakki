@@ -9,13 +9,14 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface 
     },
     username: {
       type: DataTypes.STRING,
+      allowNull: false,
       unique: true
     },
     password_hash: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    joinedAt: {
+    joined_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     }

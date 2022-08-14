@@ -18,7 +18,10 @@ export default function SignUp() {
           .max(20, 'Username must be at most 20 characters long')
           .required('Required field')
           .matches(/^[A-Za-z0-9_-äö]+$/, 'Allowed charactes are letters, numbers, - and _'),
-        password: Yup.string().min(5, 'Password must be at least 5 characters long').required('Required field'),
+        password: Yup.string()
+          .min(5, 'Password must be at least 5 characters long')
+          .max(30, 'Password must be at most 30 characters long')
+          .required('Required field'),
         repeatPassword: Yup.string().oneOf([Yup.ref('password'), ''], 'Passwords must match')
       })}
       onSubmit={values => console.log('Sign up with values', values)}

@@ -17,3 +17,4 @@
 | 11.8. | 2    | Refaktoroitu moves-taulu, UML-kaavio tietokannalle |
 | 12.8. | 2    | Konfiguroitu prettier |
 | 13.8. | 6    | Sisäänkirjautumis- ja rekisteröitymislomakkeet |
+| 13.8. | 4    | Uuden käyttäjän tallentaminen tietokantaan |

@@ -32,6 +32,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./client/tsconfig.json"
+    "project": "c:\\users\\mikae\\vscodeprojects\\shakki\\client\\tsconfig.json"
   }
 }
