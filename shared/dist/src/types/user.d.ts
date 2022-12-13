@@ -4,3 +4,13 @@ export interface NewUser {
     repeatPassword: string;
 }
 export declare type UserCredentials = Omit<NewUser, 'repeatPassword'>;
+export interface UserPayload {
+    username: string;
+    id: number;
+}
+export interface Tokens {
+    accessToken: string;
+    refreshToken: string;
+}
+export interface UserResponse extends UserPayload, Tokens {
+}
