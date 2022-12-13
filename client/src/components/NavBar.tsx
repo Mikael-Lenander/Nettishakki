@@ -1,8 +1,5 @@
 import React from 'react'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
+import { Button, Typography, Toolbar, Box, AppBar } from '@mui/material'
 import { Link } from 'react-router-dom'
 // import Button from '@mui/material/Button';
 
@@ -16,7 +13,7 @@ export default function NavBar() {
               Chess
             </Link>
           </Typography>
-          {/* <Button color="inherit">Login</Button> */}
+          <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -24,8 +24,8 @@ export default function Board({ game }: Props) {
   const socket = useSocket()
 
   const squares = useMemo((): Square[][] => {
-    return range(0, 8).map((row) =>
-      range(0, 8).map((col) => ({
+    return range(0, 8).map(row =>
+      range(0, 8).map(col => ({
         id: `(${col}, ${row})`,
         pos: new Pos(col, row),
         fill: row % 2 === col % 2 ? '#8ca2ad' : '#dee3e6'
@@ -61,8 +61,8 @@ export default function Board({ game }: Props) {
     <div style={{ margin: '1em' }}>
       <Stage width={width} height={height}>
         <Layer>
-          {squares.map((row) =>
-            row.map((square) => (
+          {squares.map(row =>
+            row.map(square => (
               <Rect
                 key={square.id}
                 col={square.pos.x}
@@ -77,7 +77,13 @@ export default function Board({ game }: Props) {
             ))
           )}
           {selectedPos && (
-            <Rect x={flip(selectedPos).x * squareSize} y={flip(selectedPos).y * squareSize} width={squareSize} height={squareSize} fill={'green'} />
+            <Rect
+              x={flip(selectedPos).x * squareSize}
+              y={flip(selectedPos).y * squareSize}
+              width={squareSize}
+              height={squareSize}
+              fill={'green'}
+            />
           )}
           {game.board.map((row, y) =>
             row.map((piece, x) => {
@@ -96,14 +102,14 @@ export default function Board({ game }: Props) {
               )
             })
           )}
-          {availabeMoves.map((move) => (
+          {availabeMoves.map(move => (
             <Circle
               key={`(${move.x}, ${move.y})`}
               row={move.y}
               col={move.x}
               x={squareSize * (flip(move).x + 0.5)}
               y={squareSize * (flip(move).y + 0.5)}
-              fill="grey"
+              fill='grey'
               radius={radius}
               onClick={handleClickBoard}
             />

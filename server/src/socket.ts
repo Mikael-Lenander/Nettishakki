@@ -13,7 +13,7 @@ export default function socketServer(server: http.Server) {
     }
   })
 
-  io.on('connection', async (socket) => {
+  io.on('connection', async socket => {
     const username = socket.handshake.query.username as string
     await socket.join(username)
     let currentGameId = games.findWithPlayer(username)
@@ -39,7 +39,7 @@ export default function socketServer(server: http.Server) {
       currentGameId = currentGame.id
       console.log(
         'activeGames',
-        games.games.map((game) => game.id)
+        games.games.map(game => game.id)
       )
       await socket.join(currentGameId)
       io.to(username).emit('gameCreated', { success: true, message: '' }, currentGame.playerColor(username), currentGameId)
@@ -79,7 +79,7 @@ export default function socketServer(server: http.Server) {
       const opponent = game.opponent(username)
       console.log(
         'activeGames',
-        games.games.map((game) => game.id)
+        games.games.map(game => game.id)
       )
       io.to(username).emit('joinedGame', { success: true, message: '' }, opponent.username, player.color, gameId)
       io.to(opponent.username).emit('joinedGame', { success: true, message: '' }, username)

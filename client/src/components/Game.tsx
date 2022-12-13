@@ -8,7 +8,7 @@ import InfoBar from './InfoBar'
 import { Navigate } from 'react-router-dom'
 
 export default function Game() {
-  const game = useAppSelector((state) => state.game)
+  const game = useAppSelector(state => state.game)
   const socket = useSocket()
   const dispatch = useAppDispatch()
 
@@ -32,7 +32,7 @@ export default function Game() {
     }
   }, [socket])
 
-  if (!game.id) return <Navigate to="/" />
+  if (!game.id) return <Navigate to='/' />
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', margin: '1em' }}>

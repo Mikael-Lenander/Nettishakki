@@ -1,14 +1,20 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./chess"), exports);
-__exportStar(require("./types"), exports);
+const chess_1 = require("./src/chess");
+const testHelpers_1 = require("./src/chess/tests/testHelpers");
+const board = chess_1.Board.empty();
+const king = new chess_1.King('white', 4, 0);
+board.add([
+    king,
+    new chess_1.Rook('white', 0, 0),
+    new chess_1.Rook('white', 7, 0),
+    new chess_1.Pawn('black', 0, 6),
+    new chess_1.King('black', 6, 7)
+]);
+const game = new chess_1.Game(board);
+game.makeMove(king.pos, new chess_1.Pos(5, 0));
+game.makeMove(new chess_1.Pos(0, 6), new chess_1.Pos(0, 5));
+game.makeMove(new chess_1.Pos(5, 0), new chess_1.Pos(4, 0));
+game.board.display();
+const moves = king.legalMoves(board);
+(0, testHelpers_1.showMoves)(moves, king.pos);

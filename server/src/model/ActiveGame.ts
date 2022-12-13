@@ -17,15 +17,15 @@ export default class ActiveGame {
   }
 
   hasPlayer(username: string) {
-    return this.players.map((player) => player.username).includes(username)
+    return this.players.map(player => player.username).includes(username)
   }
 
   playerColor(username: string): Color {
-    return this.players.find((player) => player.username === username).color
+    return this.players.find(player => player.username === username).color
   }
 
   opponent(username: string): Player {
-    return this.players.find((player) => player.username !== username)
+    return this.players.find(player => player.username !== username)
   }
 
   addPlayer(username: string): Player {

@@ -36,7 +36,7 @@ export const runMigrations = async () => {
   const migrator = new Umzug(migrationConf('*.ts'))
   const migrations = await migrator.up()
   console.log('Migrations up to date', {
-    files: migrations.map((mig) => mig.name)
+    files: migrations.map(mig => mig.name)
   })
 }
 export const rollbackMigration = async (file: string) => {

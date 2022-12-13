@@ -7,7 +7,6 @@ import { compare } from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 import { REFRESH_TOKEN_SECRET } from '../utils/config'
 import { parseString } from '../utils/parsers/parsers'
-import { authenticateToken } from '../utils/middleware'
 
 const router = Router()
 
