@@ -1,4 +1,4 @@
-import { NewUser } from '../types'
+import { NewUser } from 'shared'
 import { hash } from 'bcrypt'
 import { User } from '../database-models'
 

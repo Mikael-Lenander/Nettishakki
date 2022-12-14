@@ -3,13 +3,13 @@ import { Typography, TextField, Button, Alert } from '@mui/material'
 import { useSocket } from '../hooks/socketContext'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
-import { Color, Info } from 'shakki'
+import { Color, Info } from 'shared'
 import { Navigate } from 'react-router-dom'
 
 export default function JoinGameMenu() {
   const socket = useSocket()
   const dispatch = useAppDispatch()
-  const game = useAppSelector((state) => state.game)
+  const game = useAppSelector(state => state.game)
   const [gameId, setGameId] = useState<string>()
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -44,7 +44,7 @@ export default function JoinGameMenu() {
       <TextField
         fullWidth
         variant='outlined'
-        onChange={(e) => setGameId(e.target.value)}
+        onChange={e => setGameId(e.target.value)}
         style={{ background: 'white', borderRadius: '5px', marginTop: '1.2em', marginBottom: '1.2em' }}
       />
       <Button variant='contained' color='success' style={{ fontSize: '1.5rem', alignSelf: 'center' }} type='submit'>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSocket } from '../hooks/socketContext'
-import { Color, Info } from 'shakki'
+import { Color, Info } from 'shared'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { Navigate } from 'react-router-dom'
@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 
 export default function Lobby() {
-  const game = useAppSelector((state) => state.game)
+  const game = useAppSelector(state => state.game)
   const socket = useSocket()
   const dispatch = useAppDispatch()
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -32,17 +32,17 @@ export default function Lobby() {
     }
   }, [socket])
 
-  if (game.active) return <Navigate to="/play" />
+  if (game.active) return <Navigate to='/play' />
   return (
     <>
       {errorMessage ? (
-        <Alert severity="error">{errorMessage}</Alert>
+        <Alert severity='error'>{errorMessage}</Alert>
       ) : (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', color: 'white' }}>
-          <Typography variant="h3" component="h1">
+          <Typography variant='h3' component='h1'>
             Your game id: {game.id}
           </Typography>
-          <Typography variant="h4" component="h2">
+          <Typography variant='h4' component='h2'>
             Waiting for opponent...
           </Typography>
         </div>

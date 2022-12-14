@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 import { ACCESS_TOKEN_SECRET } from './config'
 import { Request, Response, NextFunction } from 'express'
-import { UserPayload } from '../types'
+import { UserPayload } from 'shared'
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers['authorization']?.substring(7)

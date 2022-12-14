@@ -2,8 +2,15 @@ import React from 'react'
 import TextInput from './TextInput'
 import FormContainer from './FormContainer'
 import * as Yup from 'yup'
+import { useAppSelector, useAppDispatch } from '../state/hooks'
+import { signup } from '../state/reducers/userReducer'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
+  const signUpInfo = useAppSelector(state => state.user.info)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   return (
     <FormContainer
       title='Sign up to save your games'
@@ -24,8 +31,11 @@ export default function SignUp() {
           .required('Required field'),
         repeatPassword: Yup.string().oneOf([Yup.ref('password'), ''], 'Passwords must match')
       })}
-      onSubmit={values => console.log('Sign up with values', values)}
+      onSubmit={({ username, password, repeatPassword }) =>
+        dispatch(signup({ username, password, repeatPassword })).then(() => navigate('/login'))
+      }
       submitText='Sign up'
+      submitFeedback={signUpInfo}
     >
       <TextInput label='username' name='username' placeholder='username' type='text' />
       <TextInput label='password' name='password' placeholder='password' type='password' />

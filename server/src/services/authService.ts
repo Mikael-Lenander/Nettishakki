@@ -1,5 +1,5 @@
 import { Token } from '../database-models'
-import { UserPayload, Tokens } from '../types'
+import { UserPayload, Tokens } from 'shared'
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '../utils/config'
 import * as jwt from 'jsonwebtoken'
 

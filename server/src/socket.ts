@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import http from 'http'
 // import { InterServerEvents, SocketData } from './types'
-import { Pos, PosType, ClientToServerEvents, ServerToClientEvents } from '../../shared/src'
+import { Pos, PosType, ClientToServerEvents, ServerToClientEvents } from 'shared'
 import GameController from './model/GameController'
 
 const games = new GameController()

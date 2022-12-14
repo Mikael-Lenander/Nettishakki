@@ -1,5 +1,6 @@
 import { parseString } from './parsers'
-import { UserCredentials, Fields, NewUser } from '../../types'
+import { Fields } from '../../types'
+import { UserCredentials, NewUser } from 'shared'
 
 export function toUserCredentials({ username, password }: Fields<UserCredentials>): UserCredentials {
   return {

@@ -2,7 +2,8 @@ import { Router } from 'express'
 import userService from '../services/userService'
 import authService from '../services/authService'
 import { toUserCredentials } from '../utils/parsers/toUser'
-import { Fields, UserCredentials, UserPayload } from '../types'
+import { Fields } from '../types'
+import { UserCredentials, UserPayload } from 'shared'
 import { compare } from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 import { REFRESH_TOKEN_SECRET } from '../utils/config'
@@ -13,6 +14,7 @@ const router = Router()
 router.post('/login', async (req, res) => {
   try {
     const credentials = toUserCredentials(req.body as Fields<UserCredentials>)
+    console.log('credentials.username', credentials.username)
     const user = await userService.find(credentials.username)
     if (!user) return res.status(400).json({ error: 'Invalid username' })
     const passwordCorrect = await compare(credentials.password, user.passwordHash)
@@ -32,7 +34,7 @@ router.post('/logout', (req, res) => {
       if (err) return res.status(403).json({ error: 'Unauthorized' })
       const userId = (user as UserPayload).id
       await authService.removeUserTokens(userId)
-      res.status(204)
+      res.send('Logout successful')
     })
   } catch (error) {
     res.status(400).json({ error: error.message })

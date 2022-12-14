@@ -1,7 +1,8 @@
 import React from 'react'
 import { Formik, Form } from 'formik'
-import { Typography, Button, Container } from '@mui/material'
+import { Typography, Button, Container, Alert } from '@mui/material'
 import { AnyObjectSchema } from 'yup'
+import { Info } from 'shared'
 
 type FormValues = {
   [key: string]: string
@@ -14,9 +15,10 @@ type Props = {
   onSubmit(values: FormValues): void
   children: JSX.Element[] | JSX.Element
   submitText: string
+  submitFeedback: Info
 }
 
-export default function FormContainer({ title, initialValues, validationSchema, children, submitText, onSubmit }: Props) {
+export default function FormContainer({ title, initialValues, validationSchema, children, submitText, onSubmit, submitFeedback }: Props) {
   return (
     <Container
       sx={{
@@ -38,6 +40,11 @@ export default function FormContainer({ title, initialValues, validationSchema, 
               {submitText}
             </Button>
           </Container>
+          {submitFeedback.message.length > 0 && (
+            <Alert severity={submitFeedback.success ? 'success' : 'error'} sx={{ mb: 2, mt: -2 }}>
+              {submitFeedback.message}
+            </Alert>
+          )}
         </Form>
       </Formik>
     </Container>

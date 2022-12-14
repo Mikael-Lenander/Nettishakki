@@ -47,7 +47,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "sequelize": "^6.21.3",
-    "shakki": "github:Mikael-Lenander/shakki",
+    "shared": "github:Mikael-Lenander/shakki",
     "socket.io": "^4.4.0",
     "umzug": "^3.1.1"
   },

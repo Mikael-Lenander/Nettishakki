@@ -1,4 +1,4 @@
-import { Color, Game, opponent } from 'shakki'
+import { Color, Game, opponent } from 'shared'
 import { Player } from '../types'
 
 export default class ActiveGame {

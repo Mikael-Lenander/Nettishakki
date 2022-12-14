@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Board, GameStateChange, GameState, Color, GameOverMessage } from 'shakki'
+import { Board, GameStateChange, GameState, Color, GameOverMessage } from 'shared'
 
 const initialState: GameState = {
   id: null,

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { Stage, Layer, Rect, Circle } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { range } from 'lodash'
-import { Game, Pos, GameState } from 'shakki'
+import { Game, Pos, GameState } from 'shared'
 import { useSocket } from '../hooks/socketContext'
 import ChessImage from './ChessImage'
 

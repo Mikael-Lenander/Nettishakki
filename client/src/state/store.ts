@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, AnyAction } from '@reduxjs/toolkit'
 import { Reducer, combineReducers } from 'redux'
 import gameReducer from './reducers/gameReducer'
 import userReducer from './reducers/userReducer'
@@ -8,11 +8,12 @@ import sessionStorage from 'redux-persist/lib/storage/session'
 import { STORAGE_PREFIX } from '../constants'
 import { WebStorage } from 'redux-persist/es/types'
 
-const persistedReducer = (key: string, reducer: Reducer, storage: WebStorage) =>
+const persistedReducer = <T>(key: string, reducer: Reducer<T, AnyAction>, storage: WebStorage) =>
   persistReducer({ key: STORAGE_PREFIX + key, storage }, reducer)
 
 const rootReducer = combineReducers({
-  game: persistedReducer('game', gameReducer, sessionStorage),
+  // game: persistedReducer('game', gameReducer, sessionStorage),
+  game: persistReducer({ key: STORAGE_PREFIX + 'game', storage: sessionStorage }, gameReducer),
   user: persistedReducer('user', userReducer, sessionStorage)
 })
 

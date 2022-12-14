@@ -19,3 +19,4 @@
 | 13.8. | 6    | Sisäänkirjautumis- ja rekisteröitymislomakkeet |
 | 13.8. | 4    | Uuden käyttäjän tallentaminen tietokantaan |
 | 14.8. | 6    | Backend sisään- ja uloskirjautuminen, käyttäjäistunto |
+| 14.12.| 7    | Frontend käyttäjähallinta ja -navigointi |

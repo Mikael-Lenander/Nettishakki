@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import io, { Socket } from 'socket.io-client'
-import { ServerToClientEvents, ClientToServerEvents } from 'shakki'
+import { ServerToClientEvents, ClientToServerEvents } from 'shared'
 import { useAppSelector } from '../state/hooks'
 import { URL } from '../constants'
 

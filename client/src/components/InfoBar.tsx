@@ -3,7 +3,7 @@ import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { Circle, CircleOutlined } from '@mui/icons-material'
 import { useAppSelector } from '../state/hooks'
-import { GameState, GameOverMessage } from 'shakki'
+import { GameState, GameOverMessage } from 'shared'
 
 interface Props {
   game: GameState
@@ -15,7 +15,7 @@ export default function InfoBar({ game }: Props) {
     return `${data.winner} wins by ${data.message}`
   }
 
-  const { username } = useAppSelector((state) => state.user)
+  const { username } = useAppSelector(state => state.user)
   console.log('username', username)
 
   const players = {
@@ -31,7 +31,7 @@ export default function InfoBar({ game }: Props) {
   } as React.CSSProperties
 
   return (
-    <Card variant="outlined" style={{ alignSelf: 'center', padding: '0.5em' }}>
+    <Card variant='outlined' style={{ alignSelf: 'center', padding: '0.5em' }}>
       <Typography style={text}>
         <CircleOutlined />
         {players.white.substring(0, 15)}
