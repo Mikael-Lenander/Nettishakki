@@ -20,7 +20,7 @@ class Board {
     isEmptySquare(pos) {
         return this.pieceAt(pos) == null;
     }
-    setPiece(piece, oldPos, newPos) {
+    setPiece(piece, oldPos, newPos, saveMove = true) {
         this.board[newPos.y][newPos.x] = piece;
         this.board[oldPos.y][oldPos.x] = null;
         piece.pos = newPos;
@@ -30,13 +30,14 @@ class Board {
             oldPos,
             newPos
         };
-        this.moves.push(move);
+        if (saveMove)
+            this.moves.push(move);
         return move;
     }
     castle(king, oldPos, newPos) {
         const kingMove = this.setPiece(king, oldPos, newPos);
         const rook = this.pieceAt(new Pos_1.default(newPos.x === 6 ? 7 : 0, king.pos.y));
-        const rookMove = this.setPiece(rook, rook.pos, new Pos_1.default(rook.pos.x === 7 ? 5 : 3, rook.pos.y));
+        const rookMove = this.setPiece(rook, rook.pos, new Pos_1.default(rook.pos.x === 7 ? 5 : 3, rook.pos.y), false);
         return [kingMove, rookMove];
     }
     enPassant(piece, oldPos, newPos) {

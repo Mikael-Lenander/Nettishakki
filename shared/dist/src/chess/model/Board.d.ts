@@ -8,7 +8,7 @@ export default class Board {
     constructor(board?: BoardType);
     pieceAt(pos: Pos): PieceType;
     isEmptySquare(pos: Pos): boolean;
-    setPiece(piece: Piece, oldPos: Pos, newPos: Pos): Move;
+    setPiece(piece: Piece, oldPos: Pos, newPos: Pos, saveMove?: boolean): Move;
     castle(king: King, oldPos: Pos, newPos: Pos): Move[];
     enPassant(piece: Piece, oldPos: Pos, newPos: Pos): Move[];
     movePiece(oldPos: Pos, newPos: Pos): Move[];

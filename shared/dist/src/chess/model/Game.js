@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Board_1 = require("./Board");
 const utils_1 = require("./utils");
 const pieces_1 = require("./pieces");
+const types_1 = require("../../types");
 class Game {
     constructor(board) {
         if (board) {
@@ -20,14 +21,14 @@ class Game {
     }
     over() {
         if (this.isCheck && this.allMoves(this.turn).length === 0) {
-            return { winner: (0, utils_1.opponent)(this.turn), message: 'checkmate' };
+            return { winner: (0, utils_1.opponent)(this.turn), message: types_1.GameOverCondition.CheckMate };
         }
         // Patti, nopein mahdollinen teoreettinen patti tulee 19. siirrolla :)
         if (this.board.moves.length >= 19 && !this.isCheck && this.allMoves(this.turn).length === 0) {
-            return { winner: null, message: 'stalemate' };
+            return { winner: null, message: types_1.GameOverCondition.StaleMate };
         }
         if (this.board.insufficientMaterial()) {
-            return { winner: null, message: 'insufficient material' };
+            return { winner: null, message: types_1.GameOverCondition.InsufficientMaterial };
         }
         return null;
     }
