@@ -20,7 +20,7 @@ const isValidToken = async (token: string): Promise<boolean> => {
 }
 
 const generateTokens = async (user: UserPayload): Promise<Tokens> => {
-  const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+  const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
   const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET)
   await addToken(refreshToken, user.id)
   return { accessToken, refreshToken }

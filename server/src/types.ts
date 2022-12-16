@@ -12,6 +12,7 @@ export enum GameStatus {
 export interface Player {
   username: string
   color: Color
+  isAuthenticated: boolean
 }
 
 export interface MoveCoords {
@@ -21,8 +22,10 @@ export interface MoveCoords {
 
 export type Fields<T> = Record<keyof T, unknown>
 
-// export interface InterServerEvents {
-// }
+export interface SocketData {
+  username: string
+  userId: number
+  isAuthenticated: boolean
+}
 
-// export interface SocketData {
-// }
+export interface InterServerEvents {}

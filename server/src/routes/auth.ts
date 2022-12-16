@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
   try {
     const credentials = toUserCredentials(req.body as Fields<UserCredentials>)
     console.log('credentials.username', credentials.username)
-    const user = await userService.find(credentials.username)
+    const user = await userService.findByName(credentials.username)
     if (!user) return res.status(400).json({ error: 'Invalid username' })
     const passwordCorrect = await compare(credentials.password, user.passwordHash)
     if (!passwordCorrect) return res.status(401).json({ error: 'Wrong password' })

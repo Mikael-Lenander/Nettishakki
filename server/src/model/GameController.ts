@@ -19,8 +19,8 @@ export default class GameController {
     return null
   }
 
-  findActiveWithPlayer(username: string): string | null {
-    const game = this.games.find(game => game.hasPlayer(username) && game.isActive())
+  findOnGoingWithPlayer(username: string): string | null {
+    const game = this.games.find(game => game.hasPlayer(username) && game.isOn())
     if (game) return game.id
     return null
   }
@@ -39,8 +39,8 @@ export default class GameController {
     return this.uniqueId()
   }
 
-  new(username: string): ActiveGame {
-    const newGame = new ActiveGame(this.uniqueId(), username)
+  new(username: string, isAuthenticated: boolean): ActiveGame {
+    const newGame = new ActiveGame(this.uniqueId(), username, isAuthenticated)
     this.games.push(newGame)
     return newGame
   }

@@ -4,14 +4,13 @@ import User from './user'
 import Token from './token'
 
 User.hasMany(Game, {
-  foreignKey: { name: 'whiteId', allowNull: false },
+  foreignKey: { name: 'whiteId' },
   as: 'white'
 })
 User.hasMany(Game, {
-  foreignKey: { name: 'blackId', allowNull: false },
+  foreignKey: { name: 'blackId' },
   as: 'black'
 })
-User.hasMany(Game, { foreignKey: 'winnerId', as: 'winner' })
 
 Game.hasMany(Move, { foreignKey: { allowNull: false } })
 Move.belongsTo(Game)

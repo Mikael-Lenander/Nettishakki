@@ -3,7 +3,7 @@ import Board from './Board'
 import Pos from './Pos'
 import { opponent } from './utils'
 import { Piece, King } from './pieces'
-import { GameOverMessage } from '../../types'
+import { GameOverMessage, GameOverCondition } from '../../types'
 
 export default class Game {
   board: Board
@@ -27,14 +27,14 @@ export default class Game {
 
   over(): GameOverMessage | null {
     if (this.isCheck && this.allMoves(this.turn).length === 0) {
-      return { winner: opponent(this.turn), message: 'checkmate' }
+      return { winner: opponent(this.turn), message: GameOverCondition.CheckMate }
     }
     // Patti, nopein mahdollinen teoreettinen patti tulee 19. siirrolla :)
     if (this.board.moves.length >= 19 && !this.isCheck && this.allMoves(this.turn).length === 0) {
-      return { winner: null, message: 'stalemate' }
+      return { winner: null, message: GameOverCondition.StaleMate }
     }
     if (this.board.insufficientMaterial()) {
-      return { winner: null, message: 'insufficient material' }
+      return { winner: null, message: GameOverCondition.InsufficientMaterial }
     }
     return null
   }

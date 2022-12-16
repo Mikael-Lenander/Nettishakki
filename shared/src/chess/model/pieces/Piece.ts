@@ -90,4 +90,5 @@ export abstract class LongRangePiece extends Piece {
   controlledSquares(board: Board): Pos[] {
     return this.moves(board, true)
   }
+
 }

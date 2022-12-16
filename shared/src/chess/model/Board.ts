@@ -26,7 +26,7 @@ export default class Board {
     return this.pieceAt(pos) == null
   }
 
-  setPiece(piece: Piece, oldPos: Pos, newPos: Pos): Move {
+  setPiece(piece: Piece, oldPos: Pos, newPos: Pos, saveMove = true): Move {
     this.board[newPos.y][newPos.x] = piece
     this.board[oldPos.y][oldPos.x] = null
     piece.pos = newPos
@@ -36,14 +36,14 @@ export default class Board {
       oldPos,
       newPos
     }
-    this.moves.push(move)
+    if (saveMove) this.moves.push(move)
     return move
   }
 
   castle(king: King, oldPos: Pos, newPos: Pos): Move[] {
     const kingMove = this.setPiece(king, oldPos, newPos)
     const rook = this.pieceAt(new Pos(newPos.x === 6 ? 7 : 0, king.pos.y)) as Rook
-    const rookMove = this.setPiece(rook, rook.pos, new Pos(rook.pos.x === 7 ? 5 : 3, rook.pos.y))
+    const rookMove = this.setPiece(rook, rook.pos, new Pos(rook.pos.x === 7 ? 5 : 3, rook.pos.y), false)
     return [kingMove, rookMove]
   }
 

@@ -12,10 +12,13 @@ export function useSocket() {
 
 export const SocketProvider = ({ children }: { children: JSX.Element }) => {
   const [socket, setSocket] = useState<Socket>()
-  const username = useAppSelector(state => state.user.username)
+  const { username, accessToken } = useAppSelector(state => state.user)
 
   useEffect(() => {
-    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, { query: { username } })
+    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
+      query: { username },
+      auth: { token: accessToken }
+    })
     setSocket(newSocket)
     return () => {
       newSocket.close()

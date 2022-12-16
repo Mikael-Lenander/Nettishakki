@@ -4,14 +4,23 @@ import { Request, Response, NextFunction } from 'express'
 import { UserPayload } from 'shared'
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers['authorization']?.substring(7)
-  console.log('token', token)
-  if (token == null) return res.status(401).json({ error: 'Unauthorized' })
-
-  jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
-    console.log('err', err)
-    if (err) return res.status(403).json({ error: 'Unauthorized' })
-    req.user = user as UserPayload
+  try {
+    const token = req.headers['authorization']?.substring(7)
+    const user = verifyToken(token)
+    req.user = user
     next()
+  } catch (error) {
+    return res.status(401).send({ error: 'Unauthorized' })
+  }
+}
+
+export const verifyToken = (token: string): UserPayload => {
+  if (token == null) throw Error('Unauthorized')
+  let user: UserPayload = null
+  jwt.verify(token, ACCESS_TOKEN_SECRET, (err, payload: UserPayload) => {
+    if (err) throw Error('Unauthorized')
+    user = payload
   })
+  if (user == null) throw Error('Unauthorized')
+  return user
 }

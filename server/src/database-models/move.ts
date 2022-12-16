@@ -1,10 +1,11 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, ForeignKey } from 'sequelize'
 import { sequelize } from '../utils/db'
 
 export default class Move extends Model<InferAttributes<Move>, InferCreationAttributes<Move>> {
   declare index: number
   declare oldPos: string
   declare newPos: string
+  declare gameId: ForeignKey<number>
 }
 
 Move.init(
@@ -15,11 +16,16 @@ Move.init(
     },
     oldPos: {
       type: DataTypes.STRING(2),
-      primaryKey: true
+      allowNull: false
     },
     newPos: {
       type: DataTypes.STRING(2),
       allowNull: false
+    },
+    gameId: {
+      type: DataTypes.INTEGER,
+      references: { model: 'game', key: 'id' },
+      primaryKey: true
     }
   },
   {

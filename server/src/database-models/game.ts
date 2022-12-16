@@ -1,9 +1,16 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, ForeignKey, CreationOptional } from 'sequelize'
 import { sequelize } from '../utils/db'
+import { Color, GameOverCondition } from 'shared'
 
+// @ts-ignore
 export default class Game extends Model<InferAttributes<Game>, InferCreationAttributes<Game>> {
-  declare id: number
-  declare draw: boolean
+  declare id: CreationOptional<number>
+  declare overMessage: string
+  declare whiteId: ForeignKey<number>
+  declare blackId: ForeignKey<number>
+  declare winningColor: Color
+  declare whiteName: string
+  declare blackName: string
 }
 Game.init(
   {
@@ -12,9 +19,20 @@ Game.init(
       primaryKey: true,
       autoIncrement: true
     },
-    draw: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    overMessage: {
+      type: DataTypes.ENUM,
+      values: Object.values(GameOverCondition),
+      allowNull: false
+    },
+    winningColor: {
+      type: DataTypes.ENUM,
+      values: ['black', 'white']
+    },
+    whiteName: {
+      type: DataTypes.STRING
+    },
+    blackName: {
+      type: DataTypes.STRING
     }
   },
   {

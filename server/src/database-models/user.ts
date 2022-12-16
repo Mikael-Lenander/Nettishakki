@@ -7,6 +7,7 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare username: string
   declare passwordHash: string
 }
+
 User.init(
   {
     id: {
@@ -26,7 +27,7 @@ User.init(
           msg: 'Username must only contain alphanumeric characters'
         },
         async isUnique(username: string) {
-          const user = await userService.find(username)
+          const user = await userService.findByName(username)
           if (user) throw new Error('Username taken')
         }
       },
