@@ -20,6 +20,10 @@ export default class Board {
     inCheck(color: Color): boolean;
     controlledSquares(color: Color): Pos[];
     insufficientMaterial(): boolean;
+    toSimple(): {
+        name: import("./types").PieceName;
+        color: Color;
+    }[][];
     static simple(): SimpleBoard;
     static toFullImplementation(board: SimpleBoard, moves: Move[]): Board;
     add(pieces: Piece | Piece[]): void;

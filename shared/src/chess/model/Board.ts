@@ -134,8 +134,8 @@ export default class Board {
     )
   }
 
-  static simple(): SimpleBoard {
-    return Board.createBoard().map((row) =>
+  toSimple() {
+    return this.board.map((row) =>
       row.map((piece) =>
         piece
           ? {
@@ -145,6 +145,10 @@ export default class Board {
           : null
       )
     )
+  }
+
+  static simple(): SimpleBoard {
+    return new Board(Board.createBoard()).toSimple()
   }
 
   static toFullImplementation(board: SimpleBoard, moves: Move[]) {

@@ -1,8 +1,13 @@
-import { Color } from '../chess'
+import { Color, PosType } from '../chess'
 
 export interface Info {
   success: boolean
   message: string
+}
+
+export interface MovePos {
+  oldPos: PosType
+  newPos: PosType
 }
 
 export interface GameOverMessage {
@@ -19,4 +24,17 @@ export enum GameOverCondition {
   Resignation = 'resignation',
   Disconnection = 'disconnection',
   TimeOut = 'time out'
+}
+
+export type FinishedGame = {
+  id: number
+  overMessage: GameOverCondition
+  winner: string | null
+  winningColor: Color | null
+  whiteName: string
+  blackName: string
+  whiteId: number | null
+  blackId: number | null
+  moves: MovePos[]
+  date: string
 }

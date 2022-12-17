@@ -1,5 +1,5 @@
 import { Color, Move, PosType } from '../chess'
-import { Info, GameOverMessage } from './chess'
+import { Info, GameOverMessage } from './game'
 
 export interface ServerToClientEvents {
   getMove: (moves: Move[], isCheck: boolean, turn: Color) => void

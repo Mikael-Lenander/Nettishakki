@@ -114,13 +114,16 @@ class Board {
                 blackPieces.some((piece) => piece.name === 'bishop') &&
                 whitePieces.find((piece) => piece.name === 'bishop').color === blackPieces.find((piece) => piece.name === 'bishop').color));
     }
-    static simple() {
-        return Board.createBoard().map((row) => row.map((piece) => piece
+    toSimple() {
+        return this.board.map((row) => row.map((piece) => piece
             ? {
                 name: piece.name,
                 color: piece.color
             }
             : null));
+    }
+    static simple() {
+        return new Board(Board.createBoard()).toSimple();
     }
     static toFullImplementation(board, moves) {
         const constructors = {
