@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import { Stage, Layer, Rect, Circle } from 'react-konva'
+import React, { useMemo } from 'react'
+import { Stage, Layer, Rect } from 'react-konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { range } from 'lodash'
-import { Game, Pos, GameState } from 'shared'
-import { useSocket } from '../hooks/socketContext'
+import { Pos, SimpleBoard, Color } from 'shared'
 import ChessImage from './ChessImage'
 
 interface Square {
@@ -13,15 +12,25 @@ interface Square {
 }
 
 interface Props {
-  game: GameState
+  size: number
+  board: SimpleBoard
+  handleClickBoard?: (event?: KonvaEventObject<MouseEvent>) => void
+  flip?: (pos: Pos) => Pos
+  playerColor: Color
+  componentOnTopOfSquares?: JSX.Element | JSX.Element[]
+  componentOnTopOfPieces?: JSX.Element | JSX.Element[]
 }
 
-export default function Board({ game }: Props) {
-  const width = 650
-  const height = 650
-  const squareSize = width / 8
-  const radius = 10
-  const socket = useSocket()
+export default function Board({
+  size,
+  board,
+  handleClickBoard,
+  flip = pos => pos,
+  playerColor,
+  componentOnTopOfSquares,
+  componentOnTopOfPieces
+}: Props) {
+  const squareSize = size / 8
 
   const squares = useMemo((): Square[][] => {
     return range(0, 8).map(row =>
@@ -33,33 +42,9 @@ export default function Board({ game }: Props) {
     )
   }, [])
 
-  const flip = (pos: Pos): Pos => new Pos(game.color === 'white' ? pos.x : 7 - pos.x, game.color === 'white' ? 7 - pos.y : pos.y)
-
-  const [selectedPos, setSelectedPos] = useState<Pos>()
-  const [availabeMoves, setAvailableMoves] = useState<Pos[]>([])
-
-  function handleClickBoard(event: KonvaEventObject<MouseEvent>) {
-    if (!game.active) return
-    const square = event.target.attrs
-    const pos = new Pos(square.col, square.row)
-    const piece = game.board[pos.y][pos.x]
-    if (game.turn === game.color && selectedPos && pos.in(availabeMoves) && socket) {
-      socket.emit('makeMove', selectedPos, pos)
-    }
-    setSelectedPos(piece && piece.color === game.turn && piece.color === game.color ? pos : null)
-  }
-
-  useEffect(() => {
-    if (selectedPos) {
-      setAvailableMoves(Game.getMoves(game, selectedPos))
-      return
-    }
-    setAvailableMoves([])
-  }, [selectedPos])
-
   return (
     <div style={{ margin: '1em' }}>
-      <Stage width={width} height={height}>
+      <Stage width={size} height={size} onClick={handleClickBoard}>
         <Layer>
           {squares.map(row =>
             row.map(square => (
@@ -76,16 +61,8 @@ export default function Board({ game }: Props) {
               />
             ))
           )}
-          {selectedPos && (
-            <Rect
-              x={flip(selectedPos).x * squareSize}
-              y={flip(selectedPos).y * squareSize}
-              width={squareSize}
-              height={squareSize}
-              fill={'green'}
-            />
-          )}
-          {game.board.map((row, y) =>
+          {componentOnTopOfSquares}
+          {board.map((row, y) =>
             row.map((piece, x) => {
               if (!piece) return null
               return (
@@ -95,25 +72,14 @@ export default function Board({ game }: Props) {
                   y={y}
                   pieceName={piece.name}
                   pieceColor={piece.color}
-                  playerColor={game.color}
+                  playerColor={playerColor}
                   squareSize={squareSize}
                   handleClickBoard={handleClickBoard}
                 />
               )
             })
           )}
-          {availabeMoves.map(move => (
-            <Circle
-              key={`(${move.x}, ${move.y})`}
-              row={move.y}
-              col={move.x}
-              x={squareSize * (flip(move).x + 0.5)}
-              y={squareSize * (flip(move).y + 0.5)}
-              fill='grey'
-              radius={radius}
-              onClick={handleClickBoard}
-            />
-          ))}
+          {componentOnTopOfPieces}
         </Layer>
       </Stage>
     </div>

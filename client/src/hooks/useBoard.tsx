@@ -15,5 +15,13 @@ export default function useBoard(finishedGame: FinishedGame) {
     setNextMoveIndex(nextMoveIndex + 1)
   }
 
-  return { board, nextMove }
+  function endState() {
+    finishedGame.moves.slice(nextMoveIndex).forEach(({ oldPos, newPos }) => {
+      game.current.makeMove(Pos.new(oldPos), Pos.new(newPos))
+    })
+    setNextMoveIndex(finishedGame.moves.length)
+    setBoard(game.current.board.toSimple())
+  }
+
+  return { board, nextMove, endState }
 }

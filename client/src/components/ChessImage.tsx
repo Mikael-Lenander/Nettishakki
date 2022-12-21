@@ -21,14 +21,19 @@ export default function ChessImage({ x, y, pieceColor, playerColor, pieceName, s
 
   if (!image) return null
 
+  const width = (image.width * squareSize) / 75
+  const height = (image.height * squareSize) / 75
   return (
     <Image
       row={y}
       col={x}
-      x={xCoord * squareSize + 0.45 * (squareSize - image.width)}
-      y={yCoord * squareSize + 0.45 * (squareSize - image.height)}
+      x={xCoord * squareSize + 0.45 * (squareSize - width)}
+      y={yCoord * squareSize + 0.45 * (squareSize - height)}
+      width={width}
+      height={height}
       image={image}
       onClick={handleClickBoard}
+      willReadFrequently={true}
     />
   )
 }

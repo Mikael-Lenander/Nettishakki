@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../state/hooks'
 import { getGames } from '../state/reducers/userReducer'
-import { ListItem, ListItemText, List, Divider, Avatar, Card, Typography } from '@mui/material'
-import ImageIcon from '@mui/icons-material/Image'
-import { Link } from 'react-router-dom'
+import GameListItem from './GameListItem'
+import { Card, Divider, List, Typography } from '@mui/material'
 
 export default function GameList() {
   const user = useAppSelector(state => state.user)
@@ -17,26 +16,14 @@ export default function GameList() {
   if (user.isGuest) return null
 
   return (
-    <Card>
-      <Typography variant='h4' component='h1' margin={1} gutterBottom>
+    <Card sx={{ border: 1, borderColor: 'grey', width: 'clamp(50vw, 500px, 95vw)' }}>
+      <Typography variant='h4' component='h1' margin={2}>
         Previous Games
       </Typography>
-      <List sx={{ width: '100%', bgcolor: 'background.paper', height: 300, verticalOverFlow: 'scroll' }}>
+      <Divider />
+      <List sx={{ width: '100%', bgcolor: 'background.paper', height: '40vh', overflowY: 'scroll' }}>
         {user.games.map(game => (
-          <div key={game.id}>
-            <Link to={`/game/${game.id}`} style={{ textDecoration: 'none' }} key={game.id}>
-              <ListItem>
-                <Avatar>
-                  <ImageIcon />
-                </Avatar>
-                <ListItemText
-                  primary={`${game.whiteName} vs ${game.blackName}`}
-                  secondary={`${game.winner} wins by ${game.overMessage}\n${game.date}`}
-                />
-              </ListItem>
-            </Link>
-            <Divider variant='inset' component='li' />
-          </div>
+          <GameListItem key={game.id} game={game} />
         ))}
       </List>
     </Card>

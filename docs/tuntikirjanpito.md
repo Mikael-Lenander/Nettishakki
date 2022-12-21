@@ -22,3 +22,4 @@
 | 14.12.| 7    | Frontend käyttäjähallinta ja -navigointi |
 | 16.12.| 12   | Pelien ja siirtojen tallentaminen tietokantaan, kirjautuneen pelaajan autentikointi |
 | 21.12.| 10   | Käyttäjäistunnon tallentaminen selaimelle, aikaisempien pelin tarkastelu |
+| 22.12.| 5    | Refaktorointia, pelilistan ulkonäön parantelu |
