@@ -13,9 +13,14 @@ const signup = async (newUser: NewUser) => {
 }
 
 const logout = async (refreshToken: string) => {
-  console.log('api logout')
   const response = await axios.post<string>(`${URL}/api/auth/logout`, { refreshToken })
   return response.data
 }
 
-export default { login, signup, logout }
+// Fetch refresh token
+const refreshToken = async (refreshToken: string) => {
+  const response = await axios.post<UserResponse>(`${URL}/api/auth/refresh`, { refreshToken })
+  return response.data
+}
+
+export default { login, signup, logout, refreshToken }

@@ -11,7 +11,7 @@ type Props = {
   playerColor: Color
   pieceName: PieceName
   squareSize: number
-  handleClickBoard: (event: KonvaEventObject<MouseEvent>) => void
+  handleClickBoard?: (event: KonvaEventObject<MouseEvent>) => void
 }
 
 export default function ChessImage({ x, y, pieceColor, playerColor, pieceName, squareSize, handleClickBoard }: Props) {

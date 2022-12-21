@@ -11,6 +11,7 @@ import Lobby from './Lobby'
 import Login from './Login'
 import SignUp from './SignUp'
 import Game from './Game'
+import GameReview from './GameReview'
 import { PublicRoute } from './Routes'
 
 const customTheme = createTheme({
@@ -37,6 +38,7 @@ export default function App() {
             <Route path='/' element={<MainMenu />} />
             <Route path='/lobby' element={<Lobby />} />
             <Route path='/play' element={<Game />} />
+            <Route path='/game/:id' element={<GameReview />} />
             <Route path='/join-game' element={<JoinGameMenu />} />
             <Route element={<PublicRoute redirectPath='/' />}>
               <Route path='/login' element={<Login />} />

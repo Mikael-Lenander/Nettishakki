@@ -1,7 +1,9 @@
 import { Move as MoveType, Color, GameOverCondition } from 'shared'
 import { Game, Move } from '../database-models'
+import { Op } from 'sequelize'
 import ActiveGame from '../model/ActiveGame'
 import userService from './userService'
+import { FinishedGame } from 'shared'
 
 const saveMoves = async (moves: MoveType[], gameId: number) => {
   const serializedMoves = moves.map(({ oldPos, newPos }, index) => ({
@@ -10,6 +12,7 @@ const saveMoves = async (moves: MoveType[], gameId: number) => {
     index,
     gameId
   }))
+  // @ts-ignore
   await Move.bulkCreate(serializedMoves)
 }
 
@@ -23,7 +26,6 @@ const getUsernameAndId = async (activeGame: ActiveGame, color: Color): Promise<{
 }
 
 const saveGame = async (activeGame: ActiveGame, winnerUsername?: string, gameOverCondition?: GameOverCondition) => {
-  console.log('activeGame', activeGame)
   if (activeGame.saved) return
   const { username: whiteName, id: whiteId } = await getUsernameAndId(activeGame, 'white')
   const { username: blackName, id: blackId } = await getUsernameAndId(activeGame, 'black')
@@ -38,4 +40,26 @@ const saveGame = async (activeGame: ActiveGame, winnerUsername?: string, gameOve
   activeGame.saved = true
 }
 
-export default { saveMoves, saveGame }
+/* Finds all games by user id where the user is either white or black
+  and includes all moves but excludes the move's id and index and sorts
+  the moves by index. Also includes the game's winner specified by the
+  winner method in the game model. Includes all game's attributes
+  but winningColor. */
+const find = async (userId: number): Promise<FinishedGame[]> => {
+  // @ts-ignore
+  const games = await Game.findAll({
+    where: {
+      [Op.or]: [{ whiteId: userId }, { blackId: userId }]
+    },
+    include: [
+      {
+        model: Move,
+        attributes: { exclude: ['gameId', 'index'] },
+        order: [['index', 'ASC']]
+      }
+    ]
+  })
+  return games.map(game => ({ ...game.toJSON(), winner: game.winner() }))
+}
+
+export default { saveMoves, saveGame, find }

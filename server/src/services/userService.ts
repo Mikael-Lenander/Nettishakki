@@ -19,7 +19,6 @@ async function findByName(usernames: string | string[]): Promise<User | User[]> 
         username: { [Op.in]: usernames }
       }
     })
-    console.log('users', users)
     return users
   } else {
     const user = await User.findOne({ where: { username: usernames } })
@@ -37,11 +36,9 @@ async function findById(id: number | number[]): Promise<User | User[]> {
         id: { [Op.in]: id }
       }
     })
-    console.log('users', users)
     return users
   } else {
     const user = await User.findByPk(id)
-    console.log('user', user)
     return user
   }
 }

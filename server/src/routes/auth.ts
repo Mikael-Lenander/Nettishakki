@@ -14,7 +14,6 @@ const router = Router()
 router.post('/login', async (req, res) => {
   try {
     const credentials = toUserCredentials(req.body as Fields<UserCredentials>)
-    console.log('credentials.username', credentials.username)
     const user = await userService.findByName(credentials.username)
     if (!user) return res.status(400).json({ error: 'Invalid username' })
     const passwordCorrect = await compare(credentials.password, user.passwordHash)
@@ -46,7 +45,7 @@ router.post('/refresh', async (req, res) => {
     const refreshToken = parseString(req.body?.refreshToken, 'refreshToken')
     const tokenValid = await authService.isValidToken(refreshToken)
     if (!tokenValid) {
-      console.log('Token not in database')
+      console.log('Token not in database', refreshToken)
       return res.status(403).json({ error: 'Unauthorized' })
     }
     jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, user) => {

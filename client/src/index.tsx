@@ -7,6 +7,9 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import { injectStore } from './api/auth'
+injectStore(store)
+
 const container = document.getElementById('root')
 const root = createRoot(container)
 root.render(

@@ -12,13 +12,14 @@ const persistedReducer = <T>(key: string, reducer: Reducer<T, AnyAction>, storag
   persistReducer({ key: STORAGE_PREFIX + key, storage }, reducer)
 
 const rootReducer = combineReducers({
-  // game: persistedReducer('game', gameReducer, sessionStorage),
-  game: persistReducer({ key: STORAGE_PREFIX + 'game', storage: sessionStorage }, gameReducer),
+  game: persistedReducer('game', gameReducer, sessionStorage),
+  // game: persistReducer({ key: STORAGE_PREFIX + 'game', storage: sessionStorage }, gameReducer),
   user: persistedReducer('user', userReducer, sessionStorage)
 })
 
 export const store = configureStore({
   reducer: rootReducer,
+  // Add getDefaultMiddleware and some custom middleware
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

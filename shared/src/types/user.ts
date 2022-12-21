@@ -15,4 +15,9 @@ export interface Tokens {
   refreshToken: string
 }
 
-export interface UserResponse extends UserPayload, Tokens {}
+export type UserResponse = UserPayload & Tokens
+
+export interface TokenPayload extends UserPayload {
+  iat: number
+  exp: number
+}

@@ -3,10 +3,12 @@ import { useSocket } from '../hooks/socketContext'
 import { useAppSelector } from '../state/hooks'
 import { Navigate } from 'react-router-dom'
 import MenuButton from './MenuButton'
+import GameList from './GameList'
 
 export default function MainMenu() {
   const socket = useSocket()
   const game = useAppSelector(state => state.game)
+  const user = useAppSelector(state => state.user)
 
   function createGame() {
     socket && socket.emit('createGame')
@@ -21,6 +23,7 @@ export default function MainMenu() {
         <MenuButton text='Create new game' link='/lobby' onClick={createGame} />
         <MenuButton text='Join game' link='/join-game' />
       </div>
+      {<GameList />}
     </div>
   )
 }

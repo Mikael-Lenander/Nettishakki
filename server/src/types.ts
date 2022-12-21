@@ -1,4 +1,4 @@
-import { Color, Pos } from 'shared'
+import { Color, Pos, GameOverCondition, PosType } from 'shared'
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout

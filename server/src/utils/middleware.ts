@@ -7,6 +7,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   try {
     const token = req.headers['authorization']?.substring(7)
     const user = verifyToken(token)
+    console.log('user payload', user)
     req.user = user
     next()
   } catch (error) {
@@ -15,6 +16,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 }
 
 export const verifyToken = (token: string): UserPayload => {
+  console.log('Verifying token', token)
   if (token == null) throw Error('Unauthorized')
   let user: UserPayload = null
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, payload: UserPayload) => {

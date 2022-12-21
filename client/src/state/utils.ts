@@ -14,6 +14,6 @@ interface RejectedAction extends Action {
   payload: string
 }
 
-export const isRejectedAction = (action: AnyAction): action is RejectedAction => {
-  return action.type.endsWith('rejected')
+export const isRejectedAuthAction = (action: AnyAction): action is RejectedAction => {
+  return action.type.endsWith('rejected') && action.type.includes('auth')
 }

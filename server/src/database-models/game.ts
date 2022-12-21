@@ -11,6 +11,10 @@ export default class Game extends Model<InferAttributes<Game>, InferCreationAttr
   declare winningColor: Color
   declare whiteName: string
   declare blackName: string
+
+  winner() {
+    return this.winningColor === 'white' ? this.whiteName : this.winningColor === 'black' ? this.blackName : null
+  }
 }
 Game.init(
   {

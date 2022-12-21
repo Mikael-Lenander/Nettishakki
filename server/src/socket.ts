@@ -141,7 +141,7 @@ export default function socketServer(server: http.Server) {
           if (game && game.isOn()) {
             io.to(currentGameId).emit('gameOver', {
               winner: opponent.color,
-              message: 'opponent disconnection'
+              message: GameOverCondition.Disconnection
             })
             console.log(`Gameover message sent to player ${opponent.username}`)
           }

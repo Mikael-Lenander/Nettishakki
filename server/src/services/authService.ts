@@ -4,14 +4,17 @@ import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '../utils/config'
 import * as jwt from 'jsonwebtoken'
 
 const addToken = async (token: string, userId: number) => {
+  // @ts-ignore
   return Token.create({ token, userId })
 }
 
 const removeToken = async (token: string) => {
+  // @ts-ignore
   return Token.destroy({ where: { token } })
 }
 
 const removeUserTokens = async (userId: number) => {
+  // @ts-ignore
   return Token.destroy({ where: { userId } })
 }
 
