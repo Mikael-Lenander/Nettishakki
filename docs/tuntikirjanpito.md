@@ -23,3 +23,4 @@
 | 16.12.| 12   | Pelien ja siirtojen tallentaminen tietokantaan, kirjautuneen pelaajan autentikointi |
 | 21.12.| 10   | Käyttäjäistunnon tallentaminen selaimelle, aikaisempien pelin tarkastelu |
 | 22.12.| 5    | Refaktorointia, pelilistan ulkonäön parantelu |
+| 23.12.| 8    | Uudistettu päävalikko profiiliosiolla |

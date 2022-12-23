@@ -15,28 +15,25 @@ export default function GameListItem({ game }: { game: FinishedGame }) {
   }, [])
 
   return (
-    <div key={game.id}>
-      <Link to={`/game/${game.id}`} style={{ textDecoration: 'none', color: 'black' }} key={game.id}>
-        <ListItem>
-          <ListItemAvatar>
-            <BoardComponent size={170} board={board} playerColor={game.whiteName === user.username ? 'white' : 'black'} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography variant='h5' component='h2'>
-                {formatName(game.whiteName)} vs {formatName(game.blackName)}
-              </Typography>
-            }
-            secondary={
-              <Typography variant='body1' component='p'>
-                {formatGameOverMessage(game.overMessage, game.winner, game.whiteName, game.blackName)} | {formatDate(game.date)}
-              </Typography>
-            }
-            style={{ fontSize: 50 }}
-          />
-        </ListItem>
-      </Link>
+    <Link to={`/game/${game.id}`} style={{ textDecoration: 'none', color: 'black', margin: 0, padding: 0 }} key={game.id}>
+      <ListItem>
+        <ListItemAvatar>
+          <BoardComponent size={100} board={board} playerColor={game.whiteName === user.username ? 'white' : 'black'} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <Typography variant='h5' component='h2'>
+              {formatName(game.whiteName)} vs {formatName(game.blackName)}
+            </Typography>
+          }
+          secondary={
+            <Typography variant='body1' component='p'>
+              {formatGameOverMessage(game.overMessage, game.winner, game.whiteName, game.blackName)} | {formatDate(game.date)}
+            </Typography>
+          }
+        />
+      </ListItem>
       <Divider variant='inset' component='li' />
-    </div>
+    </Link>
   )
 }
