@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Typography, TextField, Button, Alert } from '@mui/material'
+import { Typography, TextField, Button, Alert, Card } from '@mui/material'
 import { useSocket } from '../hooks/socketContext'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
@@ -35,26 +35,24 @@ export default function JoinGameMenu() {
   if (game.active) return <Navigate to='/play' />
 
   return (
-    <form
-      style={{ color: 'white', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}
-      onSubmit={handleSubmit}
-      autoComplete='off'
-    >
-      <Typography variant='h3'>Enter game id:</Typography>
-      <TextField
-        fullWidth
-        variant='outlined'
-        onChange={e => setGameId(e.target.value)}
-        style={{ background: 'white', borderRadius: '5px', marginTop: '1.2em', marginBottom: '1.2em' }}
-      />
-      <Button variant='contained' color='success' style={{ fontSize: '1.5rem', alignSelf: 'center' }} type='submit'>
-        Join
-      </Button>
-      {errorMessage && (
-        <Alert severity='error' style={{ marginTop: '1em' }}>
-          {errorMessage}
-        </Alert>
-      )}
-    </form>
+    <Card sx={{ padding: '25px 15px 25px 15px', borderRadius: '5px', border: '1px solid black' }}>
+      <form style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }} onSubmit={handleSubmit} autoComplete='off'>
+        <Typography variant='h4'>Enter game id:</Typography>
+        <TextField
+          variant='outlined'
+          size='small'
+          onChange={e => setGameId(e.target.value)}
+          style={{ marginTop: '1.2em', marginBottom: '1.2em' }}
+        />
+        <Button variant='contained' color='success' style={{ alignSelf: 'center' }} type='submit'>
+          Join
+        </Button>
+        {errorMessage && (
+          <Alert severity='error' style={{ marginTop: '1em' }}>
+            {errorMessage}
+          </Alert>
+        )}
+      </form>
+    </Card>
   )
 }

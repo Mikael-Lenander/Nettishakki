@@ -9,7 +9,8 @@ import InfoBar from './InfoBar'
 export default function GameReview() {
   const { id: gameId } = useParams()
   const user = useAppSelector(state => state.user)
-  const game = user.games.find(game => game.id === parseInt(gameId))
+  const games = useAppSelector(state => state.playerStats.games)
+  const game = games.find(game => game.id === parseInt(gameId))
   const { board, nextMove } = useBoard(game)
 
   const flip = (pos: Pos): Pos =>

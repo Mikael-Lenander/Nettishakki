@@ -38,7 +38,7 @@ export default function Lobby() {
       {errorMessage ? (
         <Alert severity='error'>{errorMessage}</Alert>
       ) : (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', color: 'white' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', color: 'black' }}>
           <Typography variant='h3' component='h1'>
             Your game id: {game.id}
           </Typography>

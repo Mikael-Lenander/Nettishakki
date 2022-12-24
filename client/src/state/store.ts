@@ -2,6 +2,7 @@ import { configureStore, AnyAction } from '@reduxjs/toolkit'
 import { Reducer, combineReducers } from 'redux'
 import gameReducer from './reducers/gameReducer'
 import userReducer from './reducers/userReducer'
+import playerStatsReducer from './reducers/playerStatsReducer'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import sessionStorage from 'redux-persist/lib/storage/session'
 // import localStorage from 'redux-persist/lib/storage'
@@ -14,7 +15,8 @@ const persistedReducer = <T>(key: string, reducer: Reducer<T, AnyAction>, storag
 const rootReducer = combineReducers({
   game: persistedReducer('game', gameReducer, sessionStorage),
   // game: persistReducer({ key: STORAGE_PREFIX + 'game', storage: sessionStorage }, gameReducer),
-  user: persistedReducer('user', userReducer, sessionStorage)
+  user: persistedReducer('user', userReducer, sessionStorage),
+  playerStats: playerStatsReducer
 })
 
 export const store = configureStore({

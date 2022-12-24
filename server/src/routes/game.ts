@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/', async (req, res) => {
   const user = req.user
-  const games = await gameService.find(user.id)
+  const games = await gameService.find(user.id, user.username)
   res.json(games)
 })
 

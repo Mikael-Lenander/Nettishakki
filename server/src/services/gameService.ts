@@ -1,9 +1,8 @@
-import { Move as MoveType, Color, GameOverCondition } from 'shared'
+import { Move as MoveType, Color, GameOverCondition, FinishedGame, PlayerStats } from 'shared'
 import { Game, Move } from '../database-models'
 import { Op } from 'sequelize'
 import ActiveGame from '../model/ActiveGame'
 import userService from './userService'
-import { FinishedGame } from 'shared'
 
 const saveMoves = async (moves: MoveType[], gameId: number) => {
   const serializedMoves = moves.map(({ oldPos, newPos }, index) => ({
@@ -25,7 +24,7 @@ const getUsernameAndId = async (activeGame: ActiveGame, color: Color): Promise<{
   return { username: player.username, id: null }
 }
 
-const saveGame = async (activeGame: ActiveGame, winnerUsername?: string, gameOverCondition?: GameOverCondition) => {
+const save = async (activeGame: ActiveGame, winnerUsername?: string, gameOverCondition?: GameOverCondition) => {
   if (activeGame.saved) return
   const { username: whiteName, id: whiteId } = await getUsernameAndId(activeGame, 'white')
   const { username: blackName, id: blackId } = await getUsernameAndId(activeGame, 'black')
@@ -45,7 +44,7 @@ const saveGame = async (activeGame: ActiveGame, winnerUsername?: string, gameOve
   the moves by index. Also includes the game's winner specified by the
   winner method in the game model. Includes all game's attributes
   but winningColor. */
-const find = async (userId: number): Promise<FinishedGame[]> => {
+const find = async (userId: number, username: string): Promise<PlayerStats> => {
   // @ts-ignore
   const games = await Game.findAll({
     where: {
@@ -59,7 +58,19 @@ const find = async (userId: number): Promise<FinishedGame[]> => {
       }
     ]
   })
-  return games.map(game => ({ ...game.toJSON(), winner: game.winner() }))
+  const finishedGames = games.map<FinishedGame>(game => ({ ...game.toJSON(), winner: game.winner() }))
+  const counts = gameCounts(finishedGames, username)
+  return { games: finishedGames, gameCounts: counts }
 }
 
-export default { saveMoves, saveGame, find }
+const gameCounts = (games: { winner: string }[], username: string) => {
+  const stats = { victories: 0, defeats: 0, draws: 0 }
+  games.forEach(game => {
+    if (game.winner == null) stats.draws++
+    else if (game.winner === username) stats.victories++
+    else stats.defeats++
+  })
+  return stats
+}
+
+export default { saveMoves, save, find }

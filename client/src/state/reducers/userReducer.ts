@@ -59,9 +59,6 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, () => {
         return guestUser
       })
-      .addCase(getGames.fulfilled, (user, action: PayloadAction<FinishedGame[]>) => {
-        user.games = action.payload
-      })
       .addMatcher(isRejectedAuthAction, (user, action) => {
         const error = action.payload
         user.info = { message: error, success: false }

@@ -24,3 +24,4 @@
 | 21.12.| 10   | Käyttäjäistunnon tallentaminen selaimelle, aikaisempien pelin tarkastelu |
 | 22.12.| 5    | Refaktorointia, pelilistan ulkonäön parantelu |
 | 23.12.| 8    | Uudistettu päävalikko profiiliosiolla |
+| 24.12 | 3    | Pelaajatilastojen haku tietokannasta, liity peliin-valikon ulkonäön parantelu |

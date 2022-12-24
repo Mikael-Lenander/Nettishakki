@@ -7,6 +7,7 @@ import NotLoggedIn from './NotLoggedIn'
 
 export default function GameList() {
   const user = useAppSelector(state => state.user)
+  const { games } = useAppSelector(state => state.playerStats)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function GameList() {
       <Divider />
       <NotLoggedIn text='previous games' style={{ height: 'calc(100% - 60px)' }}>
         <List sx={{ width: '100%', color: 'background.paper', height: 'calc(100% - 70px)', overflowY: 'scroll' }}>
-          {user.games.map(game => (
+          {games.map(game => (
             <GameListItem key={game.id} game={game} />
           ))}
         </List>

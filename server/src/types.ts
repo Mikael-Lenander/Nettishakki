@@ -1,4 +1,4 @@
-import { Color, Pos, GameOverCondition, PosType } from 'shared'
+import { Color, Pos, FinishedGame } from 'shared'
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout
@@ -29,3 +29,14 @@ export interface SocketData {
 }
 
 export interface InterServerEvents {}
+
+export interface GameCounts {
+  victories: number
+  defeats: number
+  draws: number
+}
+
+export interface PlayerStats {
+  games: FinishedGame[]
+  gameCounts: GameCounts
+}

@@ -1,3 +1,4 @@
+import { FinishedGame } from "./game";
 export interface NewUser {
     username: string;
     password: string;
@@ -12,5 +13,17 @@ export interface Tokens {
     accessToken: string;
     refreshToken: string;
 }
-export interface UserResponse extends UserPayload, Tokens {
+export declare type UserResponse = UserPayload & Tokens;
+export interface TokenPayload extends UserPayload {
+    iat: number;
+    exp: number;
+}
+export interface GameCounts {
+    victories: number;
+    defeats: number;
+    draws: number;
+}
+export interface PlayerStats {
+    games: FinishedGame[];
+    gameCounts: GameCounts;
 }

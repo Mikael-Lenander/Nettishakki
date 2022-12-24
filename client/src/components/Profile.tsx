@@ -7,6 +7,7 @@ import NotLoggedIn from './NotLoggedIn'
 
 export default function Profile() {
   const user = useAppSelector(state => state.user)
+  const gameCounts = useAppSelector(state => state.playerStats.gameCounts)
 
   return (
     <Paper
@@ -23,17 +24,17 @@ export default function Profile() {
       <NotLoggedIn text='game stats' textVariant='body1' style={{ color: 'black' }}>
         <Container style={{ flexBasis: '70%', backgroundColor: 'white' }}>
           <Typography variant='h5' component='h1' mt={1}>
-            Total games: 87
+            Total games: {gameCounts.victories + gameCounts.draws + gameCounts.defeats}
           </Typography>
           <Divider />
-          <Typography variant='body1' fontSize='large'>
-            Victories: <span style={{ color: 'green' }}>29</span>
+          <Typography variant='body1' fontSize='large' style={{ color: 'black' }}>
+            Victories: <span style={{ color: 'green' }}>{gameCounts.victories}</span>
           </Typography>
-          <Typography variant='body1' fontSize='large'>
-            Draws: 29
+          <Typography variant='body1' fontSize='large' style={{ color: 'black' }}>
+            Draws: {gameCounts.draws}
           </Typography>
-          <Typography variant='body1' fontSize='large'>
-            Defeats: <span style={{ color: 'red' }}>29</span>
+          <Typography variant='body1' fontSize='large' style={{ color: 'black' }}>
+            Defeats: <span style={{ color: 'red' }}>{gameCounts.defeats}</span>
           </Typography>
         </Container>
       </NotLoggedIn>

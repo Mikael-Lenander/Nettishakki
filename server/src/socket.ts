@@ -121,7 +121,7 @@ export default function socketServer(server: http.Server) {
       const gameOver = game.over()
       if (gameOver) {
         io.to(currentGameId).emit('gameOver', gameOver)
-        await gameService.saveGame(activeGame)
+        await gameService.save(activeGame)
         activeGames.remove(currentGameId)
         currentGameId = ''
         console.log(`game over by ${gameOver.message}`)
@@ -146,7 +146,7 @@ export default function socketServer(server: http.Server) {
             console.log(`Gameover message sent to player ${opponent.username}`)
           }
           if (game) {
-            await gameService.saveGame(game, opponent.username, GameOverCondition.Disconnection)
+            await gameService.save(game, opponent.username, GameOverCondition.Disconnection)
           }
           activeGames.remove(currentGameId)
           console.log(`Deleted disconnected game ${currentGameId}`)
