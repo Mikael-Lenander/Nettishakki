@@ -1,4 +1,4 @@
-import { FinishedGame } from "./game";
+import { FinishedGame } from './game';
 export interface NewUser {
     username: string;
     password: string;

@@ -24,19 +24,19 @@ const getUsernameAndId = async (activeGame: ActiveGame, color: Color): Promise<{
   return { username: player.username, id: null }
 }
 
-const save = async (activeGame: ActiveGame, winnerUsername?: string, gameOverCondition?: GameOverCondition) => {
-  if (activeGame.saved) return
+const save = async (activeGame: ActiveGame, winnerName?: string | null, gameOverCondition?: GameOverCondition) => {
+  if (activeGame.saving) return
+  activeGame.saving = true
   const { username: whiteName, id: whiteId } = await getUsernameAndId(activeGame, 'white')
   const { username: blackName, id: blackId } = await getUsernameAndId(activeGame, 'black')
   console.log('wu', whiteName, 'bu', blackName, 'wi', whiteId, 'bi', blackId)
   if (whiteId == null && blackId == null) return
   const gameOverMessage = activeGame.game.over()
-  const winningColor = activeGame.playerColor(winnerUsername) || gameOverMessage.winner
+  const winningColor = winnerName === null ? null : activeGame.playerColor(winnerName) || gameOverMessage.winner
   const overMessage = gameOverCondition || gameOverMessage.message
   // @ts-ignore
   const newGame = await Game.create({ whiteId, blackId, whiteName, blackName, winningColor, overMessage })
   await saveMoves(activeGame.game.board.moves, newGame.id)
-  activeGame.saved = true
 }
 
 /* Finds all games by user id where the user is either white or black
@@ -56,7 +56,8 @@ const find = async (userId: number, username: string): Promise<PlayerStats> => {
         attributes: { exclude: ['gameId', 'index'] },
         order: [['index', 'ASC']]
       }
-    ]
+    ],
+    order: [['date', 'DESC']]
   })
   const finishedGames = games.map<FinishedGame>(game => ({ ...game.toJSON(), winner: game.winner() }))
   const counts = gameCounts(finishedGames, username)

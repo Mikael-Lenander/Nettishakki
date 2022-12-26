@@ -15,7 +15,7 @@ export default function MainMenu() {
     socket && socket.emit('createGame')
   }
 
-  function MenuButton({ to, onClick, text }: { to: string; onClick?: () => void; text: string }) {
+  const MenuButton = ({ to, onClick, text }: { to: string; onClick?: () => void; text: string }) => {
     return (
       <Button
         variant='contained'

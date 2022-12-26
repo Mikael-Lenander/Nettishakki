@@ -1,8 +1,7 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { SocketData, InterServerEvents } from './types'
-import { Pos, PosType, ClientToServerEvents, ServerToClientEvents, GameOverCondition
- } from 'shared'
+import { Pos, PosType, GameOverCondition, ClientToServerEvents, ServerToClientEvents } from 'shared'
 import { verifyToken } from './utils/middleware'
 import { parseString } from './utils/parsers/parsers'
 import GameController from './model/GameController'
@@ -73,10 +72,7 @@ export default function socketServer(server: http.Server) {
     })
 
     socket.on('joinGame', async (gameId: string) => {
-      const game = activeGames.find(gameId)
-      // if (activeGame && activeGame.hasPlayer(username)) {
-      //   io.to(username).emit('joinedGame', { success: true, message: '' }, activeGame.opponent(username).color, player.color, gameId)
-      // }
+      const activeGame = activeGames.find(gameId)
       if (activeGames.findOnGoingWithPlayer(username)) {
         io.to(username).emit('joinedGame', {
           success: false,
@@ -84,14 +80,14 @@ export default function socketServer(server: http.Server) {
         })
         return
       }
-      if (!game) {
+      if (!activeGame) {
         io.to(username).emit('joinedGame', {
           success: false,
           message: 'Game does not exist'
         })
         return
       }
-      if (game.isOn()) {
+      if (activeGame.isOn()) {
         io.to(username).emit('joinedGame', {
           success: false,
           message: 'Room full'
@@ -100,9 +96,9 @@ export default function socketServer(server: http.Server) {
       }
       activeGames.removeWithPlayer(username)
       await socket.join(gameId)
-      currentGameId = game.id
-      const player = game.addPlayer(username, socket.data.isAuthenticated)
-      const opponent = game.opponent(username)
+      currentGameId = activeGame.id
+      const player = activeGame.addPlayer(username, socket.data.isAuthenticated)
+      const opponent = activeGame.opponent(username)
       console.log(
         'activeGames',
         activeGames.games.map(game => game.id)
@@ -114,7 +110,7 @@ export default function socketServer(server: http.Server) {
 
     socket.on('makeMove', async (oldPos: PosType, newPos: PosType) => {
       const activeGame = activeGames.find(currentGameId)
-      if (!activeGame) return
+      if (!activeGame?.isOn()) return
       const game = activeGame.game
       const moves = game.makeMove(Pos.new(oldPos), Pos.new(newPos))
       io.to(currentGameId).emit('getMove', moves, game.isCheck, game.turn)
@@ -123,10 +119,55 @@ export default function socketServer(server: http.Server) {
         io.to(currentGameId).emit('gameOver', gameOver)
         await gameService.save(activeGame)
         activeGames.remove(currentGameId)
-        currentGameId = ''
+        currentGameId = null
         console.log(`game over by ${gameOver.message}`)
         console.log('active games', activeGames.games)
-        console.log('current game', currentGameId)
+      }
+    })
+
+    socket.on('resign', async () => {
+      const activeGame = activeGames.find(currentGameId)
+      if (!activeGame?.isOn() || activeGame.game.board.moves.length < 2) return
+      const opponent = activeGame.opponent(username)
+      io.to(currentGameId).emit('gameOver', {
+        winner: opponent.color,
+        message: GameOverCondition.Resignation
+      })
+      await gameService.save(activeGame, opponent.username, GameOverCondition.Resignation)
+      activeGames.remove(currentGameId)
+      currentGameId = null
+      console.log(`game over by ${GameOverCondition.Resignation}`)
+      console.log('active games', activeGames.games)
+    })
+
+    socket.on('offerDraw', () => {
+      const activeGame = activeGames.find(currentGameId)
+      if (!activeGame?.isOn() || activeGame.drawOffered() || activeGame.game.board.moves.length < 2) return
+      const opponent = activeGame.opponent(username)
+      activeGame.offerDraw(username)
+      io.to(opponent.username).emit('drawOffered')
+      console.log(`draw offered by ${username}`)
+    })
+
+    socket.on('drawOfferResponse', async (accepted: boolean) => {
+      const activeGame = activeGames.find(currentGameId)
+      if (!activeGame?.isOn()) return
+      const opponent = activeGame.opponent(username)
+      if (accepted && opponent.drawOffered) {
+        io.to(currentGameId).emit('gameOver', {
+          winner: null,
+          message: GameOverCondition.Draw
+        })
+        io.to(opponent.username).emit('drawOfferResponded', true)
+        await gameService.save(activeGame, null, GameOverCondition.Draw)
+        activeGames.remove(currentGameId)
+        currentGameId = null
+        console.log(`game over by ${GameOverCondition.Draw}`)
+        console.log('active games', activeGames.games)
+      } else if (opponent.drawOffered) {
+        io.to(opponent.username).emit('drawOfferResponded', false)
+        activeGame.declineDraw()
+        console.log('draw offer declined')
       }
     })
 

@@ -42,7 +42,8 @@ export default function JoinGameMenu() {
           variant='outlined'
           size='small'
           onChange={e => setGameId(e.target.value)}
-          style={{ marginTop: '1.2em', marginBottom: '1.2em' }}
+          style={{ marginTop: '1.2em', marginBottom: '1.2em', borderColor: 'black' }}
+          placeholder='game id'
         />
         <Button variant='contained' color='success' style={{ alignSelf: 'center' }} type='submit'>
           Join

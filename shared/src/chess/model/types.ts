@@ -54,6 +54,10 @@ export interface GameState {
   moves: Move[]
   opponentName: string
   overMessage: GameOverMessage | null
+  drawOffer: {
+    sent: boolean
+    received: boolean
+  }
 }
 
 export type GameStateChange = {

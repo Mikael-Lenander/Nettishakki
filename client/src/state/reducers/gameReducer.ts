@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Board, GameStateChange, GameState, Color, GameOverMessage } from 'shared'
+import { Board, GameStateChange, Color, GameOverMessage, GameState } from 'shared'
 
 const initialState: GameState = {
   id: null,
@@ -10,7 +10,11 @@ const initialState: GameState = {
   color: 'black',
   moves: [],
   opponentName: '',
-  overMessage: null
+  overMessage: null,
+  drawOffer: {
+    sent: false,
+    received: false
+  }
 }
 
 type NewGame = {
@@ -50,13 +54,25 @@ const gameSlice = createSlice({
       game.moves = []
       game.opponentName = action.payload.opponentName
       game.overMessage = null
+      game.drawOffer.sent = false
+      game.drawOffer.received = false
     },
     gameOver: (game, action: PayloadAction<GameOverMessage>) => {
       game.active = false
       game.overMessage = action.payload
+    },
+    offerDraw: game => {
+      game.drawOffer.sent = true
+    },
+    drawOffered: game => {
+      game.drawOffer.received = true
+    },
+    resetDrawOffers: game => {
+      game.drawOffer.received = false
+      game.drawOffer.sent = false
     }
   }
 })
 
-export const { makeMove, startGame, initializeGame, gameOver } = gameSlice.actions
+export const { makeMove, startGame, initializeGame, gameOver, offerDraw, drawOffered, resetDrawOffers } = gameSlice.actions
 export default gameSlice.reducer

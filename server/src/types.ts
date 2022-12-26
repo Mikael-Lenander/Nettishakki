@@ -1,4 +1,4 @@
-import { Color, Pos, FinishedGame } from 'shared'
+import { Color, Pos } from 'shared'
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout
@@ -13,6 +13,7 @@ export interface Player {
   username: string
   color: Color
   isAuthenticated: boolean
+  drawOffered: boolean
 }
 
 export interface MoveCoords {
@@ -34,9 +35,4 @@ export interface GameCounts {
   victories: number
   defeats: number
   draws: number
-}
-
-export interface PlayerStats {
-  games: FinishedGame[]
-  gameCounts: GameCounts
 }

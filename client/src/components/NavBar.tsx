@@ -3,7 +3,6 @@ import { Button, Typography, Toolbar, Box, AppBar } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { logout } from '../state/reducers/userReducer'
-// import Button from '@mui/material/Button';
 
 export default function NavBar() {
   const user = useAppSelector(state => state.user)
@@ -30,7 +29,7 @@ export default function NavBar() {
             </>
           )}
           {!game.active && !user.isGuest && (
-            <Button color='inherit' onClick={() => dispatch(logout(user.refreshToken))}>
+            <Button color='inherit' component={Link} to='/' onClick={() => dispatch(logout(user.refreshToken))}>
               Logout
             </Button>
           )}

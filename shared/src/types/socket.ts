@@ -6,10 +6,15 @@ export interface ServerToClientEvents {
   gameCreated: (info: Info, color?: Color, gameId?: string) => void
   joinedGame: (info: Info, opponentName?: string, color?: Color, gameId?: string) => void
   gameOver: (message: GameOverMessage) => void
+  drawOffered: () => void
+  drawOfferResponded: (accepted: boolean) => void
 }
 
 export interface ClientToServerEvents {
   makeMove: (oldPos: PosType, newPos: PosType) => void
   createGame: () => void
   joinGame: (gameId: string) => void
+  resign: () => void
+  offerDraw: () => void
+  drawOfferResponse: (accepted: boolean) => void
 }

@@ -7,6 +7,7 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import { Color, Move, GameOverMessage, Pos, Game as GameLogic } from 'shared'
 import Board from './Board'
 import InfoBar from './InfoBar'
+import GameStatus from './GameStatus'
 import { Navigate } from 'react-router-dom'
 
 export default function Game() {
@@ -98,7 +99,9 @@ export default function Game() {
         whiteName={game.color === 'white' ? user.username : game.opponentName}
         blackName={game.color === 'black' ? user.username : game.opponentName}
         gameOverMessage={game.overMessage}
-      />
+      >
+        <GameStatus />
+      </InfoBar>
     </div>
   )
 }
