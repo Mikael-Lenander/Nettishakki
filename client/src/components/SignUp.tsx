@@ -32,7 +32,11 @@ export default function SignUp() {
         repeatPassword: Yup.string().oneOf([Yup.ref('password'), ''], 'Passwords must match')
       })}
       onSubmit={({ username, password, repeatPassword }) =>
-        dispatch(signup({ username, password, repeatPassword })).then(() => navigate('/login'))
+        dispatch(signup({ username, password, repeatPassword })).then(response => {
+          if (response.type.includes('fulfilled')) {
+            navigate('/login')
+          }
+        })
       }
       submitText='Sign up'
       submitFeedback={signUpInfo}

@@ -10,6 +10,12 @@ export function formatDate(date: string) {
   return format(new Date(date), 'dd.MM.yyyy HH:mm')
 }
 
+export function formatMilliseconds(milliseconds: number) {
+  const minutes = Math.max(Math.floor(milliseconds / 60000), 0)
+  const seconds = Math.min(59, Math.max(Math.ceil((milliseconds % 60000) / 1000), 0))
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+}
+
 export function formatGameOverMessage(gameOverCondition: GameOverCondition, winnerName: string, whiteName: string, blackName: string) {
   const winner = formatName(winnerName)
   const loser = formatName(winnerName == whiteName ? blackName : whiteName)

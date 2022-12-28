@@ -26,3 +26,4 @@
 | 23.12.| 8    | Uudistettu päävalikko profiiliosiolla |
 | 24.12 | 3    | Pelaajatilastojen haku tietokannasta, liity peliin-valikon ulkonäön parantelu |
 | 26.12 | 7    | Mahdollisuus luovuttaa ja ehdottaa tasapeliä |
+| 28.12 | 15   | Aikakontrolli peleihin, bugikorjauksia |

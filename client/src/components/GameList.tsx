@@ -11,7 +11,6 @@ export default function GameList() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    console.log('Getting games')
     dispatch(getGames(user.accessToken))
   }, [user.username])
 

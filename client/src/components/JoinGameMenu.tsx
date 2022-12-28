@@ -3,7 +3,7 @@ import { Typography, TextField, Button, Alert, Card } from '@mui/material'
 import { useSocket } from '../hooks/socketContext'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 import { initializeGame, startGame } from '../state/reducers/gameReducer'
-import { Color, Info } from 'shared'
+import { Color, Info, TimeControl } from 'shared'
 import { Navigate } from 'react-router-dom'
 
 export default function JoinGameMenu() {
@@ -20,9 +20,9 @@ export default function JoinGameMenu() {
 
   useEffect(() => {
     if (!socket) return
-    socket.on('joinedGame', (info: Info, opponentName: string, color: Color, gameId: string) => {
+    socket.on('joinedGame', (info: Info, opponentName: string, color: Color, gameId: string, timeControl: TimeControl) => {
       if (info.success) {
-        dispatch(initializeGame({ color, gameId }))
+        dispatch(initializeGame({ color, gameId, timeControl }))
         dispatch(startGame({ opponentName }))
       }
       setErrorMessage(info.message)

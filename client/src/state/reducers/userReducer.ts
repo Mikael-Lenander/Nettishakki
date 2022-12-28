@@ -42,7 +42,6 @@ const userSlice = createSlice({
   reducers: {
     setTokens: (user, action: PayloadAction<Tokens>) => {
       const { accessToken, refreshToken } = action.payload
-      console.log('Setting new tokens in reducer', accessToken, refreshToken)
       user.accessToken = accessToken
       user.refreshToken = refreshToken
     }

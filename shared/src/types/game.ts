@@ -38,3 +38,13 @@ export type FinishedGame = {
   moves: MovePos[]
   date: string
 }
+
+export type TimeControl = {
+  time: number
+  increment: number
+}
+
+export type TimeLeft = {
+  white: number
+  black: number
+}

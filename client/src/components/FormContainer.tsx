@@ -15,7 +15,7 @@ type Props = {
   onSubmit(values: FormValues): void
   children: JSX.Element[] | JSX.Element
   submitText: string
-  submitFeedback: Info
+  submitFeedback?: Info
 }
 
 export default function FormContainer({ title, initialValues, validationSchema, children, submitText, onSubmit, submitFeedback }: Props) {
@@ -40,7 +40,7 @@ export default function FormContainer({ title, initialValues, validationSchema, 
               {submitText}
             </Button>
           </Container>
-          {submitFeedback.message.length > 0 && (
+          {submitFeedback?.message?.length > 0 && (
             <Alert severity={submitFeedback.success ? 'success' : 'error'} sx={{ mb: 2, mt: -2 }}>
               {submitFeedback.message}
             </Alert>

@@ -7,7 +7,7 @@ import NavBar from './NavBar'
 import Background from './Background'
 import MainMenu from './MainMenu'
 import JoinGameMenu from './JoinGameMenu'
-import Lobby from './Lobby'
+import NewGame from './NewGame'
 import Login from './Login'
 import SignUp from './SignUp'
 import Game from './Game'
@@ -36,7 +36,7 @@ export default function App() {
         <Routes>
           <Route element={<Background />}>
             <Route path='/' element={<MainMenu />} />
-            <Route path='/lobby' element={<Lobby />} />
+            <Route path='/new-game' element={<NewGame />} />
             <Route path='/play' element={<Game />} />
             <Route path='/game/:id' element={<GameReview />} />
             <Route path='/join-game' element={<JoinGameMenu />} />

@@ -14,7 +14,8 @@
     "skipLibCheck": true,
     "noImplicitAny": true,
     "noUnusedParameters": true,
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types"],
+    // "types": ["node"]
   },
   "include": ["src/**/*"]
 }

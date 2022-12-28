@@ -22,7 +22,7 @@ export default class Board {
     insufficientMaterial(): boolean;
     toSimple(): {
         name: import("./types").PieceName;
-        color: Color;
+        color: "white" | "black";
     }[][];
     static simple(): SimpleBoard;
     static toFullImplementation(board: SimpleBoard, moves: Move[]): Board;

@@ -33,3 +33,11 @@ export declare type FinishedGame = {
     moves: MovePos[];
     date: string;
 };
+export declare type TimeControl = {
+    time: number;
+    increment: number;
+};
+export declare type TimeLeft = {
+    white: number;
+    black: number;
+};

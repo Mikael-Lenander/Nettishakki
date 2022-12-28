@@ -1,5 +1,6 @@
 import ActiveGame from './ActiveGame'
 import { Disconnections } from '../types'
+import { TimeControl } from 'shared'
 
 export default class GameController {
   games: ActiveGame[]
@@ -10,7 +11,11 @@ export default class GameController {
   }
 
   find(id: string): ActiveGame | null {
-    return this.games.find(game => game.id === id) || null
+    return this.games.find(game => game.id === id)
+  }
+
+  findOnGoing(id: string): ActiveGame | null {
+    return this.games.find(game => game.id === id && game.isOn())
   }
 
   findWithPlayer(username: string): string | null {
@@ -30,6 +35,9 @@ export default class GameController {
   }
 
   remove(id: string) {
+    const game = this.find(id)
+    if (!game) return
+    clearInterval(game.intervalId)
     this.games = this.games.filter(game => game.id !== id)
   }
 
@@ -39,8 +47,8 @@ export default class GameController {
     return this.uniqueId()
   }
 
-  new(username: string, isAuthenticated: boolean): ActiveGame {
-    const newGame = new ActiveGame(this.uniqueId(), username, isAuthenticated)
+  new(username: string, isAuthenticated: boolean, timeControl: TimeControl): ActiveGame {
+    const newGame = new ActiveGame(this.uniqueId(), username, isAuthenticated, timeControl)
     this.games.push(newGame)
     return newGame
   }

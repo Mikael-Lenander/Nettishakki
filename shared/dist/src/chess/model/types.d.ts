@@ -1,13 +1,14 @@
 import { Pos } from '..';
 import { Piece } from './pieces';
-import { GameOverMessage } from '../../types';
+import { GameOverMessage, TimeLeft } from '../../types';
 export declare type PieceType = Piece | null;
 export declare type SimplePiece = {
     color: Color;
     name: PieceName;
 } | null;
 export declare type SimpleBoard = SimplePiece[][];
-export declare type Color = 'white' | 'black';
+export declare const COLORS: readonly ["white", "black"];
+export declare type Color = typeof COLORS[number];
 export declare type Row = PieceType[];
 export declare type BoardType = Array<Row>;
 export declare type Direction = {
@@ -44,11 +45,16 @@ export interface GameState {
         sent: boolean;
         received: boolean;
     };
+    timeLeft: TimeLeft;
+    increment: number;
+    waitingForOpponent: boolean;
 }
 export declare type GameStateChange = {
     moves: Move[];
     isCheck: boolean;
     turn: Color;
+    timeLeft: TimeLeft;
+    delay: number;
 };
 declare type MockPiece = null | 0 | '' | 1 | 'x' | 'P';
 export declare type MockBoard = Array<Array<MockPiece>>;

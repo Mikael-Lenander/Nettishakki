@@ -1,7 +1,8 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { SocketData, InterServerEvents } from './types'
-import { Pos, PosType, GameOverCondition, ClientToServerEvents, ServerToClientEvents } from 'shared'
+import { Pos, PosType, GameOverCondition, ClientToServerEvents, ServerToClientEvents, TimeControl } from 'shared'
+import ActiveGame from './model/ActiveGame'
 import { verifyToken } from './utils/middleware'
 import { parseString } from './utils/parsers/parsers'
 import GameController from './model/GameController'
@@ -41,15 +42,16 @@ export default function socketServer(server: http.Server) {
   io.on('connection', async socket => {
     const username = parseString(socket.data.username, 'username')
     await socket.join(username)
-    let currentGameId = activeGames.findWithPlayer(username)
+    let currentGameId = activeGames.findOnGoingWithPlayer(username)
     console.log(`User ${username} connected width gameId ${currentGameId}`)
     if (currentGameId) {
       console.log(`Joined back to game ${currentGameId} with user ${username} and timeoutId ${activeGames.disconnections[username]}`)
       activeGames.reconnect(username)
+      io.to(username).emit('getTime', activeGames.find(currentGameId).timeLeft())
       await socket.join(currentGameId)
     }
 
-    socket.on('createGame', async () => {
+    socket.on('createGame', async (timeControl: TimeControl) => {
       if (!username) return console.log('no user')
       if (activeGames.findOnGoingWithPlayer(username)) {
         console.log(`Error on createGame due to player ${username} already having an active game`)
@@ -60,14 +62,20 @@ export default function socketServer(server: http.Server) {
         return
       }
       activeGames.removeWithPlayer(username)
-      const currentGame = activeGames.new(username, socket.data.isAuthenticated)
+      const currentGame = activeGames.new(username, socket.data.isAuthenticated, timeControl)
       currentGameId = currentGame.id
       console.log(
         'activeGames',
         activeGames.games.map(game => game.id)
       )
       await socket.join(currentGameId)
-      io.to(username).emit('gameCreated', { success: true, message: '' }, currentGame.playerColor(username), currentGameId)
+      io.to(username).emit(
+        'gameCreated',
+        { success: true, message: '' },
+        currentGame.playerColor(username),
+        currentGameId,
+        currentGame.timeControl
+      )
       console.log(`game ${currentGameId} created for player ${username}`)
     })
 
@@ -103,17 +111,23 @@ export default function socketServer(server: http.Server) {
         'activeGames',
         activeGames.games.map(game => game.id)
       )
-      io.to(username).emit('joinedGame', { success: true, message: '' }, opponent.username, player.color, gameId)
+      io.to(username).emit('joinedGame', { success: true, message: '' }, opponent.username, player.color, gameId, activeGame.timeControl) // eslint-disable-line
       io.to(opponent.username).emit('joinedGame', { success: true, message: '' }, username)
+      checkTimerOnIntervals(activeGame)
       console.log(`player ${username} joined to game ${gameId}`)
     })
 
-    socket.on('makeMove', async (oldPos: PosType, newPos: PosType) => {
+    socket.on('makeMove', async (oldPos: PosType, newPos: PosType, date: number) => {
       const activeGame = activeGames.find(currentGameId)
-      if (!activeGame?.isOn()) return
+      if (!activeGame?.isOn() || checkTimer(activeGame)) return
       const game = activeGame.game
       const moves = game.makeMove(Pos.new(oldPos), Pos.new(newPos))
-      io.to(currentGameId).emit('getMove', moves, game.isCheck, game.turn)
+      if (moves.length === 0) return
+      const delay = Date.now() - date
+      activeGame.switchTimer(delay)
+      console.log(`time left ${JSON.stringify(activeGame.timeLeft())} delay ${delay}`)
+      io.to(currentGameId).emit('moveMade', moves, game.isCheck, game.turn, activeGame.timeLeft(), Date.now())
+
       const gameOver = game.over()
       if (gameOver) {
         io.to(currentGameId).emit('gameOver', gameOver)
@@ -123,6 +137,12 @@ export default function socketServer(server: http.Server) {
         console.log(`game over by ${gameOver.message}`)
         console.log('active games', activeGames.games)
       }
+    })
+
+    socket.on('addDelayToTimer', (delay: number) => {
+      const activeGame = activeGames.find(currentGameId)
+      if (!activeGame?.isOn()) return
+      activeGame.player(username).timer.addTime(delay, activeGame.playerColor(username))
     })
 
     socket.on('resign', async () => {
@@ -173,7 +193,7 @@ export default function socketServer(server: http.Server) {
 
     socket.on('disconnect', () => {
       console.log(`User ${username} has disconnected`)
-      const game = activeGames.find(currentGameId)
+      const game = activeGames.findOnGoing(currentGameId)
       if (game) {
         const opponent = game.opponent(username)
 
@@ -198,5 +218,36 @@ export default function socketServer(server: http.Server) {
         activeGames.disconnect(username, timeoutId)
       }
     })
+
+    function checkTimerOnIntervals(activeGame: ActiveGame) {
+      if (!activeGame?.isOn()) return
+      activeGame.intervalId = setInterval(() => {
+        checkTimer(activeGame)
+      }, 1000)
+    }
+
+    function checkTimer(activeGame: ActiveGame): boolean {
+      activeGame.playerOnTurn.timer.tick()
+      // console.log(`white time: ${activeGame.player('white').timer.timeLeft}, black time: ${activeGame.player('black').timer.timeLeft}`)
+      const playerWithTimeout = activeGame.playerWithTimeout()
+      if (playerWithTimeout) {
+        const opponent = activeGame.opponent(playerWithTimeout.username)
+        io.to(currentGameId).emit(
+          'gameOver',
+          {
+            winner: opponent.color,
+            message: GameOverCondition.TimeOut
+          },
+          activeGame.timeLeft()
+        )
+        console.log(`Gameover message sent to player ${opponent.username}`)
+        gameService.save(activeGame, opponent.username, GameOverCondition.TimeOut)
+        activeGames.remove(currentGameId)
+        console.log(`Deleted timed out game ${currentGameId}`)
+        console.log('active games', activeGames.games)
+        return true
+      }
+      return false
+    }
   })
 }

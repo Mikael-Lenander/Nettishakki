@@ -1,4 +1,5 @@
 import { Color, Pos } from 'shared'
+import Timer from './model/Timer'
 
 export type Disconnections = {
   [id: string]: NodeJS.Timeout
@@ -14,6 +15,7 @@ export interface Player {
   color: Color
   isAuthenticated: boolean
   drawOffered: boolean
+  timer: Timer
 }
 
 export interface MoveCoords {

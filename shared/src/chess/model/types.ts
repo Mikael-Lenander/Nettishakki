@@ -1,6 +1,6 @@
 import { Pos } from '..'
 import { Piece } from './pieces'
-import { GameOverMessage } from '../../types'
+import { GameOverMessage, TimeLeft } from '../../types'
 
 export type PieceType = Piece | null
 
@@ -11,7 +11,8 @@ export type SimplePiece = {
 
 export type SimpleBoard = SimplePiece[][]
 
-export type Color = 'white' | 'black'
+export const COLORS = ['white', 'black'] as const
+export type Color = typeof COLORS[number]
 
 export type Row = PieceType[]
 
@@ -58,12 +59,17 @@ export interface GameState {
     sent: boolean
     received: boolean
   }
+  timeLeft: TimeLeft
+  increment: number
+  waitingForOpponent: boolean
 }
 
 export type GameStateChange = {
   moves: Move[]
   isCheck: boolean
   turn: Color
+  timeLeft: TimeLeft
+  delay: number
 }
 
 type MockPiece = null | 0 | '' | 1 | 'x' | 'P'

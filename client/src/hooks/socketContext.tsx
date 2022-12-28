@@ -16,7 +16,6 @@ export const SocketProvider = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     const connect = async () => {
-      console.log('Connecting to socket with token', accessToken)
       const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
         query: { username },
         auth: { token: accessToken }

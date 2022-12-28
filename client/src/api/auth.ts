@@ -16,7 +16,6 @@ export const injectStore = (_store: Store) => {
 axiosAuth.interceptors.request.use(
   async config => {
     await refresh(config)
-    console.log('axios interceptor done')
     return config
   },
   error => {

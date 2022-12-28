@@ -53,11 +53,13 @@ const find = async (userId: number, username: string): Promise<PlayerStats> => {
     include: [
       {
         model: Move,
-        attributes: { exclude: ['gameId', 'index'] },
-        order: [['index', 'ASC']]
+        attributes: ['oldPos', 'newPos']
       }
     ],
-    order: [['date', 'DESC']]
+    order: [
+      ['date', 'DESC'],
+      [Move, 'index', 'ASC']
+    ]
   })
   const finishedGames = games.map<FinishedGame>(game => ({ ...game.toJSON(), winner: game.winner() }))
   const counts = gameCounts(finishedGames, username)
