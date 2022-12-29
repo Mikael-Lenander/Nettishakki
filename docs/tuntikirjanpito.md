@@ -24,6 +24,8 @@
 | 21.12.| 10   | Käyttäjäistunnon tallentaminen selaimelle, aikaisempien pelin tarkastelu |
 | 22.12.| 5    | Refaktorointia, pelilistan ulkonäön parantelu |
 | 23.12.| 8    | Uudistettu päävalikko profiiliosiolla |
-| 24.12 | 3    | Pelaajatilastojen haku tietokannasta, liity peliin-valikon ulkonäön parantelu |
-| 26.12 | 7    | Mahdollisuus luovuttaa ja ehdottaa tasapeliä |
-| 28.12 | 15   | Aikakontrolli peleihin, bugikorjauksia |
+| 24.12.| 3    | Pelaajatilastojen haku tietokannasta, liity peliin-valikon ulkonäön parantelu |
+| 26.12.| 7    | Mahdollisuus luovuttaa ja ehdottaa tasapeliä |
+| 27.12.| 8    | Aikakontrolli peleihin |
+| 28.12.| 7    | Aikakontrolli peleihin, bugikorjauksia |
+| 29.12.| 3    | Latausruutu, bugikorjauksia |

@@ -44,6 +44,9 @@ const userSlice = createSlice({
       const { accessToken, refreshToken } = action.payload
       user.accessToken = accessToken
       user.refreshToken = refreshToken
+    },
+    resetInfo: user => {
+      user.info = noInfo
     }
   },
   extraReducers: builder => {
@@ -65,6 +68,6 @@ const userSlice = createSlice({
   }
 })
 
-const { setTokens } = userSlice.actions
-export { login, signup, logout, getGames, setTokens }
+const { setTokens, resetInfo } = userSlice.actions
+export { login, signup, logout, getGames, setTokens, resetInfo }
 export default userSlice.reducer
