@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../state/hooks'
 import { useSocket } from '../hooks/socketContext'
 import { makeMove, gameOver, setTimers } from '../state/reducers/gameReducer'
-import { Circle, Rect } from 'react-konva'
-import { KonvaEventObject } from 'konva/lib/Node'
 import { Color, Move, GameOverMessage, Pos, Game as GameLogic, TimeLeft } from 'shared'
 import Board from './Board'
 import InfoBar from './InfoBar'
@@ -44,10 +42,18 @@ export default function Game() {
   const [selectedPos, setSelectedPos] = useState<Pos>()
   const [availabeMoves, setAvailableMoves] = useState<Pos[]>([])
 
-  function handleClickBoard(event: KonvaEventObject<MouseEvent>) {
+  function handleClickBoard(event: React.MouseEvent<SVGElement>) {
     if (!game.active) return
-    const square = event.target.attrs
-    const pos = new Pos(square.col, square.row)
+    const square = event.target as SVGImageElement | SVGRectElement | SVGCircleElement
+    let x, y
+    if (square instanceof SVGCircleElement) {
+      x = square.cx.baseVal.value
+      y = square.cy.baseVal.value
+    } else {
+      x = square.x.baseVal.value
+      y = square.y.baseVal.value
+    }
+    const pos = flip(new Pos(Math.floor(x / squareSize), Math.floor(y / squareSize)))
     const piece = game.board[pos.y][pos.x]
     if (game.turn === game.color && selectedPos && pos.in(availabeMoves) && socket) {
       socket.emit('makeMove', selectedPos, pos, Date.now())
@@ -67,15 +73,15 @@ export default function Game() {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', margin: '1em' }}>
       <Board
-        size={650}
+        size={size}
         board={game.board}
         handleClickBoard={handleClickBoard}
-        flip={flip}
         playerColor={game.color}
+        previousMoves={game.moves.slice(game.moves.length - game.numLastMoves, game.moves.length)}
         componentOnTopOfSquares={
           selectedPos &&
           game.active && (
-            <Rect
+            <rect
               x={flip(selectedPos).x * squareSize}
               y={flip(selectedPos).y * squareSize}
               width={squareSize}
@@ -87,14 +93,12 @@ export default function Game() {
         componentOnTopOfPieces={
           game.active &&
           availabeMoves.map(move => (
-            <Circle
+            <circle
               key={`(${move.x}, ${move.y})`}
-              row={move.y}
-              col={move.x}
-              x={squareSize * (flip(move).x + 0.5)}
-              y={squareSize * (flip(move).y + 0.5)}
+              cx={squareSize * (flip(move).x + 0.5)}
+              cy={squareSize * (flip(move).y + 0.5)}
               fill='grey'
-              radius={10}
+              r={size / 60}
               onClick={handleClickBoard}
             />
           ))

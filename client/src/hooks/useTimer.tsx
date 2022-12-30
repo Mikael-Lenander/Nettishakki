@@ -8,7 +8,7 @@ export default function useTimer() {
   const timeLeft = useAppSelector(state => state.game.timeLeft[color])
   const interval = 1000
   const toNextInterval = timeLeft % interval
-  console.log(`timeLeft ${timeLeft} toNextSecond ${toNextInterval}`)
+  // console.log(`timeLeft ${timeLeft} toNextSecond ${toNextInterval}`)
   const dispatch = useAppDispatch()
 
   function startTimer() {

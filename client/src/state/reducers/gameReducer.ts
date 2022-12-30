@@ -9,6 +9,7 @@ const initialState: GameState = {
   isCheck: false,
   color: 'black',
   moves: [],
+  numLastMoves: 0,
   opponentName: '',
   overMessage: null,
   drawOffer: {
@@ -45,7 +46,7 @@ const gameSlice = createSlice({
     makeMove: (game, action: PayloadAction<GameStateChange>) => {
       const { moves, turn, isCheck, timeLeft, delay } = action.payload
       moves.forEach(move => {
-        game.board[move.newPos.y][move.newPos.x] = { name: move.pieceName, color: move.pieceColor }
+        game.board[move.newPos.y][move.newPos.x] = { name: move.pieceName, color: move.pieceColor, id: move.pieceId }
         game.board[move.oldPos.y][move.oldPos.x] = null
         game.moves.push(move)
       })
@@ -53,12 +54,9 @@ const gameSlice = createSlice({
       game.timeLeft = timeLeft
       if (game.moves.length > 1) {
         game.timeLeft[game.turn] += delay
-        console.log(`delay ${delay} added to ${game.turn}`)
-      } else {
-        console.log(`delay not added to ${game.turn}`)
       }
       game.turn = turn
-      console.log('time left', game.timeLeft)
+      game.numLastMoves = moves.length
     },
     initializeGame: (game, action: PayloadAction<NewGame>) => {
       const { color, gameId, timeControl } = action.payload

@@ -16,4 +16,5 @@ export default class Game {
     getMoves(piece: Piece): Pos[];
     static getMoves(game: GameState, pos: Pos): Pos[];
     allMoves(color: Color): Pos[];
+    pieceIds(): string[];
 }

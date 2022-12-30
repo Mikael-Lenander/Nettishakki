@@ -70,7 +70,10 @@ class Game {
         return Game.legalMoves(fullBoard, isCheck, turn, fullPiece);
     }
     allMoves(color) {
-        return this.board.pieces(color).flatMap((piece) => this.getMoves(piece));
+        return this.board.pieces(color).flatMap(piece => this.getMoves(piece));
+    }
+    pieceIds() {
+        return this.board.board.flatMap(row => row.map(piece => piece === null || piece === void 0 ? void 0 : piece.id).filter(id => id));
     }
 }
 exports.default = Game;

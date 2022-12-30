@@ -1,39 +1,37 @@
 import React from 'react'
-import { Color, PieceName } from 'shared'
-import useImage from 'use-image'
-import { Image } from 'react-konva'
-import { KonvaEventObject } from 'konva/lib/Node'
+import { Color, PieceName, PosType } from 'shared'
+import { animated, useSpring } from '@react-spring/web'
 
 type Props = {
-  x: number
-  y: number
+  oldPos: PosType
+  newPos: PosType
   pieceColor: Color
   playerColor: Color
   pieceName: PieceName
   squareSize: number
-  handleClickBoard?: (event: KonvaEventObject<MouseEvent>) => void
+  handleClickBoard?: (event: React.MouseEvent<SVGImageElement>) => void
 }
 
-export default function ChessImage({ x, y, pieceColor, playerColor, pieceName, squareSize, handleClickBoard }: Props) {
-  const [image] = useImage(`/chess_images/${pieceColor}_${pieceName}.png`)
-  const xCoord = playerColor === 'white' ? x : 7 - x
-  const yCoord = playerColor === 'white' ? 7 - y : y
+export default function ChessImage({ newPos, oldPos, pieceColor, playerColor, pieceName, squareSize, handleClickBoard }: Props) {
+  const xCoord = (x: number) => (playerColor === 'white' ? x : 7 - x)
+  const yCoord = (y: number) => (playerColor === 'white' ? 7 - y : y)
+  const IMG_SIZE = 60
+  const imgSize = (IMG_SIZE * squareSize) / 75
+  const position = (c: number) => c * squareSize + 0.45 * (squareSize - imgSize)
 
-  if (!image) return null
+  const props = useSpring({
+    from: { x: position(xCoord(oldPos.x)), y: position(yCoord(oldPos.y)) },
+    to: { x: position(xCoord(newPos.x)), y: position(yCoord(newPos.y)) },
+    config: { duration: 120 }
+  })
 
-  const width = (image.width * squareSize) / 75
-  const height = (image.height * squareSize) / 75
   return (
-    <Image
-      row={y}
-      col={x}
-      x={xCoord * squareSize + 0.45 * (squareSize - width)}
-      y={yCoord * squareSize + 0.45 * (squareSize - height)}
-      width={width}
-      height={height}
-      image={image}
+    <animated.image
+      {...props}
+      width={imgSize}
+      height={imgSize}
+      href={`/chess_images/${pieceColor}_${pieceName}.png`}
       onClick={handleClickBoard}
-      willReadFrequently={true}
     />
   )
 }

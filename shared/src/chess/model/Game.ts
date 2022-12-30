@@ -75,6 +75,10 @@ export default class Game {
   }
 
   allMoves(color: Color): Pos[] {
-    return this.board.pieces(color).flatMap((piece) => this.getMoves(piece))
+    return this.board.pieces(color).flatMap(piece => this.getMoves(piece))
+  }
+
+  pieceIds(): string[] {
+    return this.board.board.flatMap(row => row.map(piece => piece?.id).filter(id => id))
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Pos } from 'shared'
 import { useAppSelector } from '../state/hooks'
 import { Navigate, useParams } from 'react-router-dom'
 import useBoard from '../hooks/useBoard'
@@ -11,10 +10,7 @@ export default function GameReview() {
   const user = useAppSelector(state => state.user)
   const games = useAppSelector(state => state.playerStats.games)
   const game = games.find(game => game.id === parseInt(gameId))
-  const { board, nextMove } = useBoard(game)
-
-  const flip = (pos: Pos): Pos =>
-    new Pos(game.whiteName === user.username ? pos.x : 7 - pos.x, game.whiteName === user.username ? 7 - pos.y : pos.y)
+  const { board, nextMove, previousMoves } = useBoard(game)
 
   function handleClickBoard() {
     nextMove()
@@ -28,8 +24,8 @@ export default function GameReview() {
         size={650}
         board={board}
         handleClickBoard={handleClickBoard}
-        flip={flip}
         playerColor={game.whiteName === user.username ? 'white' : 'black'}
+        previousMoves={previousMoves}
       />
       <InfoBar
         whiteName={game.whiteName}

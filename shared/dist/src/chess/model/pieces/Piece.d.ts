@@ -3,6 +3,7 @@ import Pos from '../Pos';
 import Board from '../Board';
 export declare abstract class Piece {
     abstract name: PieceName;
+    id: string;
     color: Color;
     pos: Pos;
     constructor(color: Color, x: number, y: number);

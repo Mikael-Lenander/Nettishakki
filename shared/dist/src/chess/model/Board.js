@@ -27,6 +27,7 @@ class Board {
         const move = {
             pieceName: piece.name,
             pieceColor: piece.color,
+            pieceId: piece.id,
             oldPos,
             newPos
         };
@@ -50,6 +51,7 @@ class Board {
             {
                 pieceName: capturedPiece.name,
                 pieceColor: capturedPiece.color,
+                pieceId: capturedPiece.id,
                 oldPos: captureSquare,
                 newPos: captureSquare
             }
@@ -71,35 +73,35 @@ class Board {
         return [this.setPiece(piece, oldPos, newPos)];
     }
     kingPosition(color) {
-        return this.board.flat().find((piece) => (piece === null || piece === void 0 ? void 0 : piece.name) === 'king' && piece.color === color).pos;
+        return this.board.flat().find(piece => (piece === null || piece === void 0 ? void 0 : piece.name) === 'king' && piece.color === color).pos;
     }
     pieces(color) {
-        return this.board.flat().filter((piece) => piece && piece.color === color);
+        return this.board.flat().filter(piece => piece && piece.color === color);
     }
     longRangePieces(color) {
-        return this.pieces(color).filter((piece) => ['rook', 'queen', 'bishop'].includes(piece.name));
+        return this.pieces(color).filter(piece => ['rook', 'queen', 'bishop'].includes(piece.name));
     }
     kingAttackingPieces(color) {
-        return this.pieces(color).filter((piece) => this.kingPosition((0, utils_1.opponent)(color)).in(piece.validMoves(this)));
+        return this.pieces(color).filter(piece => this.kingPosition((0, utils_1.opponent)(color)).in(piece.validMoves(this)));
     }
     pinningPiece(pinnedPiece) {
         const kingPos = this.kingPosition(pinnedPiece.color);
         const squaresBetween = kingPos.squaresBetween(pinnedPiece.pos);
         if (!kingPos.inContactWith(pinnedPiece.pos))
             return null;
-        if (squaresBetween.some((pos) => this.pieceAt(pos)))
+        if (squaresBetween.some(pos => this.pieceAt(pos)))
             return null;
-        return (this.longRangePieces((0, utils_1.opponent)(pinnedPiece.color)).find((piece) => {
+        return (this.longRangePieces((0, utils_1.opponent)(pinnedPiece.color)).find(piece => {
             const squaresBetweenKing = piece.pos.squaresBetween(kingPos);
-            return pinnedPiece.pos.in(squaresBetweenKing) && piece.pos.squaresBetween(pinnedPiece.pos).every((pos) => !this.pieceAt(pos));
+            return pinnedPiece.pos.in(squaresBetweenKing) && piece.pos.squaresBetween(pinnedPiece.pos).every(pos => !this.pieceAt(pos));
         }) || null);
     }
     inCheck(color) {
         const kingPos = this.kingPosition(color);
-        return this.pieces((0, utils_1.opponent)(color)).some((piece) => kingPos.in(piece.controlledSquares(this)));
+        return this.pieces((0, utils_1.opponent)(color)).some(piece => kingPos.in(piece.controlledSquares(this)));
     }
     controlledSquares(color) {
-        return (0, lodash_1.uniqWith)(this.pieces(color).flatMap((piece) => piece.controlledSquares(this)), (a, b) => a.equals(b));
+        return (0, lodash_1.uniqWith)(this.pieces(color).flatMap(piece => piece.controlledSquares(this)), (a, b) => a.equals(b));
     }
     insufficientMaterial() {
         if (this.moves.length < 35)
@@ -108,17 +110,18 @@ class Board {
         const blackPieces = this.pieces('black');
         const allPieces = whitePieces.concat(blackPieces);
         return (allPieces.length <= 2 ||
-            (allPieces.length === 3 && allPieces.some((piece) => piece.name === 'bishop' || piece.name === 'knight')) ||
+            (allPieces.length === 3 && allPieces.some(piece => piece.name === 'bishop' || piece.name === 'knight')) ||
             (allPieces.length === 4 &&
-                whitePieces.some((piece) => piece.name === 'bishop') &&
-                blackPieces.some((piece) => piece.name === 'bishop') &&
-                whitePieces.find((piece) => piece.name === 'bishop').color === blackPieces.find((piece) => piece.name === 'bishop').color));
+                whitePieces.some(piece => piece.name === 'bishop') &&
+                blackPieces.some(piece => piece.name === 'bishop') &&
+                whitePieces.find(piece => piece.name === 'bishop').color === blackPieces.find(piece => piece.name === 'bishop').color));
     }
     toSimple() {
-        return this.board.map((row) => row.map((piece) => piece
+        return this.board.map(row => row.map(piece => piece
             ? {
                 name: piece.name,
-                color: piece.color
+                color: piece.color,
+                id: piece.id
             }
             : null));
     }
@@ -136,9 +139,10 @@ class Board {
         };
         const fullBoard = board.map((row, y) => row.map((piece, x) => (piece ? new constructors[piece.name](piece.color, x, y) : null)));
         const newBoard = new Board(fullBoard);
-        newBoard.moves = moves.map((move) => ({
+        newBoard.moves = moves.map(move => ({
             pieceName: move.pieceName,
             pieceColor: move.pieceColor,
+            pieceId: move.pieceId,
             oldPos: Pos_1.default.new(move.oldPos),
             newPos: Pos_1.default.new(move.newPos)
         }));
@@ -147,7 +151,7 @@ class Board {
     // Vain testaukseen
     add(pieces) {
         if (pieces instanceof Array) {
-            pieces.forEach((piece) => {
+            pieces.forEach(piece => {
                 this.board[piece.pos.y][piece.pos.x] = piece;
             });
         }
@@ -157,7 +161,7 @@ class Board {
     }
     // Vain testaukseen
     display() {
-        console.table(this.board.map((row) => row.map((piece) => (piece ? `${piece.name.substring(0, 2)}(${piece.color.substring(0, 1)} (${piece.pos.x}, ${piece.pos.y}))` : 0) //eslint-disable-line
+        console.table(this.board.map(row => row.map(piece => (piece ? `${piece.name.substring(0, 2)}(${piece.color.substring(0, 1)} (${piece.pos.x}, ${piece.pos.y}))` : 0) //eslint-disable-line
         )));
     }
     // Vain testaukseen

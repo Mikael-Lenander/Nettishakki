@@ -5,6 +5,7 @@ export declare type PieceType = Piece | null;
 export declare type SimplePiece = {
     color: Color;
     name: PieceName;
+    id: string;
 } | null;
 export declare type SimpleBoard = SimplePiece[][];
 export declare const COLORS: readonly ["white", "black"];
@@ -22,6 +23,7 @@ export declare type PieceName = 'bishop' | 'king' | 'knight' | 'pawn' | 'queen' 
 export interface Move {
     pieceName: PieceName;
     pieceColor: Color;
+    pieceId: string;
     oldPos: Pos;
     newPos: Pos;
 }
@@ -48,6 +50,7 @@ export interface GameState {
     timeLeft: TimeLeft;
     increment: number;
     waitingForOpponent: boolean;
+    numLastMoves: number;
 }
 export declare type GameStateChange = {
     moves: Move[];

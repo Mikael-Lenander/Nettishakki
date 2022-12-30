@@ -4,10 +4,12 @@ exports.LongRangePiece = exports.Piece = void 0;
 const Pos_1 = require("../Pos");
 const utils_1 = require("../utils");
 const _1 = require(".");
+const uuid_1 = require("uuid");
 class Piece {
     constructor(color, x, y) {
         this.color = color;
         this.pos = new Pos_1.default(x, y);
+        this.id = (0, uuid_1.v4)(); // eslint-disable-line
     }
     isOpponentPiece(piece) {
         return this.color !== piece.color;

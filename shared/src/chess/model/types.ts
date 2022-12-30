@@ -7,6 +7,7 @@ export type PieceType = Piece | null
 export type SimplePiece = {
   color: Color
   name: PieceName
+  id: string
 } | null
 
 export type SimpleBoard = SimplePiece[][]
@@ -34,6 +35,7 @@ export type PieceName = 'bishop' | 'king' | 'knight' | 'pawn' | 'queen' | 'rook'
 export interface Move {
   pieceName: PieceName
   pieceColor: Color
+  pieceId: string
   oldPos: Pos
   newPos: Pos
 }
@@ -62,6 +64,7 @@ export interface GameState {
   timeLeft: TimeLeft
   increment: number
   waitingForOpponent: boolean
+  numLastMoves: number
 }
 
 export type GameStateChange = {

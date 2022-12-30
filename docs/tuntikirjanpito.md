@@ -29,3 +29,4 @@
 | 27.12.| 8    | Aikakontrolli peleihin |
 | 28.12.| 7    | Aikakontrolli peleihin, bugikorjauksia |
 | 29.12.| 3    | Latausruutu, bugikorjauksia |
+| 30.12.| 8    | Animaatiot liikkuville shakkinappuloille |

@@ -1,16 +1,18 @@
 import { useState, useRef } from 'react'
-import { SimpleBoard, Pos, Game, Board } from 'shared'
-import { FinishedGame } from 'shared'
+import { SimpleBoard, Pos, Game } from 'shared'
+import { FinishedGame, Move } from 'shared'
 
 export default function useBoard(finishedGame: FinishedGame) {
-  const [board, setBoard] = useState<SimpleBoard>(Board.simple())
-  const [nextMoveIndex, setNextMoveIndex] = useState(0)
   const game = useRef(new Game())
+  const [board, setBoard] = useState<SimpleBoard>(game.current.board.toSimple())
+  const [nextMoveIndex, setNextMoveIndex] = useState(0)
+  const [previousMoves, setPreviousMoves] = useState<Move[]>([])
 
   function nextMove() {
     if (nextMoveIndex >= finishedGame.moves.length) return
     const { oldPos, newPos } = finishedGame.moves[nextMoveIndex]
-    game.current.makeMove(Pos.new(oldPos), Pos.new(newPos))
+    const moves = game.current.makeMove(Pos.new(oldPos), Pos.new(newPos))
+    setPreviousMoves(prev => (moves.length > 0 ? moves : prev))
     setBoard(game.current.board.toSimple())
     setNextMoveIndex(nextMoveIndex + 1)
   }
@@ -23,5 +25,5 @@ export default function useBoard(finishedGame: FinishedGame) {
     setBoard(game.current.board.toSimple())
   }
 
-  return { board, nextMove, endState }
+  return { board, nextMove, endState, previousMoves, pieceIds: game.current.pieceIds() }
 }

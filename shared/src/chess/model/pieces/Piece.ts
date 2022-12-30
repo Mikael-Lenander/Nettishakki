@@ -3,14 +3,17 @@ import Pos from '../Pos'
 import Board from '../Board'
 import { opponent } from '../utils'
 import { Pawn, Bishop, Queen, Rook, King, Knight } from '.'
+import { v4 as uuid } from 'uuid'
 
 export abstract class Piece {
   abstract name: PieceName
+  id: string
   color: Color
   pos: Pos
   constructor(color: Color, x: number, y: number) {
     this.color = color
     this.pos = new Pos(x, y)
+    this.id = uuid() // eslint-disable-line
   }
 
   isOpponentPiece(piece: Piece): boolean {
