@@ -18,6 +18,7 @@ const initDatabase = async () => {
 
 initDatabase()
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -25,9 +26,5 @@ app.use(morgan('tiny'))
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/games', authenticateToken, gameRouter)
-
-app.get('/', (_req, res) => {
-  res.send('<h1>Shakki backend</h1>')
-})
 
 export default app

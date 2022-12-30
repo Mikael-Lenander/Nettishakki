@@ -29,7 +29,6 @@
     "@types/umzug": "^2.3.3",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
-    "dotenv": "^16.0.1",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -40,6 +39,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.3",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
@@ -47,7 +47,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "sequelize": "^6.21.3",
-    "shared": "github:Mikael-Lenander/shakki",
+    "shared": "github:Mikael-Lenander/shared",
     "socket.io": "^4.4.0",
     "umzug": "^3.1.1"
   },

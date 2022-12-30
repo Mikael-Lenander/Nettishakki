@@ -2,7 +2,7 @@
 
 Fullstackopen-harjoitustyö 175 h
 
-Sivu löytyy [täältä](https://nettishakki.netlify.app/).
+Sivu löytyy [täältä](https://nettishakki.herokuapp.com/).
 
 [työaikakirjanpito](docs/tuntikirjanpito.md)
 
