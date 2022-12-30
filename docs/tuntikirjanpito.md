@@ -30,3 +30,4 @@
 | 28.12.| 7    | Aikakontrolli peleihin, bugikorjauksia |
 | 29.12.| 3    | Latausruutu, bugikorjauksia |
 | 30.12.| 8    | Animaatiot liikkuville shakkinappuloille |
+| 30.12.| 1    | Päivitetty README ja UML-kaavio |

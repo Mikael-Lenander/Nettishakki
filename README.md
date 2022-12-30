@@ -1,21 +1,29 @@
 # Nettishakki
 
+Fullstackopen-harjoitustyö 175 h
+
 Sivu löytyy [täältä](https://nettishakki.netlify.app/).
 
-Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan. Sivu toimii ainakin Chromella ja Firefoxilla, muista selaimista en tiedä. Sivusta ei ole puhelinversiota.
+[työaikakirjanpito](docs/tuntikirjanpito.md)
+
+## Ohjeet
+
+Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan. Sivu toimii ainakin Chromella ja Firefoxilla. Sivu ei toimi mobiililaitteilla.
 
 ## Käytetyt teknologiat ja rakenne
 
-- frontend: React, Redux, React Konva (grafiikoihin)
-- backend: Socket.io
+- frontend: React, Redux
+- backend: Socket.io, Express, PostgreSQL
 
-Koko projekti on kirjoitettu Typescriptillä. Shakin pelilogiikka ja osa tyypeistä on sijoitettu shared-kansioon, koska sekä frontend että backend tarvistevat niitä. 
+Koko projekti on kirjoitettu TypeScriptilla. Shakin pelilogiikka ja osa tyypeistä on sijoitettu shared-kansioon, koska sekä frontend että backend käyttävät niitä.
 
 ## Pelistä
 
 Peli on täysin toiminnallinen toteutus shakista lukuunottamatta seuraavia sääntöjä:
 - sotilas korotetaan automaattisesti kuningattareksi
 - tasapeli tulee ainoastaan patissa ja yleisimmissä riittämätön materiaali-tilanteissa
-- pelaaja ei voi ehdottaa tasapeliä eikä luovuttaa (paitsi disconnectaamalla).
 
-Jos pelaaja disconnectaa, hänellä on 10 sekuntia aikaa palata peliin, tai muuten vastustaja jaa luovutusvoiton. Tosin jos selaimen sulkee, ei peliin pääse enää takasin, koska vieraskäyttäjä on tallennettu session storageen.
+Tärkeimmät ominaisuudet:
+- peliä pelataan moninpelinä ihmisvastustajaa vastaan
+- pelissä on mahdollista pelata eri aikakontrolleilla sekä voi luovuttaa ja ehdottaa tasapeliä
+- sisäänkirjautuneelle käyttäjälle peli tallentuu tietokantaan, joten pelaaja voi tarkastella omia pelejään myöhemmin
