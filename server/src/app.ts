@@ -8,6 +8,7 @@ import authRouter from './routes/auth'
 import userRouter from './routes/user'
 import gameRouter from './routes/game'
 import { authenticateToken } from './utils/middleware'
+import testingRouter from './routes/testing'
 
 const app = express()
 
@@ -26,5 +27,9 @@ app.use(morgan('tiny'))
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/games', authenticateToken, gameRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRouter)
+}
 
 export default app

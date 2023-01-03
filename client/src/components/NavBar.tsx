@@ -24,16 +24,22 @@ export default function NavBar() {
           </Typography>
           {!game.active && user.isGuest && (
             <>
-              <Button>
+              <Button data-testid='navbar-login-link'>
                 <NavBarLink to='/login' text='Login' />
               </Button>
-              <Button>
+              <Button data-testid='navbar-signup-link'>
                 <NavBarLink to='/signup' text='Sign Up' />
               </Button>
             </>
           )}
           {!game.active && !user.isGuest && (
-            <Button color='inherit' component={Link} to='/' onClick={() => dispatch(logout(user.refreshToken))}>
+            <Button
+              color='inherit'
+              component={Link}
+              to='/'
+              onClick={() => dispatch(logout(user.refreshToken))}
+              data-testid='navbar-logout-link'
+            >
               Logout
             </Button>
           )}

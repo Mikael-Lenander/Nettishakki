@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
 import http from 'http'
+import { Express } from 'express'
 import { SocketData, InterServerEvents } from './types'
 import { Pos, PosType, GameOverCondition, ClientToServerEvents, ServerToClientEvents, TimeControl } from 'shared'
 import ActiveGame from './model/ActiveGame'
@@ -10,12 +11,13 @@ import gameService from './services/gameService'
 
 const activeGames = new GameController()
 
-export default function socketServer(server: http.Server) {
+export default function socketServer(server: http.Server, app: Express) {
   const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
     cors: {
       origin: ['http://localhost:3000', 'https://nettishakki.netlify.app']
     }
   })
+  app.set('io', io)
 
   io.use((socket, next) => {
     try {
@@ -82,25 +84,28 @@ export default function socketServer(server: http.Server) {
     socket.on('joinGame', async (gameId: string) => {
       const activeGame = activeGames.find(gameId)
       if (activeGames.findOnGoingWithPlayer(username)) {
-        io.to(username).emit('joinedGame', {
+        return io.to(username).emit('joinedGame', {
           success: false,
           message: 'You already have an ongoing game'
         })
-        return
       }
       if (!activeGame) {
-        io.to(username).emit('joinedGame', {
+        return io.to(username).emit('joinedGame', {
           success: false,
           message: 'Game does not exist'
         })
-        return
       }
       if (activeGame.isOn()) {
-        io.to(username).emit('joinedGame', {
+        return io.to(username).emit('joinedGame', {
           success: false,
           message: 'Room full'
         })
-        return
+      }
+      if (activeGame.hasPlayer(username)) {
+        return io.to(username).emit('joinedGame', {
+          success: false,
+          message: 'You cannot join your own game'
+        })
       }
       activeGames.removeWithPlayer(username)
       await socket.join(gameId)
@@ -209,7 +214,7 @@ export default function socketServer(server: http.Server) {
           if (game) {
             await gameService.save(game, opponent.username, GameOverCondition.Disconnection)
           }
-          activeGames.remove(currentGameId)
+          activeGames.removeWithPlayer(username)
           console.log(`Deleted disconnected game ${currentGameId}`)
           console.log('active games', activeGames.games)
         }, 10 * 1000)

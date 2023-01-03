@@ -15,17 +15,14 @@ export const SocketProvider = ({ children }: { children: JSX.Element }) => {
   const { username, accessToken } = useAppSelector(state => state.user)
 
   useEffect(() => {
-    const connect = async () => {
-      const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
-        query: { username },
-        auth: { token: accessToken }
-      })
-      setSocket(newSocket)
-      return () => {
-        newSocket.close()
-      }
+    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
+      query: { username },
+      auth: { token: accessToken }
+    })
+    setSocket(newSocket)
+    return () => {
+      newSocket.close()
     }
-    connect()
   }, [accessToken])
 
   return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

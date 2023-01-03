@@ -64,8 +64,14 @@ export default function NewGame() {
           onSubmit={({ time, increment }) => socket.emit('createGame', { time: parseInt(time) * 60, increment: parseInt(increment) })}
           submitText='Create'
         >
-          <SelectInput label='Minutes per side' name='time' defaultValue={5} values={[1, 3, 5, 10]} />
-          <SelectInput label='Increment in seconds' name='increment' defaultValue={3} values={[0, 1, 2, 3]} />
+          <SelectInput label='Minutes per side' name='time' defaultValue={5} values={[1, 3, 5, 10]} data-testid='time-select' />
+          <SelectInput
+            label='Increment in seconds'
+            name='increment'
+            defaultValue={3}
+            values={[0, 1, 2, 3]}
+            data-testid='increment-select'
+          />
         </FormContainer>
       )}
     </>

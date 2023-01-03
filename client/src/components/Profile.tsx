@@ -21,6 +21,7 @@ export default function Profile() {
         display: 'flex',
         alignItems: 'center'
       }}
+      data-testid='profile-section'
     >
       <Container style={{ flexBasis: '70%', backgroundColor: 'white' }}>
         <NotLoggedIn text='game stats' textVariant='body1' style={{ color: 'black' }}>

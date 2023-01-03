@@ -11,7 +11,7 @@ import useTimer from '../hooks/useTimer'
 
 export default function Game() {
   const { game, user } = useAppSelector(state => state)
-  const size = 650
+  const size = 600
   const squareSize = size / 8
   const socket = useSocket()
   const dispatch = useAppDispatch()

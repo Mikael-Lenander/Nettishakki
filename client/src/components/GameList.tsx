@@ -16,7 +16,7 @@ export default function GameList() {
   }, [user.username])
 
   return (
-    <Card sx={{ border: 1, borderColor: 'grey', width: '100%', flexGrow: 1 }}>
+    <Card sx={{ border: 1, borderColor: 'grey', width: '100%', flexGrow: 1 }} data-testid='gamelist-section'>
       <Typography variant='h4' component='h1' margin={1} style={{ fontSize: '2rem' }}>
         Previous Games
       </Typography>

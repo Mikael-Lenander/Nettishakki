@@ -43,7 +43,7 @@ export default function SignUp() {
     >
       <TextInput label='username' name='username' placeholder='username' type='text' />
       <TextInput label='password' name='password' placeholder='password' type='password' />
-      <TextInput label='repeat password' name='repeatPassword' placeholder='Repeat password' type='password' />
+      <TextInput label='repeat password' name='repeatPassword' placeholder='repeat password' type='password' />
     </FormContainer>
   )
 }

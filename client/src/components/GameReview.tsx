@@ -21,7 +21,7 @@ export default function GameReview() {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', margin: '1em' }}>
       <Board
-        size={650}
+        size={600}
         board={board}
         handleClickBoard={handleClickBoard}
         playerColor={game.whiteName === user.username ? 'white' : 'black'}
