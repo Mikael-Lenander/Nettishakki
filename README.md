@@ -8,7 +8,11 @@ Sivu löytyy [täältä](https://nettishakki.herokuapp.com/).
 
 ## Ohjeet
 
-Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan. Sivu toimii ainakin Chromella ja Firefoxilla. Sivu ei toimi mobiililaitteilla.
+Peliä voi kokeilla nopeasti avaamalla sivu kahdelle välilehdelle. Painamalla Create new game-nappia näytölle ilmesyy koodi, jonka voi syöttää toisella välilehdellä painamalla ensin "Join game". Peliä voi toki pelata myös kaveria vastaan.
+
+Kirjautuneelle käyttäjälle pelatut pelit ilmestyvät etusivulle. Pelin siirtoja voi selata valitsemalla ensin pelin ja sitten painamalla näytölle ilmestyvää lautaa. Esim. käyttäjällä demouser salasanalla vahvasalasana on kaksi peliä, joita voi tarkastella.
+
+Sivu toimii ainakin Chromella ja Firefoxilla. Sivu ei toimi mobiililaitteilla.
 
 ## Käytetyt teknologiat ja rakenne
 
