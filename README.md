@@ -1,10 +1,6 @@
 # Online chess
 
-Full stack project 175 h
-
 Page can be found [here](https://nettishakki.herokuapp.com/).
-
-[working hours](docs/tuntikirjanpito.md)
 
 ## Instructions
 
